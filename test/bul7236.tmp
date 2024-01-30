@@ -103,6 +103,6 @@ duration = 30
 [node name="RingPattern" type="Node2D" parent="."]
 script = ExtResource("12_qys5r")
 spawn_count = 8
+stacks = 2
+stack_velocity = 2.0
 bullet_data = SubResource("Resource_c656b")
-max_repeats = 32
-repeat_time = 5.0

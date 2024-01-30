@@ -104,5 +104,5 @@ duration = 30
 script = ExtResource("12_qys5r")
 spawn_count = 8
 bullet_data = SubResource("Resource_c656b")
-max_repeats = 32
+max_repeats = 16
 repeat_time = 5.0

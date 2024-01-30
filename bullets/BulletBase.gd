@@ -12,30 +12,30 @@ var pattern : DanmakuPattern
 var camera : Camera2D
 var screen_extents : Vector2
 
-var virtual_position : Vector2
-
 ## Bullet speed
-@export var velocity : int = 100
+var velocity : int = 100
 ## Max bullet speed
 var max_velocity : int = 1000
 ## Bullet acceleration
-@export var acceleration : int = 0
-## Direction to travel
-@export var direction : Vector2 = Vector2.LEFT
+var acceleration : int = 0
 ## Angle of travel
-@export var angle : float = 0
-var position_offset : Vector2 = Vector2.ZERO
+var angle : float = 0
 ## If true, bullet rotates to look at the direction it's traveling
-@export var directed : bool = false
+var directed : bool = false
 ## How many times bullet should bounce off the edges of the screen
-@export var max_bounces : int = 0
-## Current bounce count
-var current_bounces : int = 0
+var max_bounces : int = 0
 ## Bullet duration in frames. 0 = doesn't expire until off screen
 # 60 frames per second
-@export var duration : int = 0:
+var duration : int = 0:
 	set(value):
 		duration = maxi(0, value) # never let duration go lower than 0
+
+## Virtual position of the bullet. Use with position_offset to adjust bullets position along its projected path
+var virtual_position : Vector2
+## Offset to virtual position
+var position_offset : Vector2 = Vector2.ZERO
+## Current bounce count
+var current_bounces : int = 0
 ## How long the bullet has been alive for
 var up_time : int = 0
 
@@ -62,19 +62,26 @@ func _physics_process(delta: float) -> void:
 	update(delta, self, bulletin_board) # asks the controler how it should behave each tick
 
 
-func _swap(data : BulletData) -> void:
+func _swap(data : BulletData, v : int, a : int) -> void:
 	bulletin_board.clear()
-	texture = data.texture
+	data.set_texture(self)
 	query.shape = data.shape
 	query.collision_mask = data.hitbox_layer
+	directed = data.directed
+	velocity = v
+	acceleration = a
+	duration = data.duration
+	max_bounces = data.bounces
 
 
-func before_spawn(data : BulletData) -> void:
-	_swap(data)
+func before_spawn(data : BulletData, angle : float, v : int, a : int, position : Vector2) -> void:
+	global_position = position
+	_swap(data, a, v)
+	self.angle = angle
 	query.collide_with_areas = true
 
 
-func spawn() -> void:
+func fire() -> void:
 	show()
 	set_physics_process(true)
 
@@ -87,7 +94,6 @@ func _disable():
 	expired.emit(self)
 	hide()
 	set_physics_process(false)
-	#active = false
 
 
 func update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
@@ -103,6 +109,7 @@ func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinB
 		_disable()
 		return
 	
+	# frame up time
 	up_time += 1
 	
 	# if been alive for duration, expire bullet
@@ -111,27 +118,20 @@ func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinB
 		return
 	
 	velocity = min(velocity + acceleration, max_velocity)
-	var distance := velocity * delta
-	#var motion := direction * distance
-	# TODO: offset for waving
-	#position_offset := Vector2.ZERO
-	#var offset : Vector2 = direction.orthogonal() * sin(w_t * frequency) * amplitude
 	
-	#print_debug("testing=%s" % [Vector2(virtual_position.x + distance * cos(angle), virtual_position.y + distance * sin(angle))])
-	
-	virtual_position = Vector2(virtual_position.x + distance * cos(angle), virtual_position.y + distance * sin(angle))
-	#virtual_position += motion
+	# Take into consideration angle to arc
+	virtual_position = Vector2(virtual_position.x + (velocity * delta) * cos(angle), virtual_position.y + (velocity * delta) * sin(angle))
 	if directed: look_at(virtual_position)
 	
 	global_position = virtual_position + position_offset
 	
 	if global_position.y <= -(camera.global_position + screen_extents).y or global_position.y >= (camera.global_position + screen_extents).y or global_position.x <= -(camera.global_position + screen_extents).x or global_position.x >= (camera.global_position + screen_extents).x:
-		#print("g%s vs c%s, %s" % [global_position, camera.global_position, screen_extents])
+		# when reaching edge of screen, disable bullet or bounce if applicable
 		if max_bounces > 0 and current_bounces < max_bounces:
 			if global_position.y <= -(camera.global_position + screen_extents).y or global_position.y >= (camera.global_position + screen_extents).y:
-				direction = Vector2(direction.x, -direction.y)
+				angle = -angle
 			elif global_position.x <= -(camera.global_position + screen_extents).x or global_position.x >= (camera.global_position + screen_extents).x:
-				direction = Vector2(-direction.x, direction.y)
+				angle = -PI - angle
 			current_bounces += 1
 		else:
 			_disable()

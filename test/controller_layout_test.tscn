@@ -10,7 +10,14 @@ radius = 4.0
 
 [sub_resource type="Resource" id="Resource_wxtd4"]
 script = ExtResource("2_sijq3")
+hframes = 0
+vframes = 0
+frame = 0
+frame_coords = Vector2(0, 0)
 shape = SubResource("CircleShape2D_pt5kr")
+directed = false
+bounces = 0
+duration = 0
 hitbox_layer = 16896
 grazebox_layer = 256
 
@@ -18,14 +25,7 @@ grazebox_layer = 256
 
 [node name="RingPattern" type="Node" parent="."]
 script = ExtResource("1_3s35w")
-spawn_count = null
-fire_angle = null
-spread = null
-spread_degrees = null
-origin_offset = null
 bullet_data = SubResource("Resource_wxtd4")
-max_repeats = null
-repeat_time = null
 
 [node name="Sequence" type="Node" parent="RingPattern"]
 script = ExtResource("3_i1nd1")
