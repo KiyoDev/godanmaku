@@ -1,12 +1,15 @@
 @tool
 extends EditorPlugin
 
+var frames: RefCounted
+
+func _init():
+	name = "GodonmakuPlugin"
+	print("Godonmaku initialized")
 
 func _enter_tree() -> void:
-	# Initialization of the plugin goes here.
 	pass
 
 
 func _exit_tree() -> void:
-	# Clean-up of the plugin goes here.
 	pass

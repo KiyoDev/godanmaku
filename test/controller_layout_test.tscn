@@ -1,15 +1,15 @@
 [gd_scene load_steps=7 format=3 uid="uid://s6287c03xlge"]
 
-[ext_resource type="Script" path="res://addons/godonmaku/patterns/RingPattern.gd" id="1_5dhar"]
-[ext_resource type="Script" path="res://addons/godonmaku/bullets/BulletData.gd" id="2_0874n"]
-[ext_resource type="Script" path="res://addons/gomaku/modifiers/SpinModifier.gd" id="2_van6s"]
-[ext_resource type="Script" path="res://addons/godonmaku/controls/Sequence.gd" id="3_jnohj"]
+[ext_resource type="Script" path="res://addons/godonmaku/patterns/RingPattern.gd" id="1_3s35w"]
+[ext_resource type="Script" path="res://addons/godonmaku/bullets/BulletData.gd" id="2_sijq3"]
+[ext_resource type="Script" path="res://addons/godonmaku/controls/Sequence.gd" id="3_i1nd1"]
+[ext_resource type="Script" path="res://addons/gomaku/modifiers/SpinModifier.gd" id="4_23nek"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pt5kr"]
 radius = 4.0
 
 [sub_resource type="Resource" id="Resource_wxtd4"]
-script = ExtResource("2_0874n")
+script = ExtResource("2_sijq3")
 shape = SubResource("CircleShape2D_pt5kr")
 hitbox_layer = 16896
 grazebox_layer = 256
@@ -17,7 +17,7 @@ grazebox_layer = 256
 [node name="controller" type="Node"]
 
 [node name="RingPattern" type="Node" parent="."]
-script = ExtResource("1_5dhar")
+script = ExtResource("1_3s35w")
 spawn_count = null
 fire_angle = null
 spread = null
@@ -28,15 +28,15 @@ max_repeats = null
 repeat_time = null
 
 [node name="Sequence" type="Node" parent="RingPattern"]
-script = ExtResource("3_jnohj")
+script = ExtResource("3_i1nd1")
 
 [node name="SpinModifier" type="Node" parent="RingPattern/Sequence"]
-script = ExtResource("2_van6s")
+script = ExtResource("4_23nek")
 spin_angle = 0.25
 max_repeats = 8
 
 [node name="SpinModifier2" type="Node" parent="RingPattern/Sequence"]
-script = ExtResource("2_van6s")
+script = ExtResource("4_23nek")
 spin_angle = -0.25
 max_repeats = 7
 

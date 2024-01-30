@@ -27,10 +27,10 @@ func _custom_update(delta : float, bullet : BulletBase, bulletin_board : Bulleti
 		return SUCCESS
 	
 	if bullet.up_time % (2 * frames) == 0:
-		bullet.angle += angle * PI / 180
+		bullet.angle += (angle * PI / 180)
 		
 	if bullet.up_time % (2 * frames) == frames:
-		bullet.angle -= angle * PI / 180
+		bullet.angle -= (angle * PI / 180)
 	
 	bulletin_board.set_value(cache_key, bulletin_board.get_value(cache_key) + 1)
 	return RUNNING
