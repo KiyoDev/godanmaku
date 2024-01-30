@@ -36,6 +36,7 @@ script = ExtResource("5_p75xh")
 
 [node name="ZigZag" type="Node" parent="Sequence"]
 script = ExtResource("6_2v2mx")
+angle = 60
 duration = 60
 
 [node name="ResetMove" type="Node" parent="Sequence"]
@@ -44,4 +45,5 @@ duration = 60
 
 [node name="ZigZag2" type="Node" parent="Sequence"]
 script = ExtResource("6_2v2mx")
+angle = 60
 duration = 60
