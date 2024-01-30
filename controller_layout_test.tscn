@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://s6287c03xlge"]
+
+[ext_resource type="Script" path="res://gomaku/patterns/RingPattern.gd" id="1_5dhar"]
+[ext_resource type="Script" path="res://gomaku/bullets/BulletData.gd" id="2_0874n"]
+[ext_resource type="Script" path="res://gomaku/modifiers/SpinModifier.gd" id="2_van6s"]
+[ext_resource type="Script" path="res://gomaku/controls/Sequence.gd" id="3_jnohj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pt5kr"]
+radius = 4.0
+
+[sub_resource type="Resource" id="Resource_wxtd4"]
+script = ExtResource("2_0874n")
+shape = SubResource("CircleShape2D_pt5kr")
+hitbox_layer = 16896
+grazebox_layer = 256
+
+[node name="controller" type="Node"]
+
+[node name="RingPattern" type="Node" parent="."]
+script = ExtResource("1_5dhar")
+spawn_count = null
+fire_angle = null
+spread = null
+spread_degrees = null
+origin_offset = null
+bullet_data = SubResource("Resource_wxtd4")
+max_repeats = null
+repeat_time = null
+
+[node name="Sequence" type="Node" parent="RingPattern"]
+script = ExtResource("3_jnohj")
+
+[node name="SpinModifier" type="Node" parent="RingPattern/Sequence"]
+script = ExtResource("2_van6s")
+spin_angle = 0.25
+max_repeats = 8
+
+[node name="SpinModifier2" type="Node" parent="RingPattern/Sequence"]
+script = ExtResource("2_van6s")
+spin_angle = -0.25
+max_repeats = 7
+
+[node name="Sequence" type="Node" parent="."]
+
+[node name="MoveDistance" type="Node" parent="Sequence"]
+
+[node name="MoveStraight" type="Node" parent="Sequence"]
