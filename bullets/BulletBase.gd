@@ -62,17 +62,16 @@ func _physics_process(delta: float) -> void:
 	update(delta, self, bulletin_board) # asks the controler how it should behave each tick
 
 
-func _swap(new_texture : Texture2D, new_shape : Shape2D) -> void:
+func _swap(data : BulletData) -> void:
 	bulletin_board.clear()
-	query.shape = new_shape
-	texture = new_texture
+	texture = data.texture
+	query.shape = data.shape
+	query.collision_mask = data.hitbox_layer
 
 
-func before_spawn(shape : Shape2D, hit_layer : int) -> void:
-	query.shape = shape
-	query.collision_mask = hit_layer
+func before_spawn(data : BulletData) -> void:
+	_swap(data)
 	query.collide_with_areas = true
-	bulletin_board.clear()
 
 
 func spawn() -> void:

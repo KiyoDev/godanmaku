@@ -13,19 +13,23 @@ class_name DanmakuPattern extends Node2D
 ### How far to rotate the pattern for the next time it fires
 #@export var spin_rate : float = 0.0
 
+var custom_update : Callable
+
 var total_time : float = 0.0
 var repeat_count : int = 0
 var can_tick : bool = true
 
 
 func _ready() -> void:
-	pass
+	custom_update = _custom_update
+
+
+func _physics_process(delta: float) -> void:
+	update(delta)
 
 
 func tick(delta : float) -> void:
-	# tick only if has 1 child
-	if self.get_child_count() == 1 and can_tick:
-		fire(delta)
+	pass
 
 
 func fire(delta : float) -> void:
@@ -53,10 +57,30 @@ func _repeat(delta : float) -> void:
 
 
 func update(delta : float) -> void:
+	_base_update.call(delta)
 	custom_update.call(delta)
 
 
-func custom_update(delta : float) -> void:
+func _base_update(delta : float) -> void:
+	if !can_tick: return
+	if max_repeats == 0:
+		_handle_pattern(delta)
+		can_tick = false
+		return
+	else:
+		if max_repeats > 0 and max_repeats <= repeat_count: 
+			can_tick = false
+			return
+		
+		if total_time < repeat_time:
+			total_time += delta
+		else:
+			total_time = 0
+			repeat_count += 1
+			_handle_pattern(delta)
+
+
+func _custom_update(delta : float) -> void:
 	pass
 
 

@@ -25,15 +25,10 @@ func _custom_update(delta : float, bullet : BulletBase, bulletin_board : Bulleti
 	# stop
 	if duration > 0 and bulletin_board.get_value(cache_key) >= duration:
 		return SUCCESS
-	#
-	#if bullet.up_time % (2 * frames) == 0:
-		#bullet.angle += (angle * PI / 180)
-		#
-	#if bullet.up_time % (2 * frames) == frames:
-		#bullet.angle -= (angle * PI / 180)
+	
+	print("%s, %s" % [Vector2(cos(bullet.angle), sin(bullet.angle)), Vector2(cos(bullet.angle), sin(bullet.angle)).orthogonal()])
 	
 	bullet.position_offset = Vector2(cos(bullet.angle), sin(bullet.angle)).orthogonal() * sin(bulletin_board.get_value(cache_key) * delta * frequency) * amplitude
-	#bullet.position_offset = bullet.angle * sin(bulletin_board.get_value(cache_key) * frequency) * amplitude
 	
 	bulletin_board.set_value(cache_key, bulletin_board.get_value(cache_key) + 1)
 	return RUNNING

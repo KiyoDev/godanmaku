@@ -1,9 +1,10 @@
 extends Camera2D
 
-
+@export var count_2 := 20
 @export var t_1 : Texture2D
+@export var z : ZigZag
 @export var seq_1 : Sequence
-
+@export var data_1 : BulletData
 
 var c : Callable = func(): pass
 var duration := 0
@@ -11,8 +12,7 @@ var t := 0
 
 var running := false
 
-
-
+var c_t := 0
 
 func _physics_process(delta: float) -> void:
 	if !running: return
@@ -27,39 +27,35 @@ func _input(event: InputEvent) -> void:
 	if Input.is_key_pressed(KEY_1) and just_pressed:
 		var b = BulletBase.new()
 		add_child(b)
-		b.texture = t_1
+		b.before_spawn(data_1)
 		b.hframes = 16
 		b.vframes = 16
 		b.angle = PI
 		
-		var shape := CircleShape2D.new()
-		shape.radius = 4
-		
-		b.before_spawn(shape, 0b0100_0000_0000)
 		b.spawn()
 	elif Input.is_key_pressed(KEY_2) and just_pressed:
 		running = !running
+		if !running:
+			t = 0
+			c_t = 0
+			return
 		duration = 5
 		c = func():
 			t += 1
 			if t >= duration:
+				if c_t == count_2: 
+					running = false
+					t = 0
+					c_t = 0
+					return
+				c_t += 1
 				t = 0
 				var b = BulletBase.new()
 				add_child(b)
-				b.texture = t_1
+				b.before_spawn(data_1)
 				b.hframes = 16
 				b.vframes = 16
 				b.angle = PI
-				
-				var shape := CircleShape2D.new()
-				shape.radius = 4
-				
-				b.before_spawn(shape, 0b0100_0000_0000)
-				
-				var z = ZigZag.new()
-				add_child(z)
-				z.angle = 60
-				z.frames = 30
 				
 				z._set_custom_update(b, b.bulletin_board)
 				
@@ -67,32 +63,13 @@ func _input(event: InputEvent) -> void:
 	elif Input.is_key_pressed(KEY_3) and just_pressed:
 		var b = BulletBase.new()
 		add_child(b)
-		b.texture = t_1
+		b.before_spawn(data_1)
 		b.hframes = 16
 		b.vframes = 16
+		#b.angle = 7 * PI / 6
 		b.angle = PI
+		#b.angle = 2 * PI
 		b.velocity = 60
-		
-		var shape := CircleShape2D.new()
-		shape.radius = 4
-		
-		b.before_spawn(shape, 0b0100_0000_0000)
-		
-		#seq_1 = Sequence.new()
-		#
-		#var z = ZigZag.new()
-		#z.angle = 60
-		#z.frames = 30
-		#z.duration = 120
-		#
-		#var r = ResetMove.new()
-		#r.duration = 30
-		#
-		#seq_1.add_child(z.duplicate(0b0111))
-		#seq_1.add_child(r.duplicate(0b0111))
-		#seq_1.add_child(z.duplicate(0b0111))
-		#
-		#add_child(seq_1)
 		
 		seq_1._set_custom_update(b, b.bulletin_board)
 		
