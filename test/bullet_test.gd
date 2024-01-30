@@ -2,6 +2,7 @@ extends Camera2D
 
 
 @export var t_1 : Texture2D
+@export var seq_1 : Sequence
 
 
 var c : Callable = func(): pass
@@ -11,7 +12,6 @@ var t := 0
 var running := false
 
 
-var seq_1 : Sequence
 
 
 func _physics_process(delta: float) -> void:
@@ -58,7 +58,7 @@ func _input(event: InputEvent) -> void:
 				
 				var z = ZigZag.new()
 				add_child(z)
-				z.angle = PI / 3
+				z.angle = 60
 				z.frames = 30
 				
 				z._set_custom_update(b, b.bulletin_board)
@@ -78,21 +78,21 @@ func _input(event: InputEvent) -> void:
 		
 		b.before_spawn(shape, 0b0100_0000_0000)
 		
-		seq_1 = Sequence.new()
-		
-		var z = ZigZag.new()
-		z.angle = PI / 3
-		z.frames = 30
-		z.duration = 120
-		
-		var r = ResetMove.new()
-		r.duration = 30
-		
-		seq_1.add_child(z.duplicate(0b0111))
-		seq_1.add_child(r.duplicate(0b0111))
-		seq_1.add_child(z.duplicate(0b0111))
-		
-		add_child(seq_1)
+		#seq_1 = Sequence.new()
+		#
+		#var z = ZigZag.new()
+		#z.angle = 60
+		#z.frames = 30
+		#z.duration = 120
+		#
+		#var r = ResetMove.new()
+		#r.duration = 30
+		#
+		#seq_1.add_child(z.duplicate(0b0111))
+		#seq_1.add_child(r.duplicate(0b0111))
+		#seq_1.add_child(z.duplicate(0b0111))
+		#
+		#add_child(seq_1)
 		
 		seq_1._set_custom_update(b, b.bulletin_board)
 		

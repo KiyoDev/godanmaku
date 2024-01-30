@@ -6,8 +6,8 @@ class_name ZigZag extends ControlNode
 
 ## How many frames to alternate zig zag
 @export var frames : int = 30
-## Bullet angle modifier in radians
-@export var angle : float = 0
+## Bullet angle modifier in degrees
+@export var angle : int = 0
 ## How many frames should zig zag for
 @export var duration : int = 0
 
@@ -27,10 +27,10 @@ func _custom_update(delta : float, bullet : BulletBase, bulletin_board : Bulleti
 		return SUCCESS
 	
 	if bullet.up_time % (2 * frames) == 0:
-		bullet.angle += angle
+		bullet.angle += angle * PI / 180
 		
 	if bullet.up_time % (2 * frames) == frames:
-		bullet.angle -= angle
+		bullet.angle -= angle * PI / 180
 	
 	bulletin_board.set_value(cache_key, bulletin_board.get_value(cache_key) + 1)
 	return RUNNING

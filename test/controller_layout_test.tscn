@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://s6287c03xlge"]
 
-[ext_resource type="Script" path="res://gomaku/patterns/RingPattern.gd" id="1_5dhar"]
-[ext_resource type="Script" path="res://gomaku/bullets/BulletData.gd" id="2_0874n"]
-[ext_resource type="Script" path="res://gomaku/modifiers/SpinModifier.gd" id="2_van6s"]
-[ext_resource type="Script" path="res://gomaku/controls/Sequence.gd" id="3_jnohj"]
+[ext_resource type="Script" path="res://addons/godonmaku/patterns/RingPattern.gd" id="1_5dhar"]
+[ext_resource type="Script" path="res://addons/godonmaku/bullets/BulletData.gd" id="2_0874n"]
+[ext_resource type="Script" path="res://addons/gomaku/modifiers/SpinModifier.gd" id="2_van6s"]
+[ext_resource type="Script" path="res://addons/godonmaku/controls/Sequence.gd" id="3_jnohj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pt5kr"]
 radius = 4.0

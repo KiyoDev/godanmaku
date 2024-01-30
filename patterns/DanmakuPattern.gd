@@ -52,5 +52,13 @@ func _repeat(delta : float) -> void:
 			_handle_pattern(delta)
 
 
+func update(delta : float) -> void:
+	custom_update.call(delta)
+
+
+func custom_update(delta : float) -> void:
+	pass
+
+
 func _handle_pattern(delta : float) -> void:
 	pass
