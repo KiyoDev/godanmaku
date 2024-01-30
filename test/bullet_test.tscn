@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c41gs2sfa6tvd"]
+[gd_scene load_steps=12 format=3 uid="uid://c41gs2sfa6tvd"]
 
 [ext_resource type="Script" path="res://addons/godonmaku/test/bullet_test.gd" id="1_ap1po"]
 [ext_resource type="Texture2D" uid="uid://bxrxgvhay4bnc" path="res://assets/art/bullets/enemy_bullets.png" id="2_fa3y2"]
@@ -6,7 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://o8n22ycn4qsq" path="res://assets/art/16x16_black.png" id="4_im2dq"]
 [ext_resource type="Script" path="res://addons/godonmaku/controls/Sequence.gd" id="5_p75xh"]
 [ext_resource type="Script" path="res://addons/godonmaku/controls/ZigZag.gd" id="6_2v2mx"]
+[ext_resource type="Script" path="res://addons/godonmaku/controls/Wave.gd" id="7_71mfq"]
 [ext_resource type="Script" path="res://addons/godonmaku/controls/ResetMove.gd" id="7_oeyqb"]
+[ext_resource type="Script" path="res://addons/godonmaku/controls/Arc.gd" id="8_x1ekb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s2xqg"]
 texture = ExtResource("4_im2dq")
@@ -34,16 +36,26 @@ layer_0/tile_data = PackedInt32Array(458739, 0, 0, 524275, 0, 0, 458740, 0, 0, 5
 [node name="Sequence" type="Node" parent="."]
 script = ExtResource("5_p75xh")
 
+[node name="Wave" type="Node" parent="Sequence"]
+script = ExtResource("7_71mfq")
+frequency = 5.0
+duration = 120
+
 [node name="ZigZag" type="Node" parent="Sequence"]
 script = ExtResource("6_2v2mx")
-angle = 60
-duration = 60
+angle = 60.0
+duration = 120
 
-[node name="ResetMove" type="Node" parent="Sequence"]
-script = ExtResource("7_oeyqb")
-duration = 60
+[node name="Arc" type="Node" parent="Sequence"]
+script = ExtResource("8_x1ekb")
+angle = 10.0
+duration = 240
 
 [node name="ZigZag2" type="Node" parent="Sequence"]
 script = ExtResource("6_2v2mx")
-angle = 60
-duration = 60
+angle = 60.0
+duration = 120
+
+[node name="ResetMove" type="Node" parent="Sequence"]
+script = ExtResource("7_oeyqb")
+duration = 30

@@ -22,8 +22,9 @@ var max_velocity : int = 1000
 @export var acceleration : int = 0
 ## Direction to travel
 @export var direction : Vector2 = Vector2.LEFT
-## 
+## Angle of travel
 @export var angle : float = 0
+var position_offset : Vector2 = Vector2.ZERO
 ## If true, bullet rotates to look at the direction it's traveling
 @export var directed : bool = false
 ## How many times bullet should bounce off the edges of the screen
@@ -112,9 +113,9 @@ func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinB
 	
 	velocity = min(velocity + acceleration, max_velocity)
 	var distance := velocity * delta
-	var motion := direction * distance
+	#var motion := direction * distance
 	# TODO: offset for waving
-	var offset := Vector2.ZERO
+	#position_offset := Vector2.ZERO
 	#var offset : Vector2 = direction.orthogonal() * sin(w_t * frequency) * amplitude
 	
 	#print_debug("testing=%s" % [Vector2(virtual_position.x + distance * cos(angle), virtual_position.y + distance * sin(angle))])
@@ -123,7 +124,7 @@ func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinB
 	#virtual_position += motion
 	if directed: look_at(virtual_position)
 	
-	global_position = virtual_position + offset
+	global_position = virtual_position + position_offset
 	
 	if global_position.y <= -(camera.global_position + screen_extents).y or global_position.y >= (camera.global_position + screen_extents).y or global_position.x <= -(camera.global_position + screen_extents).x or global_position.x >= (camera.global_position + screen_extents).x:
 		#print("g%s vs c%s, %s" % [global_position, camera.global_position, screen_extents])
