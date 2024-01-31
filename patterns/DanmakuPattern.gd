@@ -61,10 +61,14 @@ func fire() -> void:
 	if !can_update:
 		can_update = true
 		set_physics_process(true)
-		if !sub_patterns.is_empty():
-			for sp in sub_patterns:
-				if !sp: continue
-				sp.fire()
+		_sub_fire()
+
+
+func _sub_fire() -> void:
+	if !sub_patterns.is_empty():
+		for sp in sub_patterns:
+			if !sp: continue
+			sp.fire()
 
 
 func stop() -> void:
