@@ -43,6 +43,7 @@ func _base_update(delta : float) -> int:
 			total_time = 0
 			repeat_count += 1
 			repeat = false
+			get_child(0).can_update = true # allow child to call its update() method
 	return RUNNING
 
 

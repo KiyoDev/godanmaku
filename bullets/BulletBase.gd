@@ -101,7 +101,6 @@ func timeout(bullet : BulletBase) -> void:
 
 
 func _disable():
-	print("d")
 	expired.emit(self)
 	set_physics_process(false)
 	reset(Vector2.ZERO)

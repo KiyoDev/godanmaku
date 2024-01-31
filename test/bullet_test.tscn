@@ -132,12 +132,40 @@ script = ExtResource("14_4m8n4")
 max_repeats = 4
 repeat_time = 120.0
 
-[node name="SinglePattern" type="Node2D" parent="PatternRepeater"]
+[node name="RingPattern" type="Node2D" parent="PatternRepeater" node_paths=PackedStringArray("ctrl")]
 script = ExtResource("12_qys5r")
-origin_offset = 32
-stacks = 4
-stack_velocity = 10
-spread = 10
-spread_degrees = 15.0
-velocity = 30
-bullet_data = SubResource("Resource_7bmaj")
+spawn_count = 4
+ctrl = NodePath("../../RingPattern/Sequence")
+spread = 3
+spread_degrees = 20.0
+velocity = 60
+bullet_data = ExtResource("8_dl0jv")
+max_repeats = 32
+repeat_time = 5.0
+
+[node name="Sequence" type="Node" parent="PatternRepeater/RingPattern"]
+script = ExtResource("5_p75xh")
+
+[node name="ZigZag" type="Node" parent="PatternRepeater/RingPattern/Sequence"]
+script = ExtResource("6_2v2mx")
+angle = 60.0
+duration = 120
+
+[node name="Wave" type="Node" parent="PatternRepeater/RingPattern/Sequence"]
+script = ExtResource("7_71mfq")
+frequency = 5.0
+duration = 120
+
+[node name="Arc" type="Node" parent="PatternRepeater/RingPattern/Sequence"]
+script = ExtResource("8_x1ekb")
+angle = 10.0
+duration = 240
+
+[node name="ZigZag2" type="Node" parent="PatternRepeater/RingPattern/Sequence"]
+script = ExtResource("6_2v2mx")
+angle = 60.0
+duration = 120
+
+[node name="ResetMove" type="Node" parent="PatternRepeater/RingPattern/Sequence"]
+script = ExtResource("7_oeyqb")
+duration = 30
