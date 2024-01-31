@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://c41gs2sfa6tvd"]
+[gd_scene load_steps=26 format=3 uid="uid://c41gs2sfa6tvd"]
 
 [ext_resource type="Script" path="res://addons/godonmaku/test/bullet_test.gd" id="1_ap1po"]
 [ext_resource type="Texture2D" uid="uid://clev7jb1fmmjj" path="res://addons/godonmaku/textures/enemy_bullets.png" id="2_fa3y2"]
@@ -39,13 +39,33 @@ texture = ExtResource("4_im2dq")
 [sub_resource type="TileSet" id="TileSet_fqdlv"]
 sources/0 = SubResource("TileSetAtlasSource_s2xqg")
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_730id"]
+radius = 4.0
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_f0cnx"]
+load_path = "res://.godot/imported/enemy_bullets.png-63fffad063e5286d2ac66e055b92a61c.ctex"
+
+[sub_resource type="Resource" id="Resource_7bmaj"]
+script = ExtResource("3_8t27t")
+texture = SubResource("CompressedTexture2D_f0cnx")
+hframes = 16
+vframes = 16
+frame = 28
+frame_coords = Vector2i(12, 1)
+shape = SubResource("CircleShape2D_730id")
+directed = false
+bounces = 0
+duration = 0
+hitbox_layer = 16896
+grazebox_layer = 256
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_inhi6"]
 radius = 4.0
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mtbov"]
 load_path = "res://.godot/imported/enemy_bullets.png-63fffad063e5286d2ac66e055b92a61c.ctex"
 
-[sub_resource type="Resource" id="Resource_7bmaj"]
+[sub_resource type="Resource" id="Resource_xp1s6"]
 script = ExtResource("3_8t27t")
 texture = SubResource("CompressedTexture2D_mtbov")
 hframes = 16
@@ -59,13 +79,27 @@ duration = 0
 hitbox_layer = 16896
 grazebox_layer = 256
 
+[sub_resource type="Resource" id="Resource_rjjws"]
+script = ExtResource("3_8t27t")
+texture = SubResource("CompressedTexture2D_mtbov")
+hframes = 16
+vframes = 16
+frame = 0
+frame_coords = Vector2i(0, 0)
+shape = SubResource("CircleShape2D_inhi6")
+directed = false
+bounces = 0
+duration = 0
+hitbox_layer = 16896
+grazebox_layer = 256
+
 [node name="Camera2D" type="Camera2D" node_paths=PackedStringArray("z", "seq_1", "rings") groups=["camera"]]
 script = ExtResource("1_ap1po")
 t_1 = ExtResource("2_fa3y2")
 z = NodePath("RingPattern/Sequence/ZigZag")
 seq_1 = NodePath("RingPattern/Sequence")
 data_1 = SubResource("Resource_42l12")
-rings = [NodePath("RingPattern"), NodePath("SinglePattern"), NodePath("PatternRepeater")]
+rings = [NodePath("RingPattern"), NodePath("SinglePattern"), NodePath("PatternRepeater"), NodePath("SinglePattern2")]
 
 [node name="BulletBase" type="Sprite2D" parent="."]
 texture = ExtResource("4_rrv4o")
@@ -169,3 +203,26 @@ duration = 120
 [node name="ResetMove" type="Node" parent="PatternRepeater/RingPattern/Sequence"]
 script = ExtResource("7_oeyqb")
 duration = 30
+
+[node name="SinglePattern2" type="Node2D" parent="." node_paths=PackedStringArray("sub_patterns")]
+script = ExtResource("12_qys5r")
+stacks = 4
+stack_velocity = 10
+spread = 6
+spread_degrees = 15.0
+velocity = 50
+bullet_data = SubResource("Resource_xp1s6")
+max_repeats = 3
+repeat_time = 60.0
+sub_patterns = [NodePath("SinglePattern2")]
+
+[node name="SinglePattern2" type="Node2D" parent="SinglePattern2"]
+script = ExtResource("12_qys5r")
+stacks = 4
+stack_velocity = 15
+spread = 5
+spread_degrees = 15.0
+velocity = 30
+bullet_data = SubResource("Resource_rjjws")
+max_repeats = 3
+repeat_time = 60.0

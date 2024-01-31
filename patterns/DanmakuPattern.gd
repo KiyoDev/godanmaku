@@ -24,6 +24,9 @@ enum {
 ## How many seconds until the pattern repeats
 @export var repeat_time : float = 1.0
 
+@export_group("Sub Patterns")
+@export var sub_patterns : Array[DanmakuPattern]
+
 #@export_group("Modifiers")
 ### How far to rotate the pattern for the next time it fires
 #@export var spin_rate : float = 0.0
@@ -58,6 +61,10 @@ func fire() -> void:
 	if !can_update:
 		can_update = true
 		set_physics_process(true)
+		if !sub_patterns.is_empty():
+			for sp in sub_patterns:
+				if !sp: continue
+				sp.fire()
 
 
 func stop() -> void:
@@ -66,6 +73,7 @@ func stop() -> void:
 	angle_offset = 0
 	can_update = false
 	set_physics_process(false)
+	finished.emit()
 
 
 func angle_to_player() -> float:
@@ -87,7 +95,9 @@ func _base_update(delta : float) -> int:
 		stop()
 		return SUCCESS
 	else:
-		if max_repeats > 0 and max_repeats <= repeat_count: 
+		if repeat_count == 0 and total_time == 0:
+			_handle_pattern(delta)
+		elif max_repeats > 0 and max_repeats <= repeat_count: 
 			stop()
 			return SUCCESS
 		
@@ -97,6 +107,7 @@ func _base_update(delta : float) -> int:
 			total_time = 0
 			repeat_count += 1
 			_handle_pattern(delta)
+			# Fire sub patterns
 			custom_repeat.call(delta, self, bulletin_board)
 	return RUNNING
 
