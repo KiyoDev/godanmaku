@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://c41gs2sfa6tvd"]
+[gd_scene load_steps=22 format=3 uid="uid://c41gs2sfa6tvd"]
 
 [ext_resource type="Script" path="res://addons/godonmaku/test/bullet_test.gd" id="1_ap1po"]
 [ext_resource type="Texture2D" uid="uid://clev7jb1fmmjj" path="res://addons/godonmaku/textures/enemy_bullets.png" id="2_fa3y2"]
@@ -13,6 +13,7 @@
 [ext_resource type="Resource" uid="uid://b6r4obveuuiqe" path="res://addons/godonmaku/test/bullet_data_base.tres" id="8_dl0jv"]
 [ext_resource type="Script" path="res://addons/godonmaku/controls/Arc.gd" id="8_x1ekb"]
 [ext_resource type="Script" path="res://addons/godonmaku/patterns/RingPattern.gd" id="12_qys5r"]
+[ext_resource type="Script" path="res://addons/godonmaku/patterns/PatternRepeater.gd" id="14_4m8n4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hdpox"]
 radius = 4.0
@@ -64,7 +65,7 @@ t_1 = ExtResource("2_fa3y2")
 z = NodePath("RingPattern/Sequence/ZigZag")
 seq_1 = NodePath("RingPattern/Sequence")
 data_1 = SubResource("Resource_42l12")
-rings = [NodePath("RingPattern"), NodePath("SinglePattern")]
+rings = [NodePath("RingPattern"), NodePath("SinglePattern"), NodePath("PatternRepeater")]
 
 [node name="BulletBase" type="Sprite2D" parent="."]
 texture = ExtResource("4_rrv4o")
@@ -81,16 +82,10 @@ layer_0/tile_data = PackedInt32Array(458739, 0, 0, 524275, 0, 0, 458740, 0, 0, 5
 [node name="RingPattern" type="Node2D" parent="." node_paths=PackedStringArray("ctrl")]
 script = ExtResource("12_qys5r")
 spawn_count = 4
-origin_offset = null
 ctrl = NodePath("Sequence")
-stacks = null
-stack_velocity = null
 spread = 3
 spread_degrees = 20.0
-chase = null
-fire_angle = null
 velocity = 60
-acceleration = null
 bullet_data = ExtResource("8_dl0jv")
 max_repeats = 32
 repeat_time = 5.0
@@ -124,16 +119,25 @@ duration = 30
 
 [node name="SinglePattern" type="Node2D" parent="."]
 script = ExtResource("12_qys5r")
-spawn_count = null
 origin_offset = 32
 stacks = 4
 stack_velocity = 10
 spread = 10
 spread_degrees = 15.0
-chase = null
-fire_angle = null
 velocity = 30
-acceleration = null
 bullet_data = SubResource("Resource_7bmaj")
-max_repeats = null
-repeat_time = null
+
+[node name="PatternRepeater" type="Node2D" parent="."]
+script = ExtResource("14_4m8n4")
+max_repeats = 4
+repeat_time = 120.0
+
+[node name="SinglePattern" type="Node2D" parent="PatternRepeater"]
+script = ExtResource("12_qys5r")
+origin_offset = 32
+stacks = 4
+stack_velocity = 10
+spread = 10
+spread_degrees = 15.0
+velocity = 30
+bullet_data = SubResource("Resource_7bmaj")

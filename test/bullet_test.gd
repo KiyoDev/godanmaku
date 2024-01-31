@@ -8,7 +8,7 @@ extends Camera2D
 
 #@export var ring_1 : RingPattern
 
-@export var rings : Array[RingPattern]
+@export var rings : Array[DanmakuPattern]
 
 var c : Callable = func(): pass
 var duration := 0
@@ -70,3 +70,5 @@ func _input(event: InputEvent) -> void:
 		rings[0].fire()
 	elif Input.is_key_pressed(KEY_5) and just_pressed:
 		rings[1].fire()
+	elif Input.is_key_pressed(KEY_6) and just_pressed:
+		rings[2].fire()

@@ -37,7 +37,7 @@ func _handle_pattern(delta : float) -> int:
 			var fire_origin : Vector2
 			var bullet : BulletBase
 			#print("i=%s, %s, %s, %s" % [i, 1 + (i * spread_rad), direction, dir])
-			print("spawn_count=", spawn_count)
+			#print("spawn_count=", spawn_count)
 			for line in range(1, spawn_count + 1):
 				angle = start_angle + (radians * line) + angle_offset + (i * spread_rad)
 				fire_origin = pos + (pattern_origin.from_angle(angle) * origin_offset)
