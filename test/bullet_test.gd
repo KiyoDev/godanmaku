@@ -65,7 +65,7 @@ func _input(event: InputEvent) -> void:
 			#if board.get_value("test") == 15:
 				#board.set_value("test", 0)
 				#pattern.angle_offset += (PI / 6)
-		ring_1.angle_offset = 0
-		ring_1.custom_repeat = func(delta, pattern, board):
-			pattern.angle_offset += (PI / 24)
+		#ring_1.angle_offset = 0
+		#ring_1.custom_repeat = func(delta, pattern, board):
+			#pattern.angle_offset += (PI / 24)
 		ring_1.fire()
