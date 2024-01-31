@@ -25,7 +25,19 @@ grazebox_layer = 256
 
 [node name="RingPattern" type="Node" parent="."]
 script = ExtResource("1_3s35w")
+spawn_count = null
+origin_offset = null
+stacks = null
+stack_velocity = null
+spread = null
+spread_degrees = null
+chase = null
+fire_angle = null
+velocity = null
+acceleration = null
 bullet_data = SubResource("Resource_wxtd4")
+max_repeats = null
+repeat_time = null
 
 [node name="Sequence" type="Node" parent="RingPattern"]
 script = ExtResource("3_i1nd1")

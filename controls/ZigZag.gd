@@ -23,7 +23,7 @@ func _set_custom_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> 
 
 func _custom_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> int:
 	# stop zig zag
-	if duration > 0 and bulletin_board.get_value(cache_key) >= duration:
+	if duration > 0 and bulletin_board.get_value(cache_key, 0) >= duration:
 		return SUCCESS
 	
 	if bullet.up_time % (2 * frames) == 0:

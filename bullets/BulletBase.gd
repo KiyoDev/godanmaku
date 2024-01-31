@@ -63,8 +63,8 @@ func _physics_process(delta: float) -> void:
 
 
 func _swap(data : BulletData, v : int, a : int) -> void:
-	bulletin_board.clear()
-	data.set_texture(self)
+	if texture != data.texture:
+		data.set_texture(self)
 	query.shape = data.shape
 	query.collision_mask = data.hitbox_layer
 	directed = data.directed
@@ -74,11 +74,21 @@ func _swap(data : BulletData, v : int, a : int) -> void:
 	max_bounces = data.bounces
 
 
-func before_spawn(data : BulletData, angle : float, v : int, a : int, position : Vector2) -> void:
+func reset(position : Vector2) -> void:
+	bulletin_board.clear()
+	virtual_position = position
 	global_position = position
+	query.collide_with_areas = true
+	custom_update = _custom_update
+	up_time = 0
+	current_bounces = 0
+	position_offset = Vector2.ZERO
+
+
+func before_spawn(data : BulletData, angle : float, v : int, a : int, position : Vector2) -> void:
+	reset(position)
 	_swap(data, a, v)
 	self.angle = angle
-	query.collide_with_areas = true
 
 
 func fire() -> void:
@@ -92,8 +102,10 @@ func timeout(bullet : BulletBase) -> void:
 
 func _disable():
 	expired.emit(self)
-	hide()
 	set_physics_process(false)
+	reset(Vector2.ZERO)
+	query.collide_with_areas = false
+	hide()
 
 
 func update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> void:

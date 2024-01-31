@@ -16,16 +16,16 @@ func _set_custom_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> 
 
 
 func _custom_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> int:
-	var status : int = get_child(bulletin_board.get_value(cache_key))._custom_update.call(delta, bullet, bulletin_board)
+	var status : int = get_child(bulletin_board.get_value(cache_key, 0))._custom_update.call(delta, bullet, bulletin_board)
 	
 	if status == SUCCESS:
-		bulletin_board.set_value(cache_key, bulletin_board.get_value(cache_key) + 1)
+		bulletin_board.set_value(cache_key, bulletin_board.get_value(cache_key, 0) + 1)
 	
-		if bulletin_board.get_value(cache_key) == get_child_count():
+		if bulletin_board.get_value(cache_key, 0) == get_child_count():
 			bulletin_board.set_value(cache_key, 0)
 			return SUCCESS
 		
-		get_child(bulletin_board.get_value(cache_key))._before_update(bullet, bulletin_board)
+		get_child(bulletin_board.get_value(cache_key, 0))._before_update(bullet, bulletin_board)
 	
 	return RUNNING
 

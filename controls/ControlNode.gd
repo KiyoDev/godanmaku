@@ -22,3 +22,7 @@ func _set_custom_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> 
 
 func _custom_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> int:
 	return SUCCESS
+
+
+func _interupt(bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
+	pass

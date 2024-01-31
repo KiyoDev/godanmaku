@@ -8,29 +8,41 @@ const MAX_BULLETS := 10000
 var bullet_index := 0
 
 
-func get_next_bullet(data : BulletData, angle : float, v : int, a : int, position : Vector2) -> BulletBase:
+func _exit_tree() -> void:
+	kill_bullets()
+
+
+func get_next_bullet(data : BulletData, angle : float, v : int, a : int, position : Vector2, ctrl : ControlNode) -> BulletBase:
+	var bullet : BulletBase
 	if get_child_count() >= MAX_BULLETS:
 		bullet_index = (bullet_index + 1) % get_child_count()
-		var bullet : BulletBase = get_child(bullet_index) as BulletBase
-		if bullet.texture != data.texture:
-			var b = BulletBase.new()
-			add_child(b)
-			b.before_spawn(data, angle, a, v, position)
-			bullet.queue_free()
-			bullet = b
+		bullet = get_child(bullet_index) as BulletBase
+		#if bullet.texture != data.texture:
+			#var b = BulletBase.new()
+			#add_child(b)
+			#bullet.queue_free()
+			#bullet = b
+		bullet.before_spawn(data, angle, a, v, position)
 		#active_enemy_bullets.append(bullet)
-		return bullet
 	else:
 		# if not enough bullets, add more
 		while bullet_index >= get_child_count():
 			var b = BulletBase.new()
 			add_child(b)
 			b.before_spawn(data, angle, a, v, position)
-		var b = get_child(bullet_index)
+		bullet = get_child(bullet_index)
 		bullet_index += 1
 		#active_enemy_bullets.append(b)
-		return b
+	if ctrl:
+		ctrl._set_custom_update(bullet, bullet.bulletin_board)
+	return bullet
 
 
 func intersect_shape(query : PhysicsShapeQueryParameters2D, max_results := 32) -> Array[Dictionary]:
 	return direct_space_state.intersect_shape(query, max_results)
+
+
+func kill_bullets() -> void:
+	for child in get_children():
+		child.queue_free()
+	bullet_index = 0
