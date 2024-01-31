@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://c41gs2sfa6tvd"]
+[gd_scene load_steps=21 format=3 uid="uid://c41gs2sfa6tvd"]
 
 [ext_resource type="Script" path="res://addons/godonmaku/test/bullet_test.gd" id="1_ap1po"]
 [ext_resource type="Texture2D" uid="uid://clev7jb1fmmjj" path="res://addons/godonmaku/textures/enemy_bullets.png" id="2_fa3y2"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://addons/godonmaku/controls/ZigZag.gd" id="6_2v2mx"]
 [ext_resource type="Script" path="res://addons/godonmaku/controls/Wave.gd" id="7_71mfq"]
 [ext_resource type="Script" path="res://addons/godonmaku/controls/ResetMove.gd" id="7_oeyqb"]
+[ext_resource type="Resource" uid="uid://b6r4obveuuiqe" path="res://addons/godonmaku/test/bullet_data_base.tres" id="8_dl0jv"]
 [ext_resource type="Script" path="res://addons/godonmaku/controls/Arc.gd" id="8_x1ekb"]
 [ext_resource type="Script" path="res://addons/godonmaku/patterns/RingPattern.gd" id="12_qys5r"]
 
@@ -22,7 +23,7 @@ texture = ExtResource("2_fa3y2")
 hframes = 16
 vframes = 16
 frame = 0
-frame_coords = Vector2(0, 0)
+frame_coords = Vector2i(0, 0)
 shape = SubResource("CircleShape2D_hdpox")
 directed = false
 bounces = 0
@@ -37,30 +38,33 @@ texture = ExtResource("4_im2dq")
 [sub_resource type="TileSet" id="TileSet_fqdlv"]
 sources/0 = SubResource("TileSetAtlasSource_s2xqg")
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_spjcb"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_inhi6"]
 radius = 4.0
 
-[sub_resource type="Resource" id="Resource_c656b"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mtbov"]
+load_path = "res://.godot/imported/enemy_bullets.png-63fffad063e5286d2ac66e055b92a61c.ctex"
+
+[sub_resource type="Resource" id="Resource_7bmaj"]
 script = ExtResource("3_8t27t")
-texture = ExtResource("2_fa3y2")
+texture = SubResource("CompressedTexture2D_mtbov")
 hframes = 16
 vframes = 16
-frame = 0
-frame_coords = Vector2(0, 0)
-shape = SubResource("CircleShape2D_spjcb")
+frame = 28
+frame_coords = Vector2i(12, 1)
+shape = SubResource("CircleShape2D_inhi6")
 directed = false
 bounces = 0
 duration = 0
 hitbox_layer = 16896
 grazebox_layer = 256
 
-[node name="Camera2D" type="Camera2D" node_paths=PackedStringArray("z", "seq_1", "ring_1") groups=["camera"]]
+[node name="Camera2D" type="Camera2D" node_paths=PackedStringArray("z", "seq_1", "rings") groups=["camera"]]
 script = ExtResource("1_ap1po")
 t_1 = ExtResource("2_fa3y2")
 z = NodePath("RingPattern/Sequence/ZigZag")
 seq_1 = NodePath("RingPattern/Sequence")
 data_1 = SubResource("Resource_42l12")
-ring_1 = NodePath("RingPattern")
+rings = [NodePath("RingPattern"), NodePath("SinglePattern")]
 
 [node name="BulletBase" type="Sprite2D" parent="."]
 texture = ExtResource("4_rrv4o")
@@ -69,6 +73,7 @@ vframes = 16
 script = ExtResource("3_on322")
 
 [node name="TileMap" type="TileMap" parent="."]
+visible = false
 tile_set = SubResource("TileSet_fqdlv")
 format = 2
 layer_0/tile_data = PackedInt32Array(458739, 0, 0, 524275, 0, 0, 458740, 0, 0, 524276, 0, 0, 458741, 0, 0, 524277, 0, 0, 458742, 0, 0, 524278, 0, 0, 458743, 0, 0, 524279, 0, 0, 458744, 0, 0, 524280, 0, 0, 458745, 0, 0, 524281, 0, 0, 458746, 0, 0, 524282, 0, 0, 458747, 0, 0, 524283, 0, 0, 458748, 0, 0, 524284, 0, 0, 458749, 0, 0, 524285, 0, 0, 458750, 0, 0, 524286, 0, 0, 458751, 0, 0, 524287, 0, 0, 393216, 0, 0, 458752, 0, 0, 393217, 0, 0, 458753, 0, 0, 393218, 0, 0, 458754, 0, 0, 393219, 0, 0, 458755, 0, 0, 393220, 0, 0, 458756, 0, 0, 393221, 0, 0, 458757, 0, 0, 393222, 0, 0, 458758, 0, 0, 393223, 0, 0, 458759, 0, 0, 393224, 0, 0, 458760, 0, 0, 393225, 0, 0, 458761, 0, 0, 393226, 0, 0, 458762, 0, 0, 393227, 0, 0, 458763, 0, 0, 393228, 0, 0, 458764, 0, 0, 393229, 0, 0, 458765, 0, 0, 12, 0, 0, 65548, 0, 0, 131084, 0, 0, 196620, 0, 0, 262156, 0, 0, 327692, 0, 0, 131078, 0, 0, 196614, 0, 0, 262150, 0, 0, 327686, 0, 0, 131079, 0, 0, 196615, 0, 0, 262151, 0, 0, 327687, 0, 0, 131073, 0, 0, 196609, 0, 0, 262145, 0, 0, 327681, 0, 0, 131074, 0, 0, 196610, 0, 0, 262146, 0, 0, 327682, 0, 0, 262138, 0, 0, 327674, 0, 0, 393210, 0, 0, 262139, 0, 0, 327675, 0, 0, 393211, 0, 0, 196598, 0, 0, 262134, 0, 0, 327670, 0, 0, 393206, 0, 0, 196599, 0, 0, 262135, 0, 0, 327671, 0, 0, 393207, 0, 0, 131059, 0, 0, 196595, 0, 0, 262131, 0, 0, 327667, 0, 0, 393203, 0, 0, -524298, 0, 0, -458762, 0, 0, -393226, 0, 0, -524292, 0, 0, -458756, 0, 0, -393220, 0, 0, -327684, 0, 0, -524291, 0, 0, -458755, 0, 0, -393219, 0, 0, -327683, 0, 0, -524286, 0, 0, -458750, 0, 0, -393214, 0, 0, -524285, 0, 0, -458749, 0, 0, -393213, 0, 0, -524284, 0, 0, -458748, 0, 0, -393212, 0, 0, -524280, 0, 0, -458744, 0, 0, -524279, 0, 0, -458743, 0, 0, -458741, 0, 0, -393205, 0, 0)
@@ -80,7 +85,7 @@ ctrl = NodePath("Sequence")
 spread = 3
 spread_degrees = 20.0
 velocity = 60
-bullet_data = SubResource("Resource_c656b")
+bullet_data = ExtResource("8_dl0jv")
 max_repeats = 32
 repeat_time = 5.0
 
@@ -110,3 +115,12 @@ duration = 120
 [node name="ResetMove" type="Node" parent="RingPattern/Sequence"]
 script = ExtResource("7_oeyqb")
 duration = 30
+
+[node name="SinglePattern" type="Node2D" parent="."]
+script = ExtResource("12_qys5r")
+stacks = 4
+stack_velocity = 10
+spread = 5
+spread_degrees = 20.0
+velocity = 30
+bullet_data = SubResource("Resource_7bmaj")

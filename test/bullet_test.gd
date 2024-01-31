@@ -6,7 +6,9 @@ extends Camera2D
 @export var seq_1 : Sequence
 @export var data_1 : BulletData
 
-@export var ring_1 : RingPattern
+#@export var ring_1 : RingPattern
+
+@export var rings : Array[RingPattern]
 
 var c : Callable = func(): pass
 var duration := 0
@@ -68,4 +70,6 @@ func _input(event: InputEvent) -> void:
 		#ring_1.angle_offset = 0
 		#ring_1.custom_repeat = func(delta, pattern, board):
 			#pattern.angle_offset += (PI / 24)
-		ring_1.fire()
+		rings[0].fire()
+	elif Input.is_key_pressed(KEY_5) and just_pressed:
+		rings[1].fire()

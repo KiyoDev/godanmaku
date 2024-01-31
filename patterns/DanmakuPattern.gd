@@ -1,6 +1,16 @@
 class_name DanmakuPattern extends Node2D
 
 
+signal finished
+
+
+enum {
+	RUNNING,
+	SUCCESS,
+	FINISHED
+}
+
+
 @export var chase : bool = false
 ## Direction to spawn and aim pattern
 @export var fire_angle := PI
@@ -55,28 +65,31 @@ func stop() -> void:
 	repeat_count = 0
 	angle_offset = 0
 	can_update = false
+	set_physics_process(false)
 
 
 func angle_to_player() -> float:
 	return get_angle_to(player.global_position if player else PI)
 
 
-func update(delta : float) -> void:
-	if !can_update: return
-	_base_update.call(delta)
+func update(delta : float) -> int:
+	if !can_update: return FINISHED
+	var status : int = _base_update.call(delta)
 	custom_update.call(delta, self, bulletin_board)
+	
+	return status
 
 
-func _base_update(delta : float) -> void:
-	if !can_update: return
+func _base_update(delta : float) -> int:
+	if !can_update: return FINISHED
 	if max_repeats == 0:
 		_handle_pattern(delta)
 		stop()
-		return
+		return SUCCESS
 	else:
 		if max_repeats > 0 and max_repeats <= repeat_count: 
 			stop()
-			return
+			return SUCCESS
 		
 		if total_time < repeat_time:
 			total_time += 1
@@ -85,15 +98,16 @@ func _base_update(delta : float) -> void:
 			repeat_count += 1
 			_handle_pattern(delta)
 			custom_repeat.call(delta, self, bulletin_board)
+	return RUNNING
 
 
-func _custom_update(delta : float, pattern : DanmakuPattern, bulletin_board : BulletinBoard) -> void:
-	pass
+func _custom_update(delta : float, pattern : DanmakuPattern, bulletin_board : BulletinBoard) -> int:
+	return RUNNING
 
 
-func _custom_repeat(delta : float, pattern : DanmakuPattern, bulletin_board : BulletinBoard) -> void:
-	pass
+func _custom_repeat(delta : float, pattern : DanmakuPattern, bulletin_board : BulletinBoard) -> int:
+	return RUNNING
 
 
-func _handle_pattern(delta : float) -> void:
-	pass
+func _handle_pattern(delta : float) -> int:
+	return RUNNING

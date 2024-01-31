@@ -1,3 +1,4 @@
+@icon("res://addons/godonmaku/icons/ring.svg")
 class_name RingPattern extends DanmakuPattern
 
 
@@ -10,7 +11,7 @@ class_name RingPattern extends DanmakuPattern
 
 @export_group("Stack Settings")
 @export var stacks : int = 1
-@export var stack_velocity : float = 0.0
+@export var stack_velocity : int = 0.0
 
 @export_group("Spread Settings")
 @export var spread : int = 1
@@ -19,7 +20,7 @@ class_name RingPattern extends DanmakuPattern
 var pattern_origin : Vector2
 
 
-func _handle_pattern(delta : float) -> void:
+func _handle_pattern(delta : float) -> int:
 	var pos = global_position
 	pattern_origin = Vector2(pos.x + (origin_offset * cos(360.0/spawn_count)), pos.y + (origin_offset * sin(360.0/spawn_count)))
 	var spread_rad : float = spread_degrees * PI / 180
@@ -28,7 +29,7 @@ func _handle_pattern(delta : float) -> void:
 	var radians : float = 2 * PI / spawn_count # convert to radians for function params
 	# stacks
 	for stack in range(1, stacks + 1):
-		var v = velocity + (velocity * stack_velocity * stack)
+		var v = velocity + (stack_velocity * stack)
 		# fire additional ring if should spread from a given line
 		for i in range(ceil(-spread / 2.0), ceil(spread / 2.0)):
 			var fire_direction : Vector2
@@ -45,3 +46,4 @@ func _handle_pattern(delta : float) -> void:
 				if ctrl:
 					ctrl._set_custom_update(bullet, bullet.bulletin_board)
 				bullet.fire()
+	return SUCCESS

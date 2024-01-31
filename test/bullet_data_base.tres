@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BulletData" load_steps=4 format=3 uid="uid://b6r4obveuuiqe"]
+
+[ext_resource type="Script" path="res://addons/godonmaku/bullets/BulletData.gd" id="1_2nhg0"]
+[ext_resource type="Texture2D" uid="uid://clev7jb1fmmjj" path="res://addons/godonmaku/textures/enemy_bullets.png" id="2_g186w"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_spjcb"]
+radius = 4.0
+
+[resource]
+script = ExtResource("1_2nhg0")
+texture = ExtResource("2_g186w")
+hframes = 16
+vframes = 16
+frame = 0
+frame_coords = Vector2i(0, 0)
+shape = SubResource("CircleShape2D_spjcb")
+directed = false
+bounces = 0
+duration = 0
+hitbox_layer = 16896
+grazebox_layer = 256
