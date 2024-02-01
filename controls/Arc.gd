@@ -1,3 +1,4 @@
+@icon("res://addons/godonmaku/icons/arc.svg")
 class_name Arc extends ControlNode
 
 
