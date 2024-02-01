@@ -12,16 +12,11 @@ func _exit_tree() -> void:
 	kill_bullets()
 
 
-func get_next_bullet(data : BulletData, angle : float, v : int, a : int, position : Vector2, ctrl : ControlNode) -> BulletBase:
+func get_next_bullet(data : BulletData, angle : float, v : int, a : int, position : Vector2, bullet_ctrl : ControlNode) -> BulletBase:
 	var bullet : BulletBase
 	if get_child_count() >= MAX_BULLETS:
 		bullet_index = (bullet_index + 1) % get_child_count()
 		bullet = get_child(bullet_index) as BulletBase
-		#if bullet.texture != data.texture:
-			#var b = BulletBase.new()
-			#add_child(b)
-			#bullet.queue_free()
-			#bullet = b
 		bullet.before_spawn(data, angle, a, v, position)
 		#active_enemy_bullets.append(bullet)
 	else:
@@ -33,8 +28,8 @@ func get_next_bullet(data : BulletData, angle : float, v : int, a : int, positio
 		bullet = get_child(bullet_index)
 		bullet_index += 1
 		#active_enemy_bullets.append(b)
-	if ctrl:
-		ctrl._set_custom_update(bullet, bullet.bulletin_board)
+	if bullet_ctrl:
+		bullet_ctrl._set_custom_update(bullet, bullet.bulletin_board)
 	return bullet
 
 

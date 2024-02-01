@@ -8,6 +8,7 @@ class_name ResetMove extends ControlNode
 
 
 func _before_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
+	super._before_update(bullet, bulletin_board)
 	bulletin_board.set_value(cache_key, 0)
 	
 

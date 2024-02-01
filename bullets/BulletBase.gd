@@ -26,7 +26,7 @@ var directed : bool = false
 var max_bounces : int = 0
 ## Bullet duration in frames. 0 = doesn't expire until off screen
 # 60 frames per second
-var duration : int = 0:
+var duration : int = 1200:
 	set(value):
 		duration = maxi(0, value) # never let duration go lower than 0
 
@@ -38,6 +38,8 @@ var position_offset : Vector2 = Vector2.ZERO
 var current_bounces : int = 0
 ## How long the bullet has been alive for
 var up_time : int = 0
+
+var tmp_velocity : int = 0
 
 #/--------------------------------------------------/
 #/---------------- CUSTOM FUNCTIONS ----------------/
@@ -62,16 +64,19 @@ func _physics_process(delta: float) -> void:
 	update(delta, self, bulletin_board) # asks the controler how it should behave each tick
 
 
-func _swap(data : BulletData, v : int, a : int) -> void:
-	if texture != data.texture:
-		data.set_texture(self)
+func _swap_data(data : BulletData) -> void:
+	data.set_texture(self)
 	query.shape = data.shape
 	query.collision_mask = data.hitbox_layer
 	directed = data.directed
-	velocity = v
-	acceleration = a
 	duration = data.duration
 	max_bounces = data.bounces
+
+
+func _swap(data : BulletData, v : int, a : int) -> void:
+	_swap_data(data)
+	velocity = v
+	acceleration = a
 
 
 func reset(position : Vector2) -> void:
@@ -103,7 +108,18 @@ func timeout(bullet : BulletBase) -> void:
 	_disable()
 
 
-func _disable():
+func resume() -> void:
+	velocity = tmp_velocity
+	tmp_velocity = 0
+
+
+func stop() -> void:
+	if tmp_velocity != 0: return
+	tmp_velocity = velocity
+	velocity = 0
+
+
+func _disable() -> void:
 	expired.emit(self)
 	set_physics_process(false)
 	reset(Vector2.ZERO)

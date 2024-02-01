@@ -12,11 +12,17 @@ enum {
 
 
 @export var chase : bool = false
-## Direction to spawn and aim pattern
-@export var fire_angle := PI
+## Direction to spawn and aim pattern (in degrees)
+@export var fire_angle : int = 180
 @export var velocity : int = 100
 @export var acceleration : int = 0
 @export var bullet_data : BulletData
+
+@export_group("Pattern Controls")
+@export var pattern_ctrl : PatternControl
+
+@export_group("Bullet Controls")
+@export var bullet_ctrl : ControlNode
 
 @export_group("Repeat Settings")
 ## How many times the pattern repeats. 0 means no repeats, -1 means infinite
@@ -62,6 +68,8 @@ func fire() -> void:
 		can_update = true
 		set_physics_process(true)
 		_sub_fire()
+		if pattern_ctrl:
+			pattern_ctrl._set_custom_repeat(self, bulletin_board)
 
 
 func _sub_fire() -> void:
@@ -101,6 +109,7 @@ func _base_update(delta : float) -> int:
 	else:
 		if repeat_count == 0 and total_time == 0:
 			_handle_pattern(delta)
+			custom_repeat.call(delta, self, bulletin_board)
 		elif max_repeats > 0 and max_repeats <= repeat_count: 
 			stop()
 			return SUCCESS

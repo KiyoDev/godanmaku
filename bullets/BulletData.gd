@@ -1,3 +1,4 @@
+## Class that holds bullet texture and shape and other universal properties
 @tool
 class_name BulletData extends Resource
 
@@ -47,7 +48,8 @@ class_name BulletData extends Resource
 
 
 func set_texture(sprite : Sprite2D) -> void:
-	sprite.texture = texture
+	if sprite.texture != texture:
+		sprite.texture = texture
 	sprite.hframes = hframes
 	sprite.vframes = vframes
 	sprite.frame = frame

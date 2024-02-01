@@ -1,4 +1,4 @@
-@icon("res://addons/godonmaku/icons/control.svg")
+@icon("res://addons/godonmaku/icons/bullet_ctrl.svg")
 class_name ControlNode extends Node
 
 
@@ -12,8 +12,15 @@ enum {
 }
 
 
+@export var alt_bullet_data : BulletData
+
+
+var reverse : bool = false
+
+
 func _before_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
-	pass
+	if alt_bullet_data:
+		bullet._swap_data(alt_bullet_data)
 
 
 func _set_custom_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
