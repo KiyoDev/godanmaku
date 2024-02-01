@@ -12,6 +12,8 @@ var pattern : DanmakuPattern
 var camera : Camera2D
 var screen_extents : Vector2
 
+## Damage
+var damage : int = 10
 ## Query collision layer
 var hitbox_layer : int = 0
 ## Bullet speed
@@ -55,6 +57,7 @@ var custom_update : Callable = _custom_update
 func _ready() -> void:
 	add_to_group("bullets")
 	hide()
+	z_index = 10
 	set_physics_process(false)
 	set_as_top_level(true)
 	camera = get_tree().get_first_node_in_group("camera")
@@ -137,7 +140,6 @@ func stop() -> void:
 
 
 func _disable() -> void:
-	print("disable")
 	expired.emit(self)
 	reset(Vector2.ZERO)
 	query.collide_with_areas = false
@@ -198,13 +200,14 @@ func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinB
 	virtual_position = Vector2(virtual_position.x + (velocity * delta) * cos(angle), virtual_position.y + (velocity * delta) * sin(angle))
 	# update rotation of texture and transform if bullet is directed
 	if directed:
-		query.transform.looking_at(virtual_position)
 		look_at(virtual_position)
+		query.transform.looking_at(virtual_position)
 		#print("query.transform1=", query.transform.looking_at(virtual_position.normalized()))
 		#print("query.transform2=", query.transform.looking_at(virtual_position))
 		#query.transform.looking_at(virtual_position)
 		#print_debug("query.transform=", query.transform)
 	
+	query.transform = global_transform
 	global_position = virtual_position + position_offset
 	
 	if global_position.y <= -(camera.global_position + screen_extents).y or global_position.y >= (camera.global_position + screen_extents).y or global_position.x <= -(camera.global_position + screen_extents).x or global_position.x >= (camera.global_position + screen_extents).x:

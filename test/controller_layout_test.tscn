@@ -15,6 +15,7 @@ vframes = 0
 frame = 0
 frame_coords = Vector2i(0, 0)
 shape = SubResource("CircleShape2D_pt5kr")
+damage = 10
 directed = false
 bounces = 0
 duration = 0

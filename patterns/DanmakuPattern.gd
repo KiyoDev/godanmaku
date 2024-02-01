@@ -10,12 +10,15 @@ enum {
 	FINISHED
 }
 
-
+## If bullet should chase the player's position
 @export var chase : bool = false
 ## Direction to spawn and aim pattern (in degrees)
 @export var fire_angle : int = 180
+## Velocity to set for bullets being fired
 @export var velocity : int = 100
+## Acceleration to set for bullets being fired
 @export var acceleration : int = 0
+## Bullet data to use when firing bullets
 @export var bullet_data : BulletData
 
 @export_group("Pattern Controls")
@@ -41,6 +44,7 @@ var bulletin_board : BulletinBoard
 
 var custom_update : Callable
 var custom_repeat : Callable
+var get_bullet_data : Callable
 
 var total_time : float = 0.0
 var repeat_count : int = 0
@@ -53,6 +57,7 @@ var player : Player
 func _ready() -> void:
 	custom_update = _custom_update
 	custom_repeat = _custom_repeat
+	get_bullet_data = _get_bullet_data
 	player = get_tree().get_first_node_in_group("player")
 	can_update = false
 	bulletin_board = BulletinBoard.new()
@@ -131,6 +136,10 @@ func _custom_update(delta : float, pattern : DanmakuPattern, bulletin_board : Bu
 
 func _custom_repeat(delta : float, pattern : DanmakuPattern, bulletin_board : BulletinBoard) -> int:
 	return RUNNING
+
+
+func _get_bullet_data() -> BulletData:
+	return bullet_data
 
 
 func _handle_pattern(delta : float) -> int:

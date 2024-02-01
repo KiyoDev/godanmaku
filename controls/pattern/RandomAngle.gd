@@ -1,10 +1,8 @@
-class_name PatternSpin extends PatternControl
+class_name RandomAngle extends PatternControl
 
 
-@onready var repeat_key = "pattern_spin_repeats_%s" % self.get_instance_id()
+@onready var repeat_key = "random_angle_repeats_%s" % self.get_instance_id()
 
-## Angle in degrees
-@export var angle : int = 0
 ## How many repeats to spin the pattern. 0 = indefinitely
 @export var repeats : int = 0
 
@@ -27,7 +25,7 @@ func _custom_repeat(delta : float, pattern : DanmakuPattern, bulletin_board : Bu
 	if repeats > 0 and bulletin_board.get_value(repeat_key) >= repeats:
 		return SUCCESS
 	
-	pattern.angle_offset += (angle * PI / 180)
+	pattern.angle_offset += (randi_range(0, 360) * PI / 180)
 	
 	bulletin_board.set_value(repeat_key, bulletin_board.get_value(repeat_key) + 1)
 	return RUNNING

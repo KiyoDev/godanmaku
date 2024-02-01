@@ -1,10 +1,12 @@
-class_name PatternSpin extends PatternControl
+class_name RandomVelocity extends PatternControl
 
 
-@onready var repeat_key = "pattern_spin_repeats_%s" % self.get_instance_id()
+@onready var repeat_key = "random_velocity_repeats_%s" % self.get_instance_id()
 
-## Angle in degrees
-@export var angle : int = 0
+## Minimum velocity
+@export_range(0, 16383) var min : int = 0
+## Maximum velocity
+@export_range(1, 16383) var max : int = 0
 ## How many repeats to spin the pattern. 0 = indefinitely
 @export var repeats : int = 0
 
@@ -27,7 +29,7 @@ func _custom_repeat(delta : float, pattern : DanmakuPattern, bulletin_board : Bu
 	if repeats > 0 and bulletin_board.get_value(repeat_key) >= repeats:
 		return SUCCESS
 	
-	pattern.angle_offset += (angle * PI / 180)
+	pattern.velocity = randi_range(min, max)
 	
 	bulletin_board.set_value(repeat_key, bulletin_board.get_value(repeat_key) + 1)
 	return RUNNING
