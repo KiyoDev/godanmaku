@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://c41gs2sfa6tvd"]
+[gd_scene load_steps=37 format=3 uid="uid://c41gs2sfa6tvd"]
 
 [ext_resource type="Script" path="res://addons/godonmaku/test/bullet_test.gd" id="1_ap1po"]
 [ext_resource type="Texture2D" uid="uid://clev7jb1fmmjj" path="res://addons/godonmaku/textures/enemy_bullets.png" id="2_fa3y2"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://addons/godonmaku/patterns/PatternRepeater.gd" id="14_4m8n4"]
 [ext_resource type="Script" path="res://addons/godonmaku/controls/bullet/Wait.gd" id="15_gtpyu"]
 [ext_resource type="Script" path="res://addons/godonmaku/controls/pattern/AlternateBControls.gd" id="15_naqrq"]
+[ext_resource type="Script" path="res://addons/godonmaku/controls/pattern/PatternSpin.gd" id="17_8xwg0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hdpox"]
 radius = 4.0
@@ -157,13 +158,30 @@ duration = 0
 hitbox_layer = 16896
 grazebox_layer = 256
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_febgs"]
+radius = 4.0
+
+[sub_resource type="Resource" id="Resource_yb80b"]
+script = ExtResource("3_8t27t")
+texture = ExtResource("2_fa3y2")
+hframes = 8
+vframes = 8
+frame = 16
+frame_coords = Vector2i(0, 2)
+shape = SubResource("CircleShape2D_febgs")
+directed = true
+bounces = 0
+duration = 0
+hitbox_layer = 16896
+grazebox_layer = 256
+
 [node name="Camera2D" type="Camera2D" node_paths=PackedStringArray("z", "seq_1", "rings") groups=["camera"]]
 script = ExtResource("1_ap1po")
 t_1 = ExtResource("2_fa3y2")
 z = NodePath("RingPattern/Sequence/ZigZag")
 seq_1 = NodePath("RingPattern/Sequence")
 data_1 = SubResource("Resource_42l12")
-rings = [NodePath("RingPattern"), NodePath("SinglePattern"), NodePath("PatternRepeater"), NodePath("SinglePattern2"), NodePath("Arcing"), NodePath("RingPattern2")]
+rings = [NodePath("RingPattern"), NodePath("SinglePattern"), NodePath("PatternRepeater"), NodePath("SinglePattern2"), NodePath("Arcing"), NodePath("RingPattern2"), NodePath("RingPattern3")]
 
 [node name="BulletBase" type="Sprite2D" parent="."]
 texture = ExtResource("4_rrv4o")
@@ -333,3 +351,17 @@ frames = 40
 angle = 50.0
 delay = 10
 velocity = 200
+
+[node name="RingPattern3" type="Node2D" parent="." node_paths=PackedStringArray("pattern_ctrl")]
+script = ExtResource("12_qys5r")
+spawn_count = 16
+origin_offset = 32
+velocity = 50
+bullet_data = SubResource("Resource_yb80b")
+pattern_ctrl = NodePath("PatternSpin")
+max_repeats = 16
+repeat_time = 15.0
+
+[node name="PatternSpin" type="Node" parent="RingPattern3"]
+script = ExtResource("17_8xwg0")
+angle = 40
