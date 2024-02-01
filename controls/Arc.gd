@@ -6,7 +6,7 @@ class_name Arc extends ControlNode
 
 
 ## How many frames to alternate zig zag
-@export var frames : int = 30
+#@export var frames : int = 30
 ## Bullet angle modifier in degrees
 @export var angle : float = 0
 ## How many frames should zig zag for

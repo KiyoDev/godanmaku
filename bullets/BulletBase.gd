@@ -89,6 +89,9 @@ func before_spawn(data : BulletData, angle : float, v : int, a : int, position :
 	reset(position)
 	_swap(data, a, v)
 	self.angle = angle
+	if directed:
+		#print("virtual_position=%s, %s" % [global_position.normalized(), global_position + global_position.normalized()])
+		look_at(global_position + global_position.normalized())
 
 
 func fire() -> void:
@@ -133,7 +136,10 @@ func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinB
 	
 	# Take into consideration angle to arc
 	virtual_position = Vector2(virtual_position.x + (velocity * delta) * cos(angle), virtual_position.y + (velocity * delta) * sin(angle))
-	if directed: look_at(virtual_position)
+	if directed:
+		look_at(virtual_position)
+		query.transform
+		#print_debug("query.transform=", query.transform)
 	
 	global_position = virtual_position + position_offset
 	
