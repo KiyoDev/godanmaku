@@ -76,3 +76,5 @@ func _input(event: InputEvent) -> void:
 		rings[3].fire()
 	elif Input.is_key_pressed(KEY_8) and just_pressed:
 		rings[4].fire()
+	elif Input.is_key_pressed(KEY_9) and just_pressed:
+		rings[5].fire()

@@ -12,6 +12,8 @@ var pattern : DanmakuPattern
 var camera : Camera2D
 var screen_extents : Vector2
 
+## Query collision layer
+var hitbox_layer : int = 0
 ## Bullet speed
 var velocity : int = 100
 ## Max bullet speed
@@ -40,6 +42,7 @@ var current_bounces : int = 0
 var up_time : int = 0
 
 var tmp_velocity : int = 0
+var tmp_acceleration : int = 0
 
 #/--------------------------------------------------/
 #/---------------- CUSTOM FUNCTIONS ----------------/
@@ -66,6 +69,7 @@ func _physics_process(delta: float) -> void:
 
 func _swap_data(data : BulletData) -> void:
 	data.set_texture(self)
+	hitbox_layer = data.hitbox_layer
 	query.shape = data.shape
 	query.collision_mask = data.hitbox_layer
 	directed = data.directed
@@ -96,6 +100,9 @@ func before_spawn(data : BulletData, angle : float, v : int, a : int, position :
 	self.angle = angle
 	if directed:
 		#print("virtual_position=%s, %s" % [global_position.normalized(), global_position + global_position.normalized()])
+		#print("query.transform=", query.transform)
+		#print("query.transform=", query.transform.looking_at(global_position.normalized()))
+		query.transform.looking_at(global_position.normalized())
 		look_at(global_position + global_position.normalized())
 
 
@@ -109,22 +116,33 @@ func timeout(bullet : BulletBase) -> void:
 
 
 func resume() -> void:
+	if tmp_velocity == 0: return
 	velocity = tmp_velocity
 	tmp_velocity = 0
+	
+	if tmp_acceleration == 0: return
+	acceleration = tmp_acceleration
+	tmp_acceleration = 0
 
 
 func stop() -> void:
 	if tmp_velocity != 0: return
 	tmp_velocity = velocity
+	
+	if tmp_acceleration == 0: return
+	tmp_acceleration = acceleration
 	velocity = 0
+	acceleration = 0
+	
 
 
 func _disable() -> void:
+	print("disable")
 	expired.emit(self)
-	set_physics_process(false)
 	reset(Vector2.ZERO)
 	query.collide_with_areas = false
 	hide()
+	set_physics_process(false)
 
 
 func update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
@@ -132,6 +150,29 @@ func update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) 
 	var status : int = custom_update.call(delta, bullet, bulletin_board) # called for any additional processing
 	if status == 1 and custom_update != _custom_update:
 		custom_update = _custom_update
+	_handle_collision(delta)
+
+
+func _handle_collision(delta : float) -> void:
+	query.collision_mask = hitbox_layer
+	#query.transform = global_transform
+	
+	var hit : Array[Dictionary] = BulletUtil.intersect_shape(query, 1)
+	if hit:
+		var coll : Node2D = hit[0]["collider"]
+		
+		#print("rest_info=%s" % [BulletUtil.direct_space_state.get_rest_info(query)])
+		if coll.has_method("_on_hit"):
+			coll._on_hit(self)
+		_disable()
+	#else:
+		#if type == Type.ENEMY:
+			#query.collision_mask = grazebox_layer
+			#hit = BulletUtil.intersect_shape(query, 1)
+			#if hit and can_graze:
+				#can_graze = false
+				#var coll = hit[0]["collider"]
+				#coll._on_grazed()
 
 # Default functionality for custom updates
 
@@ -148,13 +189,20 @@ func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinB
 		timeout.call(bullet)
 		return
 	
-	velocity = min(velocity + acceleration, max_velocity)
+	#print("v=%s,a=%s" % [velocity, acceleration])
+	#velocity = min(velocity + acceleration, max_velocity)
+	velocity = max(min(velocity + acceleration, max_velocity), 0)
+	#velocity = clamp(velocity + acceleration, 0, max_velocity)
 	
 	# Take into consideration angle to arc
 	virtual_position = Vector2(virtual_position.x + (velocity * delta) * cos(angle), virtual_position.y + (velocity * delta) * sin(angle))
+	# update rotation of texture and transform if bullet is directed
 	if directed:
+		query.transform.looking_at(virtual_position)
 		look_at(virtual_position)
-		query.transform
+		#print("query.transform1=", query.transform.looking_at(virtual_position.normalized()))
+		#print("query.transform2=", query.transform.looking_at(virtual_position))
+		#query.transform.looking_at(virtual_position)
 		#print_debug("query.transform=", query.transform)
 	
 	global_position = virtual_position + position_offset
