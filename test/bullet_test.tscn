@@ -30,11 +30,13 @@ frame = 0
 frame_coords = Vector2i(0, 0)
 shape = SubResource("CircleShape2D_hdpox")
 damage = 10
+grazeable = null
 directed = false
 bounces = 0
 duration = 0
+hide_on_hit = null
 hitbox_layer = 16896
-grazebox_layer = 256
+graze_layer = null
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s2xqg"]
 texture = ExtResource("4_im2dq")
@@ -55,11 +57,13 @@ frame = 28
 frame_coords = Vector2i(12, 1)
 shape = SubResource("CircleShape2D_730id")
 damage = 10
+grazeable = true
 directed = false
 bounces = 0
 duration = 0
+hide_on_hit = true
 hitbox_layer = 16896
-grazebox_layer = 256
+graze_layer = null
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_inhi6"]
 radius = 4.0
@@ -73,11 +77,13 @@ frame = 28
 frame_coords = Vector2i(12, 1)
 shape = SubResource("CircleShape2D_inhi6")
 damage = 10
+grazeable = true
 directed = false
 bounces = 0
 duration = 0
+hide_on_hit = true
 hitbox_layer = 16896
-grazebox_layer = 256
+graze_layer = null
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mtbov"]
 load_path = "res://.godot/imported/enemy_bullets.png-63fffad063e5286d2ac66e055b92a61c.ctex"
@@ -91,11 +97,13 @@ frame = 0
 frame_coords = Vector2i(0, 0)
 shape = SubResource("CircleShape2D_inhi6")
 damage = 10
+grazeable = true
 directed = false
 bounces = 0
 duration = 0
+hide_on_hit = null
 hitbox_layer = 16896
-grazebox_layer = 256
+graze_layer = null
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_4sxif"]
 points = PackedVector2Array(0, -8, 8, 0, 0, -8)
@@ -109,11 +117,13 @@ frame = 49
 frame_coords = Vector2i(1, 6)
 shape = SubResource("ConvexPolygonShape2D_4sxif")
 damage = 10
+grazeable = true
 directed = true
 bounces = 0
 duration = 0
+hide_on_hit = true
 hitbox_layer = 16896
-grazebox_layer = 256
+graze_layer = null
 
 [sub_resource type="Resource" id="Resource_8miuh"]
 script = ExtResource("3_8t27t")
@@ -124,11 +134,13 @@ frame = 49
 frame_coords = Vector2i(1, 6)
 shape = SubResource("ConvexPolygonShape2D_4sxif")
 damage = 10
+grazeable = null
 directed = true
 bounces = 0
 duration = 0
+hide_on_hit = null
 hitbox_layer = 16896
-grazebox_layer = 256
+graze_layer = null
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_aiaox"]
 points = PackedVector2Array(0, -8, 8, 0, 0, -8)
@@ -142,11 +154,13 @@ frame = 51
 frame_coords = Vector2i(3, 6)
 shape = SubResource("ConvexPolygonShape2D_aiaox")
 damage = 10
+grazeable = null
 directed = true
 bounces = 0
 duration = 0
+hide_on_hit = null
 hitbox_layer = 16896
-grazebox_layer = 256
+graze_layer = null
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xcly8"]
 radius = 4.0
@@ -160,11 +174,13 @@ frame = 155
 frame_coords = Vector2i(11, 9)
 shape = SubResource("CircleShape2D_xcly8")
 damage = 10
+grazeable = true
 directed = true
 bounces = 0
 duration = 0
+hide_on_hit = true
 hitbox_layer = 16896
-grazebox_layer = 256
+graze_layer = null
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kqp1d"]
 radius = 4.0
@@ -178,11 +194,13 @@ frame = 16
 frame_coords = Vector2i(0, 2)
 shape = SubResource("CircleShape2D_kqp1d")
 damage = 10
+grazeable = true
 directed = true
 bounces = 0
 duration = 0
+hide_on_hit = true
 hitbox_layer = 16896
-grazebox_layer = 256
+graze_layer = null
 
 [node name="Camera2D" type="Camera2D" node_paths=PackedStringArray("z", "seq_1", "rings") groups=["camera"]]
 script = ExtResource("1_ap1po")

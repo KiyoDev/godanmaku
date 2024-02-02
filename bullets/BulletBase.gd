@@ -16,6 +16,8 @@ var screen_extents : Vector2
 var damage : int = 10
 ## Query collision layer
 var hitbox_layer : int = 0
+## Query graze collision layer
+var graze_layer : int = 0
 ## Bullet speed
 var velocity : int = 100
 ## Max bullet speed
@@ -33,6 +35,9 @@ var max_bounces : int = 0
 var duration : int = 1200:
 	set(value):
 		duration = maxi(0, value) # never let duration go lower than 0
+var hide_on_hit : bool = true
+var grazeable : bool = true
+var can_graze : bool = false
 
 ## Virtual position of the bullet. Use with position_offset to adjust bullets position along its projected path
 var virtual_position : Vector2
@@ -42,6 +47,8 @@ var position_offset : Vector2 = Vector2.ZERO
 var current_bounces : int = 0
 ## How long the bullet has been alive for
 var up_time : int = 0
+
+
 
 var tmp_velocity : int = 0
 var tmp_acceleration : int = 0
@@ -73,10 +80,14 @@ func _physics_process(delta: float) -> void:
 func _swap_data(data : BulletData) -> void:
 	data.set_texture(self)
 	hitbox_layer = data.hitbox_layer
+	graze_layer = data.graze_layer
 	query.shape = data.shape
-	query.collision_mask = data.hitbox_layer
+	grazeable = data.grazeable
+	if grazeable:
+		can_graze = true
 	directed = data.directed
 	duration = data.duration
+	hide_on_hit = data.hide_on_hit
 	max_bounces = data.bounces
 
 
@@ -154,7 +165,6 @@ func update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) 
 		custom_update = _custom_update
 	_handle_collision(delta)
 
-
 func _handle_collision(delta : float) -> void:
 	query.collision_mask = hitbox_layer
 	#query.transform = global_transform
@@ -166,15 +176,18 @@ func _handle_collision(delta : float) -> void:
 		#print("rest_info=%s" % [BulletUtil.direct_space_state.get_rest_info(query)])
 		if coll.has_method("_on_hit"):
 			coll._on_hit(self)
-		_disable()
-	#else:
-		#if type == Type.ENEMY:
-			#query.collision_mask = grazebox_layer
-			#hit = BulletUtil.intersect_shape(query, 1)
-			#if hit and can_graze:
-				#can_graze = false
-				#var coll = hit[0]["collider"]
-				#coll._on_grazed()
+		
+		if hide_on_hit:
+			_disable()
+	else:
+		if !grazeable: return
+		query.collision_mask = graze_layer
+		hit = BulletUtil.intersect_shape(query, 1)
+		if hit and can_graze:
+			can_graze = false
+			var coll = hit[0]["collider"]
+			if coll.has_method("_on_grazed"):
+				coll._on_grazed()
 
 # Default functionality for custom updates
 

@@ -45,15 +45,17 @@ class_name BulletData extends Resource
 @export_group("Properties")
 ## Damage
 @export var damage : int = 10
+@export var grazeable : bool = true
 ## If bullet should be directed
 @export var directed : bool = false
 ## How many times the bullet should bounce
 @export var bounces : int = 0
 ## How many frames the bullet should live for
 @export var duration : int = 0
+@export var hide_on_hit : bool = true
 
 @export_flags_2d_physics var hitbox_layer := 0b0100_0010_0000_0000
-@export_flags_2d_physics var grazebox_layer := 0b0000_0001_0000_0000
+@export_flags_2d_physics var graze_layer := 0b0000_0001_0000_0000
 
 ## Swap the sprite's texture information with the data's properties
 func set_texture(sprite : Sprite2D) -> void:

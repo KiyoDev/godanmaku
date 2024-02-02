@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BulletData" load_steps=4 format=3 uid="uid://bbqm48yjfq704"]
+
+[ext_resource type="Script" path="res://addons/godonmaku/bullets/BulletData.gd" id="1_wp4qa"]
+[ext_resource type="Texture2D" uid="uid://c6pqylfaqjicj" path="res://addons/godonmaku/textures/laser_1.png" id="2_hs23c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g0q7k"]
+size = Vector2(256, 6)
+
+[resource]
+script = ExtResource("1_wp4qa")
+texture = ExtResource("2_hs23c")
+hframes = 16
+vframes = 0
+frame = 0
+frame_coords = Vector2i(0, 0)
+shape = SubResource("RectangleShape2D_g0q7k")
+damage = 10
+directed = false
+bounces = 0
+duration = 0
+hide_on_hit = false
+hitbox_layer = 16896
+grazebox_layer = 256
