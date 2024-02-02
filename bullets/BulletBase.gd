@@ -170,7 +170,7 @@ func _handle_collision(delta : float) -> void:
 	query.collision_mask = hitbox_layer
 	#query.transform = global_transform
 	
-	var hit : Array[Dictionary] = BulletUtil.intersect_shape(query, 1)
+	var hit : Array[Dictionary] = BulletPool.intersect_shape(query, 1)
 	if hit:
 		var coll : Node2D = hit[0]["collider"]
 		
@@ -183,7 +183,7 @@ func _handle_collision(delta : float) -> void:
 	else:
 		if !grazeable: return
 		query.collision_mask = graze_layer
-		hit = BulletUtil.intersect_shape(query, 1)
+		hit = BulletPool.intersect_shape(query, 1)
 		if hit and can_graze:
 			can_graze = false
 			var coll = hit[0]["collider"]
