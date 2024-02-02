@@ -101,6 +101,7 @@ func reset(position : Vector2) -> void:
 	bulletin_board.clear()
 	virtual_position = position
 	global_position = position
+	query.transform = global_transform
 	query.collide_with_areas = true
 	custom_update = _custom_update
 	up_time = 0
@@ -113,11 +114,8 @@ func before_spawn(data : BulletData, angle : float, v : int, a : int, position :
 	_swap(data, a, v)
 	self.angle = angle
 	if directed:
-		#print("virtual_position=%s, %s" % [global_position.normalized(), global_position + global_position.normalized()])
-		#print("query.transform=", query.transform)
-		#print("query.transform=", query.transform.looking_at(global_position.normalized()))
-		query.transform.looking_at(global_position.normalized())
-		look_at(global_position + global_position.normalized())
+		query.transform.looking_at(global_position)
+		look_at(global_position)
 
 
 func fire() -> void:
