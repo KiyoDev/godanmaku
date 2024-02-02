@@ -165,6 +165,7 @@ func update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) 
 		custom_update = _custom_update
 	_handle_collision(delta)
 
+
 func _handle_collision(delta : float) -> void:
 	query.collision_mask = hitbox_layer
 	#query.transform = global_transform

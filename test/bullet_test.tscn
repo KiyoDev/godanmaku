@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://c41gs2sfa6tvd"]
+[gd_scene load_steps=43 format=3 uid="uid://c41gs2sfa6tvd"]
 
 [ext_resource type="Script" path="res://addons/godonmaku/test/bullet_test.gd" id="1_ap1po"]
 [ext_resource type="Texture2D" uid="uid://clev7jb1fmmjj" path="res://addons/godonmaku/textures/enemy_bullets.png" id="2_fa3y2"]
@@ -17,6 +17,9 @@
 [ext_resource type="Script" path="res://addons/godonmaku/controls/bullet/Wait.gd" id="15_gtpyu"]
 [ext_resource type="Script" path="res://addons/godonmaku/controls/pattern/AlternateBControls.gd" id="15_naqrq"]
 [ext_resource type="Script" path="res://addons/godonmaku/controls/pattern/PatternSpin.gd" id="17_8xwg0"]
+[ext_resource type="Script" path="res://addons/godonmaku/patterns/DelayLaserPattern.gd" id="18_srjgk"]
+[ext_resource type="Texture2D" uid="uid://bidfpmsxhypus" path="res://addons/godonmaku/textures/laser_marker.png" id="19_04nb8"]
+[ext_resource type="Texture2D" uid="uid://c6pqylfaqjicj" path="res://addons/godonmaku/textures/laser_1.png" id="20_ey4bv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hdpox"]
 radius = 4.0
@@ -30,13 +33,13 @@ frame = 0
 frame_coords = Vector2i(0, 0)
 shape = SubResource("CircleShape2D_hdpox")
 damage = 10
-grazeable = null
+grazeable = true
 directed = false
 bounces = 0
 duration = 0
-hide_on_hit = null
+hide_on_hit = true
 hitbox_layer = 16896
-graze_layer = null
+graze_layer = 256
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s2xqg"]
 texture = ExtResource("4_im2dq")
@@ -63,7 +66,7 @@ bounces = 0
 duration = 0
 hide_on_hit = true
 hitbox_layer = 16896
-graze_layer = null
+graze_layer = 256
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_inhi6"]
 radius = 4.0
@@ -83,7 +86,7 @@ bounces = 0
 duration = 0
 hide_on_hit = true
 hitbox_layer = 16896
-graze_layer = null
+graze_layer = 256
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mtbov"]
 load_path = "res://.godot/imported/enemy_bullets.png-63fffad063e5286d2ac66e055b92a61c.ctex"
@@ -101,9 +104,9 @@ grazeable = true
 directed = false
 bounces = 0
 duration = 0
-hide_on_hit = null
+hide_on_hit = true
 hitbox_layer = 16896
-graze_layer = null
+graze_layer = 256
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_4sxif"]
 points = PackedVector2Array(0, -8, 8, 0, 0, -8)
@@ -123,7 +126,7 @@ bounces = 0
 duration = 0
 hide_on_hit = true
 hitbox_layer = 16896
-graze_layer = null
+graze_layer = 256
 
 [sub_resource type="Resource" id="Resource_8miuh"]
 script = ExtResource("3_8t27t")
@@ -134,13 +137,13 @@ frame = 49
 frame_coords = Vector2i(1, 6)
 shape = SubResource("ConvexPolygonShape2D_4sxif")
 damage = 10
-grazeable = null
+grazeable = true
 directed = true
 bounces = 0
 duration = 0
-hide_on_hit = null
+hide_on_hit = true
 hitbox_layer = 16896
-graze_layer = null
+graze_layer = 256
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_aiaox"]
 points = PackedVector2Array(0, -8, 8, 0, 0, -8)
@@ -154,13 +157,13 @@ frame = 51
 frame_coords = Vector2i(3, 6)
 shape = SubResource("ConvexPolygonShape2D_aiaox")
 damage = 10
-grazeable = null
+grazeable = true
 directed = true
 bounces = 0
 duration = 0
-hide_on_hit = null
+hide_on_hit = true
 hitbox_layer = 16896
-graze_layer = null
+graze_layer = 256
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xcly8"]
 radius = 4.0
@@ -180,7 +183,7 @@ bounces = 0
 duration = 0
 hide_on_hit = true
 hitbox_layer = 16896
-graze_layer = null
+graze_layer = 256
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kqp1d"]
 radius = 4.0
@@ -200,7 +203,43 @@ bounces = 0
 duration = 0
 hide_on_hit = true
 hitbox_layer = 16896
-graze_layer = null
+graze_layer = 256
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g0q7k"]
+size = Vector2(256, 6)
+
+[sub_resource type="Resource" id="Resource_lsbbi"]
+script = ExtResource("3_8t27t")
+texture = ExtResource("19_04nb8")
+hframes = 16
+vframes = 0
+frame = 0
+frame_coords = Vector2i(0, 0)
+shape = SubResource("RectangleShape2D_g0q7k")
+damage = 0
+grazeable = false
+directed = true
+bounces = 0
+duration = 60
+hide_on_hit = false
+hitbox_layer = 0
+graze_layer = 0
+
+[sub_resource type="Resource" id="Resource_mxabd"]
+script = ExtResource("3_8t27t")
+texture = ExtResource("20_ey4bv")
+hframes = 16
+vframes = 0
+frame = 0
+frame_coords = Vector2i(0, 0)
+damage = 10
+grazeable = true
+directed = true
+bounces = 0
+duration = 90
+hide_on_hit = false
+hitbox_layer = 16896
+graze_layer = 256
 
 [node name="Camera2D" type="Camera2D" node_paths=PackedStringArray("z", "seq_1", "rings") groups=["camera"]]
 script = ExtResource("1_ap1po")
@@ -392,3 +431,8 @@ repeat_time = 15.0
 [node name="PatternSpin" type="Node" parent="RingPattern3"]
 script = ExtResource("17_8xwg0")
 angle = 40
+
+[node name="DelayLaserPattern" type="Node2D" parent="."]
+script = ExtResource("18_srjgk")
+delay_marker = SubResource("Resource_lsbbi")
+bullet_data = SubResource("Resource_mxabd")
