@@ -38,6 +38,11 @@ class_name BulletData extends Resource
 		frame_coords.y = clampi(value.y, 0, vframes)
 		frame = (hframes * value.y) + value.x
 		notify_property_list_changed()
+@export var animated : bool = false
+@export var start_frame : int = 0
+@export var end_frame : int = 0
+@export var ani_rate : int = 10
+
 @export_subgroup("Shape")
 ## Shape for the bullet physics query
 @export var shape : Shape2D

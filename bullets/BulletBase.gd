@@ -39,6 +39,12 @@ var hide_on_hit : bool = true
 var grazeable : bool = true
 var can_graze : bool = false
 
+var animated : bool = false
+var start_frame : int = 0
+var end_frame : int = 0
+var ani_time : int = 0
+var ani_rate : int = 10
+
 ## Virtual position of the bullet. Use with position_offset to adjust bullets position along its projected path
 var virtual_position : Vector2
 ## Offset to virtual position
@@ -89,6 +95,11 @@ func _swap_data(data : BulletData) -> void:
 	duration = data.duration
 	hide_on_hit = data.hide_on_hit
 	max_bounces = data.bounces
+	ani_time = 0
+	animated = data.animated
+	start_frame = data.start_frame
+	end_frame = data.end_frame
+	ani_rate = data.ani_rate
 
 
 func _swap(data : BulletData, v : int, a : int) -> void:
@@ -161,6 +172,7 @@ func update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) 
 	var status : int = custom_update.call(delta, bullet, bulletin_board) # called for any additional processing
 	if status == 1 and custom_update != _custom_update:
 		custom_update = _custom_update
+	_animation_update(delta, bullet, bulletin_board)
 	_handle_collision(delta)
 
 
@@ -188,6 +200,14 @@ func _handle_collision(delta : float) -> void:
 			if coll.has_method("_on_grazed"):
 				coll._on_grazed()
 
+
+func _animation_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
+	if animated:
+		ani_time += 1
+		if ani_time == ani_rate:
+			ani_time = 0
+			frame = wrapi(frame + 1, start_frame, end_frame + 1)
+
 # Default functionality for custom updates
 
 func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
@@ -204,9 +224,7 @@ func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinB
 		return
 	
 	#print("v=%s,a=%s" % [velocity, acceleration])
-	#velocity = min(velocity + acceleration, max_velocity)
 	velocity = max(min(velocity + acceleration, max_velocity), 0)
-	#velocity = clamp(velocity + acceleration, 0, max_velocity)
 	
 	# Take into consideration angle to arc
 	virtual_position = Vector2(virtual_position.x + (velocity * delta) * cos(angle), virtual_position.y + (velocity * delta) * sin(angle))
@@ -214,10 +232,6 @@ func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinB
 	if directed:
 		look_at(virtual_position)
 		query.transform.looking_at(virtual_position)
-		#print("query.transform1=", query.transform.looking_at(virtual_position.normalized()))
-		#print("query.transform2=", query.transform.looking_at(virtual_position))
-		#query.transform.looking_at(virtual_position)
-		#print_debug("query.transform=", query.transform)
 	
 	query.transform = global_transform
 	global_position = virtual_position + position_offset
