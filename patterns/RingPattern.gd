@@ -40,7 +40,5 @@ func _handle_pattern(delta : float) -> int:
 				fire_origin = pos + (pattern_origin.from_angle(angle) * origin_offset)
 				
 				bullet = BulletPool.get_next_bullet(get_bullet_data.call(), angle, v, acceleration, fire_origin, bullet_ctrl) as BulletBase
-				if bullet_ctrl:
-					bullet_ctrl._set_custom_update(bullet, bullet.bulletin_board)
 				bullet.fire()
 	return SUCCESS

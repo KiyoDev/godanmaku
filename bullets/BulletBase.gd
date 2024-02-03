@@ -139,23 +139,23 @@ func timeout(bullet : BulletBase) -> void:
 
 
 func resume() -> void:
-	if tmp_velocity == 0: return
-	velocity = tmp_velocity
-	tmp_velocity = 0
+	if tmp_velocity != 0:
+		velocity = tmp_velocity
+		tmp_velocity = 0
 	
-	if tmp_acceleration == 0: return
-	acceleration = tmp_acceleration
-	tmp_acceleration = 0
+	if tmp_acceleration != 0:
+		acceleration = tmp_acceleration
+		tmp_acceleration = 0
 
 
 func stop() -> void:
-	if tmp_velocity != 0: return
-	tmp_velocity = velocity
-	velocity = 0
+	if tmp_velocity == 0:
+		tmp_velocity = velocity
+		velocity = 0
 	
-	if tmp_acceleration != 0: return
-	tmp_acceleration = acceleration
-	acceleration = 0
+	if tmp_acceleration == 0:
+		tmp_acceleration = acceleration
+		acceleration = 0
 	
 
 
@@ -174,6 +174,11 @@ func update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) 
 		custom_update = _custom_update
 	_animation_update(delta, bullet, bulletin_board)
 	_handle_collision(delta)
+	
+	# if been alive for duration, expire bullet
+	if duration > 0 and up_time >= duration:
+		timeout.call(bullet)
+		return
 
 
 func _handle_collision(delta : float) -> void:
@@ -217,11 +222,6 @@ func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinB
 	
 	# frame up time
 	up_time += 1
-	
-	# if been alive for duration, expire bullet
-	if duration > 0 and up_time >= duration:
-		timeout.call(bullet)
-		return
 	
 	#print("v=%s,a=%s" % [velocity, acceleration])
 	velocity = max(min(velocity + acceleration, max_velocity), 0)

@@ -39,13 +39,15 @@ func _handle_pattern(delta : float) -> int:
 				angle = start_angle + (radians * line) + angle_offset + (i * spread_rad)
 				fire_origin = pos + (pattern_origin.from_angle(angle) * origin_offset)
 				
-				var laser_marker = BulletPool.get_next_bullet(delay_marker, angle, v, acceleration, fire_origin, bullet_ctrl) as BulletBase
-				var laser = BulletPool.get_next_bullet(get_bullet_data.call(), angle, v, acceleration, fire_origin, bullet_ctrl) as BulletBase
-				laser_marker.bulletin_board
-				laser_marker.custom_update = func(delta, laser_marker, bulletin) -> void:
-					pass
-					
-				if bullet_ctrl:
-					bullet_ctrl._set_custom_update(laser, laser.bulletin_board)
+				var laser_marker = BulletPool.get_next_bullet(delay_marker, angle, v, acceleration, fire_origin, null) as BulletBase
+				
+				#laser_marker.bulletin_board.set_value("delay_timer", 0)
+				laser_marker.custom_update = func(delta, laser_marker, bulletin) -> int:
+					if laser_marker.up_time == laser_marker.duration:
+						laser_marker._disable()
+						var laser = BulletPool.get_next_bullet(get_bullet_data.call(), angle, v, acceleration, fire_origin, bullet_ctrl) as BulletBase
+						laser.fire()
+						return SUCCESS
+					return RUNNING
 				laser_marker.fire()
 	return SUCCESS

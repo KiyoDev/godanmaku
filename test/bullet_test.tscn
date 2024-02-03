@@ -239,7 +239,7 @@ size = Vector2(256, 6)
 [sub_resource type="Resource" id="Resource_lsbbi"]
 script = ExtResource("3_8t27t")
 texture = ExtResource("19_04nb8")
-hframes = 16
+hframes = 1
 vframes = 0
 frame = 0
 frame_coords = Vector2i(0, 0)
@@ -260,7 +260,7 @@ graze_layer = 0
 [sub_resource type="Resource" id="Resource_mxabd"]
 script = ExtResource("3_8t27t")
 texture = ExtResource("20_ey4bv")
-hframes = 16
+hframes = 1
 vframes = 0
 frame = 0
 frame_coords = Vector2i(0, 0)
@@ -277,13 +277,14 @@ hide_on_hit = false
 hitbox_layer = 16896
 graze_layer = 256
 
-[node name="Camera2D" type="Camera2D" node_paths=PackedStringArray("z", "seq_1", "rings") groups=["camera"]]
+[node name="Camera2D" type="Camera2D" node_paths=PackedStringArray("z", "seq_1", "rings", "lasers") groups=["camera"]]
 script = ExtResource("1_ap1po")
 t_1 = ExtResource("2_fa3y2")
 z = NodePath("RingPattern/Sequence/ZigZag")
 seq_1 = NodePath("RingPattern/Sequence")
 data_1 = SubResource("Resource_42l12")
-rings = [NodePath("RingPattern"), NodePath("SinglePattern"), NodePath("PatternRepeater"), NodePath("SinglePattern2"), NodePath("Arcing"), NodePath("RingPattern2"), NodePath("RingPattern3")]
+rings = [NodePath("RingPattern"), NodePath("SinglePattern"), NodePath("PatternRepeater"), NodePath("SinglePattern2"), NodePath("Arcing"), NodePath("Delay Zig"), NodePath("RingPattern3")]
+lasers = [NodePath("DelayLaserPattern")]
 
 [node name="BulletBase" type="Sprite2D" parent="."]
 texture = ExtResource("4_rrv4o")
@@ -431,7 +432,7 @@ script = ExtResource("8_x1ekb")
 angle = -20.0
 alt_bullet_data = SubResource("Resource_2pcmu")
 
-[node name="RingPattern2" type="Node2D" parent="." node_paths=PackedStringArray("bullet_ctrl")]
+[node name="Delay Zig" type="Node2D" parent="." node_paths=PackedStringArray("bullet_ctrl")]
 script = ExtResource("12_qys5r")
 spawn_count = 8
 velocity = 200
@@ -441,7 +442,7 @@ bullet_ctrl = NodePath("ZigZag")
 max_repeats = 16
 repeat_time = 15.0
 
-[node name="ZigZag" type="Node" parent="RingPattern2"]
+[node name="ZigZag" type="Node" parent="Delay Zig"]
 script = ExtResource("6_2v2mx")
 frames = 40
 angle = 50.0
@@ -464,5 +465,8 @@ angle = 40
 
 [node name="DelayLaserPattern" type="Node2D" parent="."]
 script = ExtResource("18_srjgk")
+spawn_count = 3
+origin_offset = 32
 delay_marker = SubResource("Resource_lsbbi")
+velocity = 0
 bullet_data = SubResource("Resource_mxabd")
