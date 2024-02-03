@@ -151,10 +151,10 @@ func resume() -> void:
 func stop() -> void:
 	if tmp_velocity != 0: return
 	tmp_velocity = velocity
-	
-	if tmp_acceleration == 0: return
-	tmp_acceleration = acceleration
 	velocity = 0
+	
+	if tmp_acceleration != 0: return
+	tmp_acceleration = acceleration
 	acceleration = 0
 	
 
