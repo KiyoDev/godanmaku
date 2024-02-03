@@ -1,4 +1,4 @@
-@icon("res://addons/godonmaku/icons/control.svg")
+@icon("res://addons/godanmaku/icons/control.svg")
 class_name ControlNode extends Node
 
 

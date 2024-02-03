@@ -1,4 +1,4 @@
-@icon("res://addons/godonmaku/icons/ring.svg")
+@icon("res://addons/godanmaku/icons/ring.svg")
 class_name RingPattern extends DanmakuPattern
 
 

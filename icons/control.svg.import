@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bwsclma4rkrpg"
-path="res://.godot/imported/control.svg-9a3e3e22316c0de28db815e339e07590.ctex"
+path="res://.godot/imported/control.svg-6e13916479fdcee31d1b441cb8a2fa64.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/godonmaku/icons/control.svg"
-dest_files=["res://.godot/imported/control.svg-9a3e3e22316c0de28db815e339e07590.ctex"]
+source_file="res://addons/godanmaku/icons/control.svg"
+dest_files=["res://.godot/imported/control.svg-6e13916479fdcee31d1b441cb8a2fa64.ctex"]
 
 [params]
 

@@ -1,6 +1,12 @@
 class_name BulletPool2D extends Node2D
 
 
+enum {
+	BULLET,
+	LASER
+}
+
+
 const MAX_BULLETS := 10000
 
 @onready var direct_space_state : PhysicsDirectSpaceState2D = get_world_2d().direct_space_state

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BulletData" load_steps=3 format=3 uid="uid://b7w0p1ftjhyx"]
 
-[ext_resource type="Script" path="res://addons/godonmaku/bullets/BulletData.gd" id="1_lt7xm"]
-[ext_resource type="Texture2D" uid="uid://bidfpmsxhypus" path="res://addons/godonmaku/textures/laser_marker.png" id="2_5nhra"]
+[ext_resource type="Script" path="res://addons/godanmaku/bullets/BulletData.gd" id="1_lt7xm"]
+[ext_resource type="Texture2D" uid="uid://bidfpmsxhypus" path="res://addons/godanmaku/textures/laser_marker.png" id="2_5nhra"]
 
 [resource]
 script = ExtResource("1_lt7xm")

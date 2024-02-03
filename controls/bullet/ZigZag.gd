@@ -1,4 +1,4 @@
-@icon("res://addons/godonmaku/icons/zigzag.svg")
+@icon("res://addons/godanmaku/icons/zigzag.svg")
 class_name ZigZag extends ControlNode
 
 

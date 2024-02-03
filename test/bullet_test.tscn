@@ -1,24 +1,24 @@
 [gd_scene load_steps=40 format=3 uid="uid://c41gs2sfa6tvd"]
 
-[ext_resource type="Script" path="res://addons/godonmaku/test/bullet_test.gd" id="1_ap1po"]
-[ext_resource type="Texture2D" uid="uid://clev7jb1fmmjj" path="res://addons/godonmaku/textures/enemy_bullets.png" id="2_fa3y2"]
-[ext_resource type="Script" path="res://addons/godonmaku/bullets/BulletData.gd" id="3_8t27t"]
-[ext_resource type="Script" path="res://addons/godonmaku/bullets/BulletBase.gd" id="3_on322"]
+[ext_resource type="Script" path="res://addons/godanmaku/test/bullet_test.gd" id="1_ap1po"]
+[ext_resource type="Texture2D" uid="uid://clev7jb1fmmjj" path="res://addons/godanmaku/textures/enemy_bullets.png" id="2_fa3y2"]
+[ext_resource type="Script" path="res://addons/godanmaku/bullets/BulletData.gd" id="3_8t27t"]
+[ext_resource type="Script" path="res://addons/godanmaku/bullets/BulletBase.gd" id="3_on322"]
 [ext_resource type="Texture2D" uid="uid://bxrxgvhay4bnc" path="res://assets/bullets/enemy_bullets.png" id="4_rrv4o"]
-[ext_resource type="Script" path="res://addons/godonmaku/controls/bullet/Sequence.gd" id="5_p75xh"]
-[ext_resource type="Script" path="res://addons/godonmaku/controls/bullet/ZigZag.gd" id="6_2v2mx"]
-[ext_resource type="Script" path="res://addons/godonmaku/controls/bullet/Wave.gd" id="7_71mfq"]
-[ext_resource type="Script" path="res://addons/godonmaku/controls/bullet/ResetMove.gd" id="7_oeyqb"]
-[ext_resource type="Resource" uid="uid://b6r4obveuuiqe" path="res://addons/godonmaku/test/bullet_data_basic.tres" id="8_dl0jv"]
-[ext_resource type="Script" path="res://addons/godonmaku/controls/bullet/Arc.gd" id="8_x1ekb"]
-[ext_resource type="Script" path="res://addons/godonmaku/patterns/RingPattern.gd" id="12_qys5r"]
-[ext_resource type="Script" path="res://addons/godonmaku/patterns/PatternRepeater.gd" id="14_4m8n4"]
-[ext_resource type="Script" path="res://addons/godonmaku/controls/bullet/Wait.gd" id="15_gtpyu"]
-[ext_resource type="Script" path="res://addons/godonmaku/controls/pattern/AlternateBControls.gd" id="15_naqrq"]
-[ext_resource type="Script" path="res://addons/godonmaku/controls/pattern/PatternSpin.gd" id="17_8xwg0"]
-[ext_resource type="Script" path="res://addons/godonmaku/patterns/DelayLaserPattern.gd" id="18_srjgk"]
-[ext_resource type="Texture2D" uid="uid://bidfpmsxhypus" path="res://addons/godonmaku/textures/laser_marker.png" id="19_04nb8"]
-[ext_resource type="Texture2D" uid="uid://c6pqylfaqjicj" path="res://addons/godonmaku/textures/laser_1.png" id="20_ey4bv"]
+[ext_resource type="Script" path="res://addons/godanmaku/controls/bullet/Sequence.gd" id="5_p75xh"]
+[ext_resource type="Script" path="res://addons/godanmaku/controls/bullet/ZigZag.gd" id="6_2v2mx"]
+[ext_resource type="Script" path="res://addons/godanmaku/controls/bullet/Wave.gd" id="7_71mfq"]
+[ext_resource type="Script" path="res://addons/godanmaku/controls/bullet/ResetMove.gd" id="7_oeyqb"]
+[ext_resource type="Resource" uid="uid://b6r4obveuuiqe" path="res://addons/godanmaku/test/bullet_data_basic.tres" id="8_dl0jv"]
+[ext_resource type="Script" path="res://addons/godanmaku/controls/bullet/Arc.gd" id="8_x1ekb"]
+[ext_resource type="Script" path="res://addons/godanmaku/patterns/RingPattern.gd" id="12_qys5r"]
+[ext_resource type="Script" path="res://addons/godanmaku/patterns/PatternRepeater.gd" id="14_4m8n4"]
+[ext_resource type="Script" path="res://addons/godanmaku/controls/bullet/Wait.gd" id="15_gtpyu"]
+[ext_resource type="Script" path="res://addons/godanmaku/controls/pattern/AlternateBControls.gd" id="15_naqrq"]
+[ext_resource type="Script" path="res://addons/godanmaku/controls/pattern/PatternSpin.gd" id="17_8xwg0"]
+[ext_resource type="Script" path="res://addons/godanmaku/patterns/DelayLaserPattern.gd" id="18_srjgk"]
+[ext_resource type="Texture2D" uid="uid://bidfpmsxhypus" path="res://addons/godanmaku/textures/laser_marker.png" id="19_04nb8"]
+[ext_resource type="Texture2D" uid="uid://c6pqylfaqjicj" path="res://addons/godanmaku/textures/laser_1.png" id="20_ey4bv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hdpox"]
 radius = 4.0
@@ -272,7 +272,7 @@ damage = 10
 grazeable = true
 directed = true
 bounces = 0
-duration = 90
+duration = 60
 hide_on_hit = false
 hitbox_layer = 16896
 graze_layer = 256

@@ -20,7 +20,6 @@ func _handle_pattern(delta : float) -> int:
 	var fire_direction : Vector2
 	var angle : float
 	var fire_origin : Vector2
-	var bullet : BulletBase
 	var v : int
 	var pos = global_position
 	# calculate origin offset
@@ -40,8 +39,13 @@ func _handle_pattern(delta : float) -> int:
 				angle = start_angle + (radians * line) + angle_offset + (i * spread_rad)
 				fire_origin = pos + (pattern_origin.from_angle(angle) * origin_offset)
 				
-				bullet = BulletPool.get_next_bullet(get_bullet_data.call(), angle, v, acceleration, fire_origin, bullet_ctrl) as BulletBase
+				var laser_marker = BulletPool.get_next_bullet(delay_marker, angle, v, acceleration, fire_origin, bullet_ctrl) as BulletBase
+				var laser = BulletPool.get_next_bullet(get_bullet_data.call(), angle, v, acceleration, fire_origin, bullet_ctrl) as BulletBase
+				laser_marker.bulletin_board
+				laser_marker.custom_update = func(delta, laser_marker, bulletin) -> void:
+					pass
+					
 				if bullet_ctrl:
-					bullet_ctrl._set_custom_update(bullet, bullet.bulletin_board)
-				bullet.fire()
+					bullet_ctrl._set_custom_update(laser, laser.bulletin_board)
+				laser_marker.fire()
 	return SUCCESS

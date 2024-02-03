@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dj6c2yogfw8yy"
-path="res://.godot/imported/straight.svg-919c020c6f0ce8f2df6cc63d34e714db.ctex"
+path="res://.godot/imported/straight.svg-76e78b22a240157560a5162d43137f8e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/godonmaku/icons/straight.svg"
-dest_files=["res://.godot/imported/straight.svg-919c020c6f0ce8f2df6cc63d34e714db.ctex"]
+source_file="res://addons/godanmaku/icons/straight.svg"
+dest_files=["res://.godot/imported/straight.svg-76e78b22a240157560a5162d43137f8e.ctex"]
 
 [params]
 

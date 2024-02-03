@@ -1,5 +1,5 @@
 ## Parent pattern used to repeat its child pattern after a certain number of frames
-@icon("res://addons/godonmaku/icons/repeat.svg")
+@icon("res://addons/godanmaku/icons/repeat.svg")
 class_name PatternRepeater extends DanmakuPattern
 
 var repeat : bool = false

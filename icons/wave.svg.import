@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d3b6ab13ojnnn"
-path="res://.godot/imported/wave.svg-14d3da8acdf6330c4b108ecf66519fd8.ctex"
+path="res://.godot/imported/wave.svg-eb25f03fa08bf3c63636eb05b7bd28a7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/godonmaku/icons/wave.svg"
-dest_files=["res://.godot/imported/wave.svg-14d3da8acdf6330c4b108ecf66519fd8.ctex"]
+source_file="res://addons/godanmaku/icons/wave.svg"
+dest_files=["res://.godot/imported/wave.svg-eb25f03fa08bf3c63636eb05b7bd28a7.ctex"]
 
 [params]
 

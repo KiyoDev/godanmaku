@@ -1,4 +1,4 @@
-@icon("res://addons/godonmaku/icons/wave.svg")
+@icon("res://addons/godanmaku/icons/wave.svg")
 class_name Wave extends ControlNode
 
 

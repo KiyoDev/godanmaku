@@ -1,4 +1,4 @@
-@icon("res://addons/godonmaku/icons/straight.svg")
+@icon("res://addons/godanmaku/icons/straight.svg")
 class_name ResetMove extends ControlNode
 
 @onready var cache_key = "reset_move_%s" % self.get_instance_id()

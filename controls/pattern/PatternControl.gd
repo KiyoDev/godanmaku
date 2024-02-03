@@ -1,4 +1,4 @@
-@icon("res://addons/godonmaku/icons/pattern_control.svg")
+@icon("res://addons/godanmaku/icons/pattern_control.svg")
 class_name PatternControl extends Node
 
 

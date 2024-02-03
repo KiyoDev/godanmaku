@@ -4,9 +4,9 @@ extends EditorPlugin
 var frames: RefCounted
 
 func _init():
-	name = "GodonmakuPlugin"
+	name = "GodanmakuPlugin"
 	add_autoload_singleton("BulletPool", "bullets/BulletPool.gd")
-	print("Godonmaku initialized")
+	print("Godanmaku initialized")
 
 
 func _enter_tree() -> void:

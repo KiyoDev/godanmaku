@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c6pqylfaqjicj"
-path="res://.godot/imported/laser_1.png-d6f3c8616e3b1759463d113f2b9bca29.ctex"
+path="res://.godot/imported/laser_1.png-1e5049be540d0986e2ad85c31b34277a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/godonmaku/textures/laser_1.png"
-dest_files=["res://.godot/imported/laser_1.png-d6f3c8616e3b1759463d113f2b9bca29.ctex"]
+source_file="res://addons/godanmaku/textures/laser_1.png"
+dest_files=["res://.godot/imported/laser_1.png-1e5049be540d0986e2ad85c31b34277a.ctex"]
 
 [params]
 

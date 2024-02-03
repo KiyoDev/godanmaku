@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bmcfsscqmtax0"
-path="res://.godot/imported/pattern_control.svg-bde87ff71359efc237fee58e51bd1471.ctex"
+path="res://.godot/imported/pattern_control.svg-d7cbe3bd1565fd333b1380a75b8d8954.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/godonmaku/icons/pattern_control.svg"
-dest_files=["res://.godot/imported/pattern_control.svg-bde87ff71359efc237fee58e51bd1471.ctex"]
+source_file="res://addons/godanmaku/icons/pattern_control.svg"
+dest_files=["res://.godot/imported/pattern_control.svg-d7cbe3bd1565fd333b1380a75b8d8954.ctex"]
 
 [params]
 

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c4roaa5dw5ah8"
-path="res://.godot/imported/16x16_black.png-6dfbe3bec5be4abe2aed853b9f7131c2.ctex"
+path="res://.godot/imported/16x16_black.png-b52a3decf3e998ee1cdd7cc99a32a79c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/godonmaku/test/16x16_black.png"
-dest_files=["res://.godot/imported/16x16_black.png-6dfbe3bec5be4abe2aed853b9f7131c2.ctex"]
+source_file="res://addons/godanmaku/test/16x16_black.png"
+dest_files=["res://.godot/imported/16x16_black.png-b52a3decf3e998ee1cdd7cc99a32a79c.ctex"]
 
 [params]
 
