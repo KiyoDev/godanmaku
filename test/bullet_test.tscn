@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://c41gs2sfa6tvd"]
+[gd_scene load_steps=37 format=3 uid="uid://c41gs2sfa6tvd"]
 
 [ext_resource type="Script" path="res://addons/godanmaku/test/bullet_test.gd" id="1_ap1po"]
 [ext_resource type="Texture2D" uid="uid://clev7jb1fmmjj" path="res://addons/godanmaku/textures/enemy_bullets.png" id="2_fa3y2"]
@@ -17,8 +17,7 @@
 [ext_resource type="Script" path="res://addons/godanmaku/controls/pattern/AlternateBControls.gd" id="15_naqrq"]
 [ext_resource type="Script" path="res://addons/godanmaku/controls/pattern/PatternSpin.gd" id="17_8xwg0"]
 [ext_resource type="Script" path="res://addons/godanmaku/patterns/DelayLaserPattern.gd" id="18_srjgk"]
-[ext_resource type="Texture2D" uid="uid://bidfpmsxhypus" path="res://addons/godanmaku/textures/laser_marker.png" id="19_04nb8"]
-[ext_resource type="Texture2D" uid="uid://c6pqylfaqjicj" path="res://addons/godanmaku/textures/laser_1.png" id="20_ey4bv"]
+[ext_resource type="Texture2D" uid="uid://ddkj88wgs6pnp" path="res://addons/godanmaku/textures/delay_laser.png" id="18_ya57w"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hdpox"]
 radius = 4.0
@@ -233,37 +232,13 @@ hide_on_hit = true
 hitbox_layer = 16896
 graze_layer = 256
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_g0q7k"]
-size = Vector2(256, 6)
-
-[sub_resource type="Resource" id="Resource_lsbbi"]
-script = ExtResource("3_8t27t")
-texture = ExtResource("19_04nb8")
-hframes = 1
-vframes = 0
-frame = 0
-frame_coords = Vector2i(0, 0)
-animated = false
-start_frame = 0
-end_frame = 0
-ani_rate = 10
-shape = SubResource("RectangleShape2D_g0q7k")
-damage = 0
-grazeable = false
-directed = true
-bounces = 0
-duration = 60
-hide_on_hit = false
-hitbox_layer = 0
-graze_layer = 0
-
 [sub_resource type="Resource" id="Resource_mxabd"]
 script = ExtResource("3_8t27t")
-texture = ExtResource("20_ey4bv")
+texture = ExtResource("18_ya57w")
 hframes = 1
-vframes = 0
-frame = 0
-frame_coords = Vector2i(0, 0)
+vframes = 16
+frame = 1
+frame_coords = Vector2i(0, 1)
 animated = false
 start_frame = 0
 end_frame = 0
@@ -272,7 +247,7 @@ damage = 10
 grazeable = true
 directed = true
 bounces = 0
-duration = 60
+duration = 240
 hide_on_hit = false
 hitbox_layer = 16896
 graze_layer = 256
@@ -467,6 +442,5 @@ angle = 40
 script = ExtResource("18_srjgk")
 spawn_count = 3
 origin_offset = 32
-delay_marker = SubResource("Resource_lsbbi")
 velocity = 0
 bullet_data = SubResource("Resource_mxabd")

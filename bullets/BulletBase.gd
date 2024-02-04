@@ -35,6 +35,8 @@ var max_bounces : int = 0
 var duration : int = 1200:
 	set(value):
 		duration = maxi(0, value) # never let duration go lower than 0
+## If the bullet should fade after a certain time
+var fade : bool = false
 var hide_on_hit : bool = true
 var grazeable : bool = true
 var can_graze : bool = false
@@ -64,6 +66,8 @@ var tmp_acceleration : int = 0
 #/--------------------------------------------------/
 var move_update : Callable = _move_update
 var custom_update : Callable = _custom_update
+var animation_update : Callable = _animation_update
+var handle_collision : Callable = _handle_collision
 
 
 # Called when the node enters the scene tree for the first time.
@@ -125,8 +129,9 @@ func before_spawn(data : BulletData, angle : float, v : int, a : int, position :
 	_swap(data, a, v)
 	self.angle = angle
 	if directed:
-		query.transform.looking_at(global_position)
-		look_at(global_position)
+		# global_position + global_position to look at the direction properly
+		query.transform.looking_at(global_position + global_position)
+		look_at(global_position + global_position)
 
 
 func fire() -> void:
@@ -156,7 +161,6 @@ func stop() -> void:
 	if tmp_acceleration == 0:
 		tmp_acceleration = acceleration
 		acceleration = 0
-	
 
 
 func _disable() -> void:
@@ -167,13 +171,27 @@ func _disable() -> void:
 	set_physics_process(false)
 
 
+func disable_collision() -> void:
+	handle_collision = func(delta): pass
+
+
+func enable_collision() -> void:
+	handle_collision = _handle_collision
+
+
 func update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
 	move_update.call(delta, bullet, bulletin_board)
 	var status : int = custom_update.call(delta, bullet, bulletin_board) # called for any additional processing
 	if status == 1 and custom_update != _custom_update:
 		custom_update = _custom_update
-	_animation_update(delta, bullet, bulletin_board)
+	animation_update.call(delta, bullet, bulletin_board) # can be overwritten for custom animation updates
 	_handle_collision(delta)
+	
+	if fade and duration > 0 and up_time >= duration * 0.75:
+		self_modulate.a8 -= 15
+		if self_modulate.a8 == 0:
+			timeout.call(bullet)
+			return
 	
 	# if been alive for duration, expire bullet
 	if duration > 0 and up_time >= duration:

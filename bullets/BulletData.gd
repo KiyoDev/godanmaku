@@ -28,7 +28,7 @@ class_name BulletData extends Resource
 		if frame == value: return
 		frame = value
 		frame_coords.x = clampi(value % hframes, 0, hframes)
-		frame_coords.y = clampi(value / vframes, 0, vframes)
+		frame_coords.y = clampi(value / vframes, 0, vframes) if hframes > 1 else value
 		notify_property_list_changed()
 ## Texture animation frame coords
 @export var frame_coords : Vector2i:

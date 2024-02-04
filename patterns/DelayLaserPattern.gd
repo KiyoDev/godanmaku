@@ -2,9 +2,10 @@
 class_name DelayLaserPattern extends DanmakuPattern
 
 
+@export_group("Laser Settings")
 @export var spawn_count : int = 1
 @export var origin_offset : int = 1
-@export var delay_marker : BulletData
+@export var warning_time : int = 60
 
 @export_group("Stack Settings")
 @export var stacks : int = 1
@@ -39,15 +40,37 @@ func _handle_pattern(delta : float) -> int:
 				angle = start_angle + (radians * line) + angle_offset + (i * spread_rad)
 				fire_origin = pos + (pattern_origin.from_angle(angle) * origin_offset)
 				
-				var laser_marker = BulletPool.get_next_bullet(delay_marker, angle, v, acceleration, fire_origin, null) as BulletBase
-				
-				#laser_marker.bulletin_board.set_value("delay_timer", 0)
-				laser_marker.custom_update = func(delta, laser_marker, bulletin) -> int:
-					if laser_marker.up_time == laser_marker.duration:
-						laser_marker._disable()
-						var laser = BulletPool.get_next_bullet(get_bullet_data.call(), angle, v, acceleration, fire_origin, bullet_ctrl) as BulletBase
-						laser.fire()
-						return SUCCESS
-					return RUNNING
-				laser_marker.fire()
+				var laser = BulletPool.get_next_bullet(get_bullet_data.call(), angle, v, acceleration, fire_origin, bullet_ctrl) as BulletBase
+				laser.disable_collision()
+				laser.animation_update = custom_animation_update
+				laser.fire()
 	return SUCCESS
+
+
+
+func custom_animation_update(delta : float, laser : BulletBase, bulletin_board : BulletinBoard) -> void:
+	#laser.ani_time += 1
+	if laser.up_time == warning_time:
+		laser.frame = 2
+	elif laser.up_time == warning_time + 4:
+		laser.frame = 3
+	elif laser.up_time == warning_time + 12:
+		laser.frame = 2
+	elif laser.up_time == warning_time + 18:
+		laser.frame = 1
+	elif laser.up_time == warning_time + 42:
+		laser.frame = 4
+		laser.enable_collision()
+	elif laser.up_time == warning_time + 48:
+		laser.frame = 5
+	elif laser.up_time == warning_time + 54:
+		laser.frame = 6
+	elif laser.up_time == warning_time + 60:
+		laser.frame = 7
+		laser.disable_collision()
+	elif laser.up_time == warning_time + 64:
+		laser.frame = 8
+	elif laser.up_time == warning_time + 68:
+		laser.frame = 9
+	elif laser.up_time == warning_time + 72:
+		laser._disable()
