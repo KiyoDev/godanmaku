@@ -10,8 +10,15 @@ enum {
 	FINISHED
 }
 
+enum Angle {
+	FIXED,
+	CHASE_PLAYER,
+	TARGET
+}
+
 ## If bullet should chase the player's position
-@export var chase : bool = false
+@export var angle_type : Angle = Angle.FIXED
+@export var target : Node2D
 @export var origin_offset : int = 1
 ## Direction to spawn and aim pattern (in degrees)
 @export var fire_angle : int = 180
@@ -94,8 +101,13 @@ func stop() -> void:
 	finished.emit()
 
 
-func angle_to_player() -> float:
-	return get_angle_to(player.global_position if player else global_position + Vector2.LEFT)
+func angle_to_player(pattern_origin : Vector2) -> float:
+	return pattern_origin.angle_to_point(player.global_position if player else global_position + Vector2.LEFT)
+
+
+func angle_to_target(pattern_origin : Vector2, target : Node2D) -> float:
+	#print_debug("a=%s, %s --- %s, %s" % [pattern_origin, pattern_origin.normalized(), target.global_position, pattern_origin.angle_to_point(target.global_position if target else Vector2(-69.69, -69.69))])
+	return pattern_origin.angle_to_point(target.global_position if target else global_position + Vector2.LEFT)
 
 
 func player_position() -> Vector2:

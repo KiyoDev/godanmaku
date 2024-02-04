@@ -1,5 +1,7 @@
 extends Camera2D
 
+@export var texture : CurveTexture
+
 @export var count_2 := 20
 @export var t_1 : Texture2D
 @export var z : ZigZag
@@ -11,7 +13,7 @@ extends Camera2D
 @export var rings : Array[DanmakuPattern]
 @export var lasers : Array[DanmakuPattern]
 
-var c : Callable = func(): pass
+#var c : Callable = func(): pass
 var duration := 0
 var t := 0
 
@@ -21,7 +23,6 @@ var c_t := 0
 
 func _physics_process(delta: float) -> void:
 	if !running: return
-	c.call()
 
 
 func _input(event: InputEvent) -> void:
@@ -34,26 +35,7 @@ func _input(event: InputEvent) -> void:
 		
 		b.fire()
 	elif Input.is_key_pressed(KEY_2) and just_pressed:
-		running = !running
-		if !running:
-			t = 0
-			c_t = 0
-			return
-		duration = 5
-		c = func():
-			t += 1
-			if t >= duration:
-				if c_t == count_2: 
-					running = false
-					t = 0
-					c_t = 0
-					return
-				c_t += 1
-				t = 0
-				var b = BulletPool.get_next_bullet(data_1, PI, 100, 0, Vector2.ZERO, z)
-				
-				
-				b.fire()
+		pass
 	elif Input.is_key_pressed(KEY_3) and just_pressed:
 		var b = BulletPool.get_next_bullet(data_1, PI, 60, 0, Vector2.ZERO, seq_1)
 		
@@ -85,3 +67,5 @@ func _input(event: InputEvent) -> void:
 		rings[7].fire()
 	elif Input.is_key_pressed(KEY_Q) and just_pressed:
 		lasers[0].fire()
+	elif Input.is_key_pressed(KEY_W) and just_pressed:
+		lasers[1].fire()

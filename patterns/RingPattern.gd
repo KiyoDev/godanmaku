@@ -25,7 +25,8 @@ func _handle_pattern(delta : float) -> int:
 	# calculate origin offset
 	pattern_origin = Vector2(pos.x + (origin_offset * cos(360.0/spawn_count)), pos.y + (origin_offset * sin(360.0/spawn_count)))
 	var spread_rad : float = spread_degrees * PI / 180 # angle to shoot spread
-	var start_angle = angle_to_player() if chase else (fire_angle * PI / 180) # angle of main bullet to fire
+	var start_angle = angle_to_player(pattern_origin) if angle_type == Angle.CHASE_PLAYER else (fire_angle * PI / 180) # angle of main bullet to fire
+	#var start_angle = angle_to_player(pattern_origin) if angle_type == Angle.CHASE_PLAYER else angle_to_target(pattern_origin, target) if angle_type == Angle.TARGET else (fire_angle * PI / 180) # angle of main bullet to fire
 	start_angle = start_angle if spread % 2 != 0 else start_angle + (spread_rad / 2)
 	var radians : float = 2 * PI / spawn_count # convert to radians for function params
 	# spawn stacks of rings
@@ -38,7 +39,9 @@ func _handle_pattern(delta : float) -> int:
 				# calculate fire angle, taking spread, and angle offset modifiers
 				angle = start_angle + (radians * line) + angle_offset + (i * spread_rad)
 				fire_origin = pos + (pattern_origin.from_angle(angle) * origin_offset)
+				#print(fire_origin)
+				#print(angle_to_target(fire_origin, target))
 				
-				bullet = BulletPool.get_next_bullet(get_bullet_data.call(), angle, v, acceleration, fire_origin, bullet_ctrl) as BulletBase
+				bullet = BulletPool.get_next_bullet(get_bullet_data.call(), angle_to_target(fire_origin, target) if angle_type == Angle.TARGET else angle, v, acceleration, fire_origin, bullet_ctrl) as BulletBase
 				bullet.fire()
 	return SUCCESS

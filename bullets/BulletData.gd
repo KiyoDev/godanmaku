@@ -43,9 +43,10 @@ class_name BulletData extends Resource
 @export var end_frame : int = 0
 @export var ani_rate : int = 10
 
-@export_subgroup("Shape")
-## Shape for the bullet physics query
+@export_subgroup("Size and Shape")
+## Shape for the bullet physics queryi
 @export var shape : Shape2D
+@export var size : Vector2i = Vector2(1, 1)
 
 @export_group("Properties")
 ## Damage

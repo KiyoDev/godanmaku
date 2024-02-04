@@ -104,6 +104,7 @@ func _swap_data(data : BulletData) -> void:
 	start_frame = data.start_frame
 	end_frame = data.end_frame
 	ani_rate = data.ani_rate
+	scale = data.size
 
 
 func _swap(data : BulletData, v : int, a : int) -> void:
@@ -236,6 +237,7 @@ func _animation_update(delta : float, bullet : BulletBase, bulletin_board : Bull
 		if ani_time == ani_rate:
 			ani_time = 0
 			frame = wrapi(frame + 1, start_frame, end_frame + 1)
+	
 
 # Default functionality for custom updates
 

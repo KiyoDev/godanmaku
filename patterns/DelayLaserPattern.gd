@@ -14,14 +14,14 @@ func _handle_pattern(delta : float) -> int:
 	var fire_direction : Vector2
 	var angle : float
 	var v : int
-	pattern_origin = (player_position() if chase else global_position)
+	pattern_origin = (player_position() if angle_type == Angle.CHASE_PLAYER else global_position)
 	pattern_origin = Vector2(pattern_origin.x + randi_range(-origin_offset, origin_offset), pattern_origin.y + randi_range(-origin_offset, origin_offset))
 	
 	var start_angle : float
 	if variable_angle:
 		start_angle = randf_range(0, 359) * PI / 180
 	else:
-		start_angle = angle_to_player() if chase else (fire_angle * PI / 180) # angle of main bullet to fire
+		start_angle = angle_to_player(pattern_origin) if angle_type == Angle.CHASE_PLAYER else angle_to_target(pattern_origin, target) if angle_type == Angle.TARGET else (fire_angle * PI / 180) # angle of main bullet to fire
 	for line in range(1, spawn_count + 1):
 		angle = start_angle + angle_offset
 		var laser = BulletPool.get_next_bullet(get_bullet_data.call(), angle, v, acceleration, pattern_origin, bullet_ctrl) as BulletBase
