@@ -129,8 +129,7 @@ func before_spawn(data : BulletData, angle : float, v : int, a : int, position :
 	_swap(data, a, v)
 	self.angle = angle
 	if directed:
-		# global_position + global_position to look at the direction properly
-		query.transform.looking_at(global_position + Vector2.RIGHT.rotated(angle))
+		# global_position + angle to look at the direction properly
 		look_at(global_position + Vector2.RIGHT.rotated(angle))
 		#query.transform.looking_at(global_position + global_position)
 		#look_at(global_position + global_position)
@@ -209,7 +208,6 @@ func update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) 
 
 func _handle_collision(delta : float) -> void:
 	query.collision_mask = hitbox_layer
-	#query.transform = global_transform
 	
 	var hit : Array[Dictionary] = BulletPool.intersect_shape(query, 1)
 	if hit:
@@ -257,7 +255,6 @@ func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinB
 	# update rotation of texture and transform if bullet is directed
 	if directed:
 		look_at(virtual_position)
-		query.transform.looking_at(virtual_position)
 	
 	query.transform = global_transform
 	global_position = virtual_position + position_offset
