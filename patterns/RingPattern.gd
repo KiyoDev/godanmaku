@@ -2,8 +2,8 @@
 class_name RingPattern extends DanmakuPattern
 
 
+@export_group("Ring Settings")
 @export var spawn_count : int = 1
-@export var origin_offset : int = 1
 
 @export_group("Stack Settings")
 @export var stacks : int = 1

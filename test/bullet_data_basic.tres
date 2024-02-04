@@ -24,5 +24,5 @@ directed = false
 bounces = 0
 duration = 0
 hide_on_hit = true
-hitbox_layer = 16896
-graze_layer = 256
+hitbox_layer = 1
+graze_layer = 2

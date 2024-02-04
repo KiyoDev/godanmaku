@@ -59,8 +59,8 @@ class_name BulletData extends Resource
 @export var duration : int = 0
 @export var hide_on_hit : bool = true
 
-@export_flags_2d_physics var hitbox_layer := 0b0100_0010_0000_0000
-@export_flags_2d_physics var graze_layer := 0b0000_0001_0000_0000
+@export_flags_2d_physics var hitbox_layer := 0b0000_0000_0000_0001
+@export_flags_2d_physics var graze_layer := 0b0000_0000_0000_0010
 
 ## Swap the sprite's texture information with the data's properties
 func set_texture(sprite : Sprite2D) -> void:

@@ -12,6 +12,7 @@ enum {
 
 ## If bullet should chase the player's position
 @export var chase : bool = false
+@export var origin_offset : int = 1
 ## Direction to spawn and aim pattern (in degrees)
 @export var fire_angle : int = 180
 ## Velocity to set for bullets being fired
@@ -94,7 +95,11 @@ func stop() -> void:
 
 
 func angle_to_player() -> float:
-	return get_angle_to(player.global_position if player else PI)
+	return get_angle_to(player.global_position if player else global_position + Vector2.LEFT)
+
+
+func player_position() -> Vector2:
+	return player.global_position if player else global_position
 
 
 func update(delta : float) -> int:

@@ -130,13 +130,21 @@ func before_spawn(data : BulletData, angle : float, v : int, a : int, position :
 	self.angle = angle
 	if directed:
 		# global_position + global_position to look at the direction properly
-		query.transform.looking_at(global_position + global_position)
-		look_at(global_position + global_position)
+		query.transform.looking_at(global_position + Vector2.RIGHT.rotated(angle))
+		look_at(global_position + Vector2.RIGHT.rotated(angle))
+		#query.transform.looking_at(global_position + global_position)
+		#look_at(global_position + global_position)
 
 
 func fire() -> void:
 	show()
 	set_physics_process(true)
+		
+	# view shape debug
+	#var col = CollisionShape2D.new()
+	#add_child(col)
+	#col.shape = query.shape
+	#col.global_transform = global_transform
 
 
 func timeout(bullet : BulletBase) -> void:
@@ -185,7 +193,7 @@ func update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) 
 	if status == 1 and custom_update != _custom_update:
 		custom_update = _custom_update
 	animation_update.call(delta, bullet, bulletin_board) # can be overwritten for custom animation updates
-	_handle_collision(delta)
+	handle_collision.call(delta)
 	
 	if fade and duration > 0 and up_time >= duration * 0.75:
 		self_modulate.a8 -= 15
