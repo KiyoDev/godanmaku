@@ -68,4 +68,6 @@ func _input(event: InputEvent) -> void:
 	elif Input.is_key_pressed(KEY_Q) and just_pressed:
 		lasers[0].fire()
 	elif Input.is_key_pressed(KEY_W) and just_pressed:
-		lasers[1].fire()
+		for p in $moving_target.get_children():
+			if p is DanmakuPattern:
+				p.fire()
