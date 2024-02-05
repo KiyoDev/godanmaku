@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://c41gs2sfa6tvd"]
+[gd_scene load_steps=42 format=3 uid="uid://c41gs2sfa6tvd"]
 
 [ext_resource type="Script" path="res://addons/godanmaku/test/bullet_test.gd" id="1_ap1po"]
 [ext_resource type="Texture2D" uid="uid://clev7jb1fmmjj" path="res://addons/godanmaku/textures/enemy_bullets.png" id="2_fa3y2"]
@@ -14,11 +14,9 @@
 [ext_resource type="Script" path="res://addons/godanmaku/patterns/PatternRepeater.gd" id="14_4m8n4"]
 [ext_resource type="Script" path="res://addons/godanmaku/controls/bullet/Wait.gd" id="15_gtpyu"]
 [ext_resource type="Script" path="res://addons/godanmaku/controls/pattern/AlternateBControls.gd" id="15_naqrq"]
+[ext_resource type="PackedScene" uid="uid://dw8v3p1pxikjw" path="res://addons/godanmaku/test/delay_laser_pattern.tscn" id="16_vjitu"]
 [ext_resource type="Script" path="res://addons/godanmaku/controls/pattern/PatternSpin.gd" id="17_8xwg0"]
-[ext_resource type="Script" path="res://addons/godanmaku/patterns/DelayLaserPattern.gd" id="18_srjgk"]
-[ext_resource type="Texture2D" uid="uid://ddkj88wgs6pnp" path="res://addons/godanmaku/textures/delay_laser.png" id="18_ya57w"]
 [ext_resource type="Script" path="res://addons/godanmaku/test/moving_target.gd" id="19_gg23f"]
-[ext_resource type="Texture2D" uid="uid://boulhs6lt0o52" path="res://icon.svg" id="19_gxe2x"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hdpox"]
 radius = 4.0
@@ -295,33 +293,8 @@ hide_on_hit = true
 hitbox_layer = 1
 graze_layer = 2
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_l1puh"]
-size = Vector2(224, 6)
-
-[sub_resource type="Resource" id="Resource_mxabd"]
-script = ExtResource("3_8t27t")
-texture = ExtResource("18_ya57w")
-hframes = 1
-vframes = 16
-frame = 1
-frame_coords = Vector2i(0, 1)
-animated = false
-start_frame = 0
-end_frame = 0
-ani_rate = 10
-shape = SubResource("RectangleShape2D_l1puh")
-size = Vector2i(1, 1)
-damage = 10
-grazeable = true
-directed = true
-bounces = 0
-duration = 240
-hide_on_hit = false
-hitbox_layer = 1
-graze_layer = 2
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6qcsk"]
-size = Vector2(32, 8)
+size = Vector2(8, 8)
 
 [sub_resource type="Resource" id="Resource_uqup4"]
 script = ExtResource("3_8t27t")
@@ -352,7 +325,7 @@ z = NodePath("RingPattern/Sequence/ZigZag")
 seq_1 = NodePath("RingPattern/Sequence")
 data_1 = SubResource("Resource_42l12")
 rings = [NodePath("RingPattern"), NodePath("SinglePattern"), NodePath("PatternRepeater"), NodePath("SinglePattern2"), NodePath("Arcing"), NodePath("Delay Zig"), NodePath("RingPattern3"), NodePath("Arcing2")]
-lasers = [NodePath("DelayLaserPattern"), NodePath("laser_arc")]
+lasers = [NodePath("DelayLaserPattern")]
 
 [node name="RingPattern" type="Node2D" parent="." node_paths=PackedStringArray("bullet_ctrl")]
 script = ExtResource("12_qys5r")
@@ -394,12 +367,11 @@ duration = 30
 
 [node name="SinglePattern" type="Node2D" parent="."]
 script = ExtResource("12_qys5r")
-stacks = 4
 stack_velocity = 10
-spread = 10
-spread_degrees = 15.0
+spread = 3
+spread_degrees = 30.0
 origin_offset = 32
-velocity = 30
+velocity = 60
 bullet_data = SubResource("Resource_7bmaj")
 
 [node name="SinglePattern2" type="Node2D" parent="." node_paths=PackedStringArray("sub_patterns")]
@@ -549,35 +521,30 @@ repeat_time = 15.0
 script = ExtResource("17_8xwg0")
 angle = 40
 
-[node name="DelayLaserPattern" type="Node2D" parent="."]
-script = ExtResource("18_srjgk")
-warning_time = 40
-angle_type = 1
-velocity = 0
-bullet_data = SubResource("Resource_mxabd")
-max_repeats = 10
-repeat_time = 15.0
+[node name="DelayLaserPattern" parent="." instance=ExtResource("16_vjitu")]
 
 [node name="laser_arc" type="Node2D" parent="." node_paths=PackedStringArray("target", "bullet_ctrl")]
+visible = false
 script = ExtResource("12_qys5r")
 angle_type = 2
 target = NodePath("../moving_target")
-velocity = 60
+velocity = 80
 bullet_data = SubResource("Resource_uqup4")
 bullet_ctrl = NodePath("Arc")
 max_repeats = 256
-repeat_time = 2.0
+repeat_time = 5.0
 
 [node name="Arc" type="Node" parent="laser_arc"]
 script = ExtResource("8_x1ekb")
-angle = 30.0
+angle = 35.0
 
 [node name="Sprite2D" type="Sprite2D" parent="laser_arc"]
-scale = Vector2(0.125, 0.125)
-texture = ExtResource("19_gxe2x")
+z_index = 22
+texture = ExtResource("2_fa3y2")
+region_enabled = true
+region_rect = Rect2(96, 32, 32, 32)
 
 [node name="moving_target" type="Sprite2D" parent="." node_paths=PackedStringArray("pattern")]
 script = ExtResource("19_gg23f")
-origin_offset = 112
 pattern = NodePath("../laser_arc")
 count = 8

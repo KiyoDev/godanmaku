@@ -79,6 +79,8 @@ func _ready() -> void:
 	set_as_top_level(true)
 	camera = get_tree().get_first_node_in_group("camera")
 	screen_extents = get_viewport_rect().size / (2 * camera.zoom)
+	screen_extents.x += 16
+	screen_extents.y += 16
 	bulletin_board = BulletinBoard.new()
 
 

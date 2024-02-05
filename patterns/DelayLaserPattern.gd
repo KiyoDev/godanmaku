@@ -43,9 +43,9 @@ func custom_animation_update(delta : float, laser : BulletBase, bulletin_board :
 		laser.frame = 1
 	elif laser.up_time == warning_time + 40: # Actual laser hit frame
 		laser.frame = 4
-		laser.enable_collision()
 	elif laser.up_time == warning_time + 46:
 		laser.frame = 5
+		laser.enable_collision()
 	elif laser.up_time == warning_time + 52:
 		laser.frame = 6
 		laser.disable_collision()

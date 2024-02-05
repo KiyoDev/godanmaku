@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://dw8v3p1pxikjw"]
+
+[ext_resource type="Script" path="res://addons/godanmaku/patterns/DelayLaserPattern.gd" id="1_4ch00"]
+[ext_resource type="Script" path="res://addons/godanmaku/bullets/BulletData.gd" id="2_q6bk6"]
+[ext_resource type="Texture2D" uid="uid://ddkj88wgs6pnp" path="res://addons/godanmaku/textures/delay_laser.png" id="3_cquii"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l1puh"]
+size = Vector2(224, 6)
+
+[sub_resource type="Resource" id="Resource_mxabd"]
+script = ExtResource("2_q6bk6")
+texture = ExtResource("3_cquii")
+hframes = 1
+vframes = 16
+frame = 1
+frame_coords = Vector2i(0, 1)
+animated = false
+start_frame = 0
+end_frame = 0
+ani_rate = 10
+shape = SubResource("RectangleShape2D_l1puh")
+size = Vector2i(1, 1)
+damage = 10
+grazeable = true
+directed = true
+bounces = 0
+duration = 240
+hide_on_hit = false
+hitbox_layer = 1
+graze_layer = 2
+
+[node name="DelayLaserPattern" type="Node2D"]
+script = ExtResource("1_4ch00")
+warning_time = 40
+angle_type = 1
+velocity = 0
+bullet_data = SubResource("Resource_mxabd")
+max_repeats = 10
+repeat_time = 15.0

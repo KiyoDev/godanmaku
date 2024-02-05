@@ -1,6 +1,7 @@
 extends Sprite2D
 
-@export var origin_offset := 6400
+@export var origin_offset := 112
+#@export var target_offset := 32
 @export var velocity := 120
 @export var angle := 90
 
@@ -21,11 +22,13 @@ func _ready() -> void:
 	for p in range(0, child_count):
 		# calculate fire angle, taking spread, and angle offset modifiers
 		var child : Node2D = get_child(p)
+		child.show()
 		var angle = child.global_position.angle_to_point(global_position) + (radians * p)
 		var fire_origin = global_position + (pattern_origin.from_angle(angle) * origin_offset)
 		
-		print("[%s]=%s" % [p, fire_origin])
+		#print("[%s]=%s" % [p, fire_origin])
 		child.global_position = fire_origin
+		#pattern.pattern_ctrl = P
 
 
 func _physics_process(delta: float) -> void:
@@ -39,7 +42,7 @@ func _physics_process(delta: float) -> void:
 		#angle_offset += (angle * PI / 180)  * delta + p.global_position.angle_to_point(global_position) + (radians * p.get_index()) * delta
 		var virtual_position = Vector2(cos(angle_offset + (radians * i)), sin(angle_offset + (radians * i))) * origin_offset + global_position
 		#var virtual_position = Vector2((global_position.x + pos.x) + (velocity * delta) * cos(angle_offset), (global_position.y + pos.y) + (velocity * delta) * sin(angle_offset))
-		print("%s - virtual_position=%s" % [t, Vector2(cos(angle_offset), sin(angle_offset)) * origin_offset])
+		#print("%s - virtual_position=%s" % [t, Vector2(cos(angle_offset), sin(angle_offset)) * origin_offset])
 		p.global_position = virtual_position
 	
 	t += 1
