@@ -42,6 +42,6 @@ func _handle_pattern(delta : float) -> int:
 				#print(fire_origin)
 				#print(angle_to_target(fire_origin, target))
 				
-				bullet = BulletPool.get_next_bullet(get_bullet_data.call(), angle_to_target(fire_origin, target) if angle_type == Angle.TARGET else angle, v, acceleration, fire_origin, bullet_ctrl, instance_key) as BulletBase
+				bullet = BulletPool.get_next_bullet(get_bullet_data.call(), angle_to_target(fire_origin, target) if angle_type == Angle.TARGET else angle, v, acceleration, fire_origin, bullet_ctrl, self) as BulletBase
 				bullet.fire()
 	return SUCCESS

@@ -1,14 +1,10 @@
-@icon("res://addons/godanmaku/icons/arc.svg")
-class_name Arc extends ControlNode
+class_name TravelFrames extends ControlNode
 
+@onready var instance_key = "travel_distance_%s" % self.get_instance_id()
 
-@onready var instance_key = "arc_%s" % self.get_instance_id()
+## Frames of movement
+@export var frames : int = 60
 
-
-## Bullet angle modifier in degrees
-@export var angle : float = 0
-## How many frames should zig zag for
-@export var duration : int = 0
 
 
 func _before_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
@@ -22,10 +18,12 @@ func _set_custom_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> 
 
 
 func _custom_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> int:
-	if duration > 0 and bulletin_board.get_value(instance_key) >= duration:
+	# resume
+	if bulletin_board.get_value(instance_key) >= frames:
+		#bullet.resume()
 		return SUCCESS
 	
-	bullet.angle += (angle * PI / 180)  * delta
+	#bullet.stop()
 	
 	bulletin_board.set_value(instance_key, bulletin_board.get_value(instance_key) + 1)
 	return RUNNING

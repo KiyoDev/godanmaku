@@ -1,14 +1,11 @@
-@icon("res://addons/godanmaku/icons/arc.svg")
-class_name Arc extends ControlNode
+class_name Delay extends ControlNode
 
 
-@onready var instance_key = "arc_%s" % self.get_instance_id()
+@onready var instance_key = "delay_%s" % self.get_instance_id()
 
 
-## Bullet angle modifier in degrees
-@export var angle : float = 0
-## How many frames should zig zag for
-@export var duration : int = 0
+## How many frames should delay for
+@export var duration : int = 60
 
 
 func _before_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
@@ -22,10 +19,10 @@ func _set_custom_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> 
 
 
 func _custom_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> int:
-	if duration > 0 and bulletin_board.get_value(instance_key) >= duration:
+	if bulletin_board.get_value(instance_key) >= duration:
 		return SUCCESS
 	
-	bullet.angle += (angle * PI / 180)  * delta
+	#bullet.position_offset = Vector2(cos(bullet.angle), sin(bullet.angle)).orthogonal() * sin(bulletin_board.get_value(instance_key) * delta * frequency) * amplitude
 	
 	bulletin_board.set_value(instance_key, bulletin_board.get_value(instance_key) + 1)
 	return RUNNING

@@ -18,19 +18,19 @@ func _exit_tree() -> void:
 	kill_bullets()
 
 
-func get_next_bullet(data : BulletData, angle : float, v : int, a : int, position : Vector2, bullet_ctrl : ControlNode, instance_key : String = "") -> BulletBase:
+func get_next_bullet(data : BulletData, angle : float, v : int, a : int, position : Vector2, bullet_ctrl : ControlNode, pattern : DanmakuPattern = null) -> BulletBase:
 	var bullet : BulletBase
 	if get_child_count() >= MAX_BULLETS:
 		bullet_index = (bullet_index + 1) % get_child_count()
 		bullet = get_child(bullet_index) as BulletBase
-		bullet.before_spawn(instance_key, data, angle, a, v, position)
+		bullet.before_spawn(pattern, data, angle, a, v, position)
 		#active_enemy_bullets.append(bullet)
 	else:
 		# if not enough bullets, add more
 		while bullet_index >= get_child_count():
 			var b = BulletBase.new()
 			add_child(b)
-			b.before_spawn(instance_key, data, angle, a, v, position)
+			b.before_spawn(pattern, data, angle, a, v, position)
 		bullet = get_child(bullet_index)
 		bullet_index += 1
 		#active_enemy_bullets.append(b)

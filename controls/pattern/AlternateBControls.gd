@@ -6,7 +6,7 @@ class_name AlternateBControls extends PatternControl
 
 
 ## How many repeats to alternate reverse
-@export var repeats : int = 30
+@export var repeats : int = 1
 ## How many frames should alternate
 @export var duration : int = 0
 

@@ -31,13 +31,13 @@ func _input(event: InputEvent) -> void:
 	# debugging
 	var just_pressed = event.is_pressed() and not event.is_echo()
 	if Input.is_key_pressed(KEY_1) and just_pressed:
-		var b = BulletPool.get_next_bullet(data_1, PI, 60, 0, Vector2.ZERO, z, "test_key")
+		var b = BulletPool.get_next_bullet(data_1, PI, 60, 0, Vector2.ZERO, z)
 		
 		b.fire()
 	elif Input.is_key_pressed(KEY_2) and just_pressed:
 		pass
 	elif Input.is_key_pressed(KEY_3) and just_pressed:
-		var b = BulletPool.get_next_bullet(data_1, PI, 60, 0, Vector2.ZERO, seq_1, "test_key")
+		var b = BulletPool.get_next_bullet(data_1, PI, 60, 0, Vector2.ZERO, seq_1)
 		
 		b.fire()
 	#elif Input.is_key_pressed(KEY_4) and just_pressed:
@@ -65,6 +65,8 @@ func _input(event: InputEvent) -> void:
 		rings[6].fire()
 	elif Input.is_key_pressed(KEY_MINUS) and just_pressed:
 		rings[7].fire()
+	elif Input.is_key_pressed(KEY_EQUAL) and just_pressed:
+		rings[8].fire()
 	elif Input.is_key_pressed(KEY_Q) and just_pressed:
 		lasers[0].fire()
 	elif Input.is_key_pressed(KEY_W) and just_pressed:

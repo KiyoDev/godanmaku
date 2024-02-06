@@ -62,6 +62,7 @@ var total_time : float = 0.0
 var repeat_count : int = 0
 var can_update : bool = false
 var angle_offset : float = 0
+var call_count : int = 0
 
 var player : Player
 
@@ -131,14 +132,16 @@ func _base_update(delta : float) -> int:
 	if !can_update: return FINISHED
 	if max_repeats == 0:
 		_handle_pattern(delta)
-		bulletin_board.set_value(calls_key, bulletin_board.get_value(calls_key) + 1)
+		#bulletin_board.set_value(calls_key, bulletin_board.get_value(calls_key) + 1)
+		call_count += 1
 		stop()
 		return SUCCESS
 	else:
 		if repeat_count == 0 and total_time == 0:
 			_handle_pattern(delta)
-			bulletin_board.set_value(calls_key, bulletin_board.get_value(calls_key) + 1)
+			#bulletin_board.set_value(calls_key, bulletin_board.get_value(calls_key) + 1)
 			custom_repeat.call(delta, self, bulletin_board)
+			call_count += 1
 		elif max_repeats > 0 and max_repeats <= repeat_count: 
 			stop()
 			return SUCCESS
@@ -148,10 +151,11 @@ func _base_update(delta : float) -> int:
 		else:
 			total_time = 0
 			repeat_count += 1
-			bulletin_board.set_value(calls_key, bulletin_board.get_value(calls_key) + 1)
+			#bulletin_board.set_value(calls_key, bulletin_board.get_value(calls_key) + 1)
 			_handle_pattern(delta)
 			# Fire sub patterns
 			custom_repeat.call(delta, self, bulletin_board)
+			call_count += 1
 	return RUNNING
 
 

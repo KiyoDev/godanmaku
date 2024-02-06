@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://c41gs2sfa6tvd"]
+[gd_scene load_steps=55 format=3 uid="uid://c41gs2sfa6tvd"]
 
 [ext_resource type="Script" path="res://addons/godanmaku/test/bullet_test.gd" id="1_ap1po"]
 [ext_resource type="Texture2D" uid="uid://clev7jb1fmmjj" path="res://addons/godanmaku/textures/enemy_bullets.png" id="2_fa3y2"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://dw8v3p1pxikjw" path="res://addons/godanmaku/test/delay_laser_pattern.tscn" id="16_vjitu"]
 [ext_resource type="Script" path="res://addons/godanmaku/controls/pattern/PatternSpin.gd" id="17_8xwg0"]
 [ext_resource type="Script" path="res://addons/godanmaku/controls/bullet/TravelFrames.gd" id="18_07jc4"]
+[ext_resource type="Script" path="res://addons/godanmaku/controls/bullet/AlternateOnRepeat.gd" id="18_a1g8e"]
 [ext_resource type="Script" path="res://addons/godanmaku/test/moving_target.gd" id="19_gg23f"]
 [ext_resource type="Script" path="res://addons/godanmaku/controls/bullet/ChangeAngleRelative.gd" id="19_xk0pp"]
 [ext_resource type="Script" path="res://addons/godanmaku/controls/bullet/Delay.gd" id="20_00kps"]
@@ -655,6 +656,7 @@ repeat_time = 15.0
 
 [node name="AlternateBControls" type="Node" parent="Arcing"]
 script = ExtResource("15_naqrq")
+repeats = 1
 
 [node name="Arc" type="Node" parent="Arcing/AlternateBControls"]
 script = ExtResource("8_x1ekb")
@@ -685,6 +687,7 @@ repeat_time = 15.0
 
 [node name="AlternateBControls" type="Node" parent="Arcing2"]
 script = ExtResource("15_naqrq")
+repeats = 1
 
 [node name="Arc" type="Node" parent="Arcing2/AlternateBControls"]
 script = ExtResource("8_x1ekb")
@@ -740,7 +743,6 @@ repeat_time = 15.0
 [node name="PatternSpin" type="Node" parent="ring_spinning_directed"]
 script = ExtResource("17_8xwg0")
 angle = 40
-repeats = null
 
 [node name="DelayLaserPattern" parent="." instance=ExtResource("16_vjitu")]
 visible = false
@@ -799,21 +801,20 @@ velocity = null
 acceleration = null
 bullet_data = SubResource("Resource_hndrd")
 pattern_ctrl = NodePath("PatternSpin")
-bullet_ctrl = NodePath("")
+bullet_ctrl = NodePath("AlternateOnRepeat")
 max_repeats = 32
 repeat_time = 3.0
 
-[node name="AlternateBControls" type="Node" parent="ultra_ring"]
-script = ExtResource("15_naqrq")
+[node name="AlternateOnRepeat" type="Node" parent="ultra_ring"]
+script = ExtResource("18_a1g8e")
 
-[node name="Sequence" type="Node" parent="ultra_ring/AlternateBControls"]
+[node name="Sequence" type="Node" parent="ultra_ring/AlternateOnRepeat"]
 script = ExtResource("5_p75xh")
 
-[node name="TravelFrames" type="Node" parent="ultra_ring/AlternateBControls/Sequence"]
+[node name="TravelFrames" type="Node" parent="ultra_ring/AlternateOnRepeat/Sequence"]
 script = ExtResource("18_07jc4")
-frames = 40
 
-[node name="ChangeAngleRelative" type="Node" parent="ultra_ring/AlternateBControls/Sequence"]
+[node name="ChangeAngleRelative" type="Node" parent="ultra_ring/AlternateOnRepeat/Sequence"]
 script = ExtResource("19_xk0pp")
 angle = 30
 velocity = 100
@@ -821,26 +822,25 @@ acceleration = -5
 duration = 120
 alt_bullet_data = SubResource("Resource_7ftg6")
 
-[node name="Delay" type="Node" parent="ultra_ring/AlternateBControls/Sequence"]
+[node name="Delay" type="Node" parent="ultra_ring/AlternateOnRepeat/Sequence"]
 script = ExtResource("20_00kps")
 duration = 120
 alt_bullet_data = SubResource("Resource_ftjqd")
 
-[node name="ChangeAngleRelative2" type="Node" parent="ultra_ring/AlternateBControls/Sequence"]
+[node name="ChangeAngleRelative2" type="Node" parent="ultra_ring/AlternateOnRepeat/Sequence"]
 script = ExtResource("19_xk0pp")
 angle = -60
 velocity = 50
 duration = -1
 alt_bullet_data = SubResource("Resource_jlkug")
 
-[node name="Sequence2" type="Node" parent="ultra_ring/AlternateBControls"]
+[node name="Sequence2" type="Node" parent="ultra_ring/AlternateOnRepeat"]
 script = ExtResource("5_p75xh")
 
-[node name="TravelFrames" type="Node" parent="ultra_ring/AlternateBControls/Sequence2"]
+[node name="TravelFrames" type="Node" parent="ultra_ring/AlternateOnRepeat/Sequence2"]
 script = ExtResource("18_07jc4")
-frames = 40
 
-[node name="ChangeAngleRelative" type="Node" parent="ultra_ring/AlternateBControls/Sequence2"]
+[node name="ChangeAngleRelative" type="Node" parent="ultra_ring/AlternateOnRepeat/Sequence2"]
 script = ExtResource("19_xk0pp")
 angle = 30
 velocity = 100
@@ -848,20 +848,18 @@ acceleration = -5
 duration = 120
 alt_bullet_data = SubResource("Resource_mslgc")
 
-[node name="Delay" type="Node" parent="ultra_ring/AlternateBControls/Sequence2"]
+[node name="Delay" type="Node" parent="ultra_ring/AlternateOnRepeat/Sequence2"]
 script = ExtResource("20_00kps")
 duration = 120
 alt_bullet_data = SubResource("Resource_s010y")
 
-[node name="ChangeAngleRelative2" type="Node" parent="ultra_ring/AlternateBControls/Sequence2"]
+[node name="ChangeAngleRelative2" type="Node" parent="ultra_ring/AlternateOnRepeat/Sequence2"]
 script = ExtResource("19_xk0pp")
 angle = 60
 velocity = 50
 duration = -1
 alt_bullet_data = SubResource("Resource_28ja3")
 
-[node name="PatternSpin" type="Node" parent="ultra_ring" node_paths=PackedStringArray("sub_control")]
+[node name="PatternSpin" type="Node" parent="ultra_ring"]
 script = ExtResource("17_8xwg0")
 angle = 5
-repeats = null
-sub_control = NodePath("../AlternateBControls")

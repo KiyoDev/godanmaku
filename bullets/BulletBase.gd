@@ -9,8 +9,7 @@ signal expired
 ## Dictionary wrapper that can be used by updates for additional parameters and properties
 var bulletin_board : BulletinBoard
 ## Reference to a pattern's BulletinBoard to read any shared data from the pattern firing this bullet
-var pattern_bulletin_board : BulletinBoard
-var pattern_key : String
+var pattern : DanmakuPattern
 
 ## Camera and bounds stuff
 var camera : Camera2D
@@ -131,8 +130,9 @@ func reset(position : Vector2) -> void:
 	position_offset = Vector2.ZERO
 
 
-func before_spawn(key : String, data : BulletData, angle : float, v : int, a : int, position : Vector2) -> void:
-	pattern_key = key
+func before_spawn(_pattern : DanmakuPattern, data : BulletData, angle : float, v : int, a : int, position : Vector2) -> void:
+	if _pattern:
+		pattern = _pattern
 	reset(position)
 	_swap(data, a, v)
 	self.angle = angle
@@ -146,7 +146,7 @@ func before_spawn(key : String, data : BulletData, angle : float, v : int, a : i
 func fire() -> void:
 	show()
 	set_physics_process(true)
-		
+	
 	# view shape debug
 	#var col = CollisionShape2D.new()
 	#add_child(col)

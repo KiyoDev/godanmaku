@@ -12,6 +12,9 @@ enum {
 }
 
 
+@export var sub_control : PatternControl
+
+
 func _before_set(pattern : DanmakuPattern, bulletin_board : BulletinBoard) -> void:
 	pass
 
