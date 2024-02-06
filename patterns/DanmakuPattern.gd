@@ -41,7 +41,7 @@ enum Angle {
 
 @export_group("Repeat Settings")
 ## How many times the pattern repeats. 0 means no repeats, -1 means infinite
-@export_range(-1, 1000) var max_repeats : int = 0
+@export_range(-1, 10000) var max_repeats : int = 0
 ## How many seconds until the pattern repeats
 @export var repeat_time : float = 1.0
 
@@ -137,7 +137,7 @@ func _base_update(delta : float) -> int:
 		stop()
 		return SUCCESS
 	else:
-		if repeat_count == 0 and total_time == 0:
+		if repeat_count >= -1 and total_time == 0:
 			_handle_pattern(delta)
 			#bulletin_board.set_value(calls_key, bulletin_board.get_value(calls_key) + 1)
 			custom_repeat.call(delta, self, bulletin_board)

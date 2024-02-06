@@ -1,18 +1,14 @@
-class_name PatternSpin extends PatternControl
+class_name OriginChase extends PatternControl
 
 
-@onready var repeat_key = "pattern_spin_repeats_%s" % self.get_instance_id()
+@onready var repeat_key = "origin_chase_repeats_%s" % self.get_instance_id()
 
-## Angle in degrees
-@export var angle : float = 0
 ## How many repeats to spin the pattern. 0 = indefinitely
 @export var repeats : int = 0
 
 
 func _before_set(pattern : DanmakuPattern, bulletin_board : BulletinBoard) -> void:
 	bulletin_board.set_value(repeat_key, 0)
-	if sub_control:
-		sub_control._before_set(pattern, bulletin_board)
 
 
 func _set_custom_update(pattern : DanmakuPattern, bulletin_board : BulletinBoard) -> void:
@@ -29,10 +25,8 @@ func _custom_repeat(delta : float, pattern : DanmakuPattern, bulletin_board : Bu
 	if repeats > 0 and bulletin_board.get_value(repeat_key) >= repeats:
 		return SUCCESS
 	
-	pattern.angle_offset += (angle * PI / 180)
+	pattern.origin_offset = pattern.global_position.distance_to(pattern.player_position())
+	print("d=%s" % [pattern.global_position.distance_to(pattern.player_position())])
 	
 	bulletin_board.set_value(repeat_key, bulletin_board.get_value(repeat_key) + 1)
-	
-	if sub_control:
-		sub_control._custom_repeat(delta, pattern, bulletin_board)
 	return RUNNING

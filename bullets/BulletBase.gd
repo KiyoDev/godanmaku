@@ -134,8 +134,8 @@ func before_spawn(_pattern : DanmakuPattern, data : BulletData, angle : float, v
 	if _pattern:
 		pattern = _pattern
 	reset(position)
-	_swap(data, a, v)
 	self.angle = angle
+	_swap(data, a, v)
 	if directed:
 		# global_position + angle to look at the direction properly
 		look_at(global_position + Vector2.RIGHT.rotated(angle))

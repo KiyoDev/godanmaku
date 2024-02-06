@@ -7,6 +7,10 @@ class_name Arc extends ControlNode
 
 ## Bullet angle modifier in degrees
 @export var angle : float = 0
+## New velocity
+@export var velocity : int = 0
+## New acceleration
+@export var acceleration : int = 0
 ## How many frames should zig zag for
 @export var duration : int = 0
 
@@ -14,6 +18,9 @@ class_name Arc extends ControlNode
 func _before_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
 	super._before_update(bullet, bulletin_board)
 	bulletin_board.set_value(instance_key, 0)
+	if velocity != 0:
+		bullet.velocity = velocity
+	bullet.acceleration = acceleration
 
 
 func _set_custom_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void:

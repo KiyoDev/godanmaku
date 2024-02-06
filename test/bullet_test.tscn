@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://c41gs2sfa6tvd"]
+[gd_scene load_steps=62 format=3 uid="uid://c41gs2sfa6tvd"]
 
 [ext_resource type="Script" path="res://addons/godanmaku/test/bullet_test.gd" id="1_ap1po"]
 [ext_resource type="Texture2D" uid="uid://clev7jb1fmmjj" path="res://addons/godanmaku/textures/enemy_bullets.png" id="2_fa3y2"]
@@ -20,6 +20,7 @@
 [ext_resource type="Script" path="res://addons/godanmaku/test/moving_target.gd" id="19_gg23f"]
 [ext_resource type="Script" path="res://addons/godanmaku/controls/bullet/ChangeAngleRelative.gd" id="19_xk0pp"]
 [ext_resource type="Script" path="res://addons/godanmaku/controls/bullet/Delay.gd" id="20_00kps"]
+[ext_resource type="Script" path="res://addons/godanmaku/controls/pattern/OriginChase.gd" id="21_cwha1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hdpox"]
 radius = 4.0
@@ -464,6 +465,72 @@ script = ExtResource("3_8t27t")
 texture = ExtResource("2_fa3y2")
 hframes = 8
 vframes = 8
+frame = 16
+frame_coords = Vector2i(0, 2)
+animated = false
+start_frame = 0
+end_frame = 0
+ani_rate = 10
+shape = SubResource("ConvexPolygonShape2D_reqlt")
+size = Vector2i(1, 1)
+damage = 10
+grazeable = true
+directed = true
+bounces = 0
+duration = 0
+hide_on_hit = true
+hitbox_layer = 1
+graze_layer = 2
+
+[sub_resource type="Resource" id="Resource_xkk6g"]
+script = ExtResource("3_8t27t")
+texture = ExtResource("2_fa3y2")
+hframes = 8
+vframes = 8
+frame = 1
+frame_coords = Vector2i(1, 0)
+animated = false
+start_frame = 0
+end_frame = 0
+ani_rate = 10
+shape = SubResource("CircleShape2D_spjcb")
+size = Vector2i(1, 1)
+damage = 10
+grazeable = true
+directed = false
+bounces = 0
+duration = 0
+hide_on_hit = true
+hitbox_layer = 1
+graze_layer = 2
+
+[sub_resource type="Resource" id="Resource_uenu7"]
+script = ExtResource("3_8t27t")
+texture = ExtResource("2_fa3y2")
+hframes = 16
+vframes = 16
+frame = 0
+frame_coords = Vector2i(0, 0)
+animated = false
+start_frame = 0
+end_frame = 0
+ani_rate = 10
+shape = SubResource("CircleShape2D_spjcb")
+size = Vector2i(1, 1)
+damage = 10
+grazeable = true
+directed = false
+bounces = 0
+duration = 0
+hide_on_hit = true
+hitbox_layer = 1
+graze_layer = 2
+
+[sub_resource type="Resource" id="Resource_5ic52"]
+script = ExtResource("3_8t27t")
+texture = ExtResource("2_fa3y2")
+hframes = 8
+vframes = 8
 frame = 20
 frame_coords = Vector2i(4, 2)
 animated = false
@@ -481,27 +548,90 @@ hide_on_hit = true
 hitbox_layer = 1
 graze_layer = 2
 
+[sub_resource type="Resource" id="Resource_cx2un"]
+script = ExtResource("3_8t27t")
+texture = ExtResource("2_fa3y2")
+hframes = 8
+vframes = 8
+frame = 20
+frame_coords = Vector2i(4, 2)
+animated = false
+start_frame = 0
+end_frame = 0
+ani_rate = 10
+shape = SubResource("ConvexPolygonShape2D_reqlt")
+size = Vector2i(1, 1)
+damage = 10
+grazeable = true
+directed = true
+bounces = 0
+duration = 0
+hide_on_hit = true
+hitbox_layer = 1
+graze_layer = 2
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_17vcv"]
+radius = 4.0
+
+[sub_resource type="Resource" id="Resource_tkhpe"]
+script = ExtResource("3_8t27t")
+texture = ExtResource("2_fa3y2")
+hframes = 16
+vframes = 16
+frame = 0
+frame_coords = Vector2i(0, 0)
+animated = false
+start_frame = 0
+end_frame = 0
+ani_rate = 10
+shape = SubResource("CircleShape2D_17vcv")
+size = Vector2i(1, 1)
+damage = 10
+grazeable = true
+directed = false
+bounces = 0
+duration = 200
+hide_on_hit = true
+hitbox_layer = 1
+graze_layer = 2
+
+[sub_resource type="Resource" id="Resource_ssi7h"]
+script = ExtResource("3_8t27t")
+texture = ExtResource("2_fa3y2")
+hframes = 16
+vframes = 16
+frame = 28
+frame_coords = Vector2i(12, 1)
+animated = false
+start_frame = 0
+end_frame = 0
+ani_rate = 10
+shape = SubResource("CircleShape2D_17vcv")
+size = Vector2i(1, 1)
+damage = 10
+grazeable = true
+directed = false
+bounces = 0
+duration = 0
+hide_on_hit = true
+hitbox_layer = 1
+graze_layer = 2
+
 [node name="Camera2D" type="Camera2D" node_paths=PackedStringArray("z", "seq_1", "rings", "lasers") groups=["camera"]]
 script = ExtResource("1_ap1po")
 t_1 = ExtResource("2_fa3y2")
 z = NodePath("RingPattern/Sequence/ZigZag")
 seq_1 = NodePath("RingPattern/Sequence")
 data_1 = SubResource("Resource_42l12")
-rings = [NodePath("RingPattern"), NodePath("SinglePattern"), NodePath("SinglePattern2"), NodePath("PatternRepeater"), NodePath("Arcing"), NodePath("Arcing2"), NodePath("Delay Zig"), NodePath("ring_spinning_directed"), NodePath("ultra_ring")]
+rings = [NodePath("RingPattern"), NodePath("SinglePattern"), NodePath("SinglePattern2"), NodePath("PatternRepeater"), NodePath("Arcing"), NodePath("Arcing2"), NodePath("Delay Zig"), NodePath("ring_spinning_directed"), NodePath("ultra_ring"), NodePath("static_bullet_chase")]
 lasers = [NodePath("DelayLaserPattern")]
 
 [node name="RingPattern" type="Node2D" parent="." node_paths=PackedStringArray("bullet_ctrl")]
 script = ExtResource("12_qys5r")
 spawn_count = 4
-stacks = null
-stack_velocity = null
 spread = 3
 spread_degrees = 20.0
-angle_type = null
-origin_offset = null
-fire_angle = null
 velocity = 60
-acceleration = null
 bullet_data = ExtResource("8_dl0jv")
 bullet_ctrl = NodePath("Sequence")
 max_repeats = 32
@@ -522,7 +652,6 @@ duration = 120
 
 [node name="Arc" type="Node" parent="RingPattern/Sequence"]
 script = ExtResource("8_x1ekb")
-angle = 10.0
 duration = 240
 
 [node name="ZigZag2" type="Node" parent="RingPattern/Sequence"]
@@ -536,32 +665,21 @@ duration = 30
 
 [node name="SinglePattern" type="Node2D" parent="."]
 script = ExtResource("12_qys5r")
-spawn_count = null
-stacks = null
 stack_velocity = 10
 spread = 3
 spread_degrees = 30.0
-angle_type = null
 origin_offset = 32
-fire_angle = null
 velocity = 60
-acceleration = null
 bullet_data = SubResource("Resource_7bmaj")
-max_repeats = null
-repeat_time = null
 
 [node name="SinglePattern2" type="Node2D" parent="." node_paths=PackedStringArray("sub_patterns")]
 script = ExtResource("12_qys5r")
-spawn_count = null
 stacks = 4
 stack_velocity = 10
 spread = 6
 spread_degrees = 15.0
 angle_type = 1
-origin_offset = null
-fire_angle = null
 velocity = 50
-acceleration = null
 bullet_data = SubResource("Resource_xp1s6")
 max_repeats = 3
 repeat_time = 60.0
@@ -569,16 +687,12 @@ sub_patterns = [NodePath("SinglePattern2")]
 
 [node name="SinglePattern2" type="Node2D" parent="SinglePattern2"]
 script = ExtResource("12_qys5r")
-spawn_count = null
 stacks = 4
 stack_velocity = 15
 spread = 5
 spread_degrees = 15.0
 angle_type = 1
-origin_offset = null
-fire_angle = null
 velocity = 30
-acceleration = null
 bullet_data = SubResource("Resource_rjjws")
 max_repeats = 3
 repeat_time = 60.0
@@ -591,15 +705,9 @@ repeat_time = 120.0
 [node name="RingPattern" type="Node2D" parent="PatternRepeater" node_paths=PackedStringArray("bullet_ctrl")]
 script = ExtResource("12_qys5r")
 spawn_count = 4
-stacks = null
-stack_velocity = null
 spread = 3
 spread_degrees = 20.0
-angle_type = null
-origin_offset = null
-fire_angle = null
 velocity = 60
-acceleration = null
 bullet_data = ExtResource("8_dl0jv")
 bullet_ctrl = NodePath("Sequence")
 max_repeats = 32
@@ -624,7 +732,6 @@ duration = 120
 
 [node name="Arc" type="Node" parent="PatternRepeater/RingPattern/Sequence"]
 script = ExtResource("8_x1ekb")
-angle = 10.0
 duration = 240
 
 [node name="ZigZag2" type="Node" parent="PatternRepeater/RingPattern/Sequence"]
@@ -639,15 +746,6 @@ duration = 30
 [node name="Arcing" type="Node2D" parent="." node_paths=PackedStringArray("pattern_ctrl")]
 script = ExtResource("12_qys5r")
 spawn_count = 16
-stacks = null
-stack_velocity = null
-spread = null
-spread_degrees = null
-angle_type = null
-origin_offset = null
-fire_angle = null
-velocity = null
-acceleration = null
 bullet_data = SubResource("Resource_uuwct")
 pattern_ctrl = NodePath("AlternateBControls")
 max_repeats = 16
@@ -658,26 +756,15 @@ script = ExtResource("15_naqrq")
 
 [node name="Arc" type="Node" parent="Arcing/AlternateBControls"]
 script = ExtResource("8_x1ekb")
-angle = 20.0
 alt_bullet_data = SubResource("Resource_hi6wo")
 
 [node name="-Arc" type="Node" parent="Arcing/AlternateBControls"]
 script = ExtResource("8_x1ekb")
-angle = -20.0
 alt_bullet_data = SubResource("Resource_d7148")
 
 [node name="Arcing2" type="Node2D" parent="." node_paths=PackedStringArray("pattern_ctrl")]
 script = ExtResource("12_qys5r")
 spawn_count = 16
-stacks = null
-stack_velocity = null
-spread = null
-spread_degrees = null
-angle_type = null
-origin_offset = null
-fire_angle = null
-velocity = null
-acceleration = null
 bullet_data = SubResource("Resource_uuwct")
 pattern_ctrl = NodePath("AlternateBControls")
 max_repeats = 16
@@ -688,24 +775,15 @@ script = ExtResource("15_naqrq")
 
 [node name="Arc" type="Node" parent="Arcing2/AlternateBControls"]
 script = ExtResource("8_x1ekb")
-angle = 20.0
 alt_bullet_data = SubResource("Resource_8miuh")
 
 [node name="-Arc" type="Node" parent="Arcing2/AlternateBControls"]
 script = ExtResource("8_x1ekb")
-angle = -20.0
 alt_bullet_data = SubResource("Resource_2pcmu")
 
 [node name="Delay Zig" type="Node2D" parent="." node_paths=PackedStringArray("bullet_ctrl")]
 script = ExtResource("12_qys5r")
 spawn_count = 8
-stacks = null
-stack_velocity = null
-spread = null
-spread_degrees = null
-angle_type = null
-origin_offset = null
-fire_angle = null
 velocity = 200
 acceleration = -6
 bullet_data = SubResource("Resource_glv80")
@@ -723,15 +801,8 @@ velocity = 200
 [node name="ring_spinning_directed" type="Node2D" parent="." node_paths=PackedStringArray("pattern_ctrl")]
 script = ExtResource("12_qys5r")
 spawn_count = 16
-stacks = null
-stack_velocity = null
-spread = null
-spread_degrees = null
-angle_type = null
 origin_offset = 32
-fire_angle = null
 velocity = 50
-acceleration = null
 bullet_data = SubResource("Resource_yb80b")
 pattern_ctrl = NodePath("PatternSpin")
 max_repeats = 16
@@ -739,31 +810,17 @@ repeat_time = 15.0
 
 [node name="PatternSpin" type="Node" parent="ring_spinning_directed"]
 script = ExtResource("17_8xwg0")
-angle = 40
-repeats = null
+angle = 20.0
 
 [node name="DelayLaserPattern" parent="." instance=ExtResource("16_vjitu")]
 visible = false
-spawn_count = null
-variable_angle = null
-origin_offset = null
-fire_angle = null
-acceleration = null
 
 [node name="laser_arc" type="Node2D" parent="." node_paths=PackedStringArray("target", "bullet_ctrl")]
 visible = false
 script = ExtResource("12_qys5r")
-spawn_count = null
-stacks = null
-stack_velocity = null
-spread = null
-spread_degrees = null
 angle_type = 2
 target = NodePath("../moving_target")
-origin_offset = null
-fire_angle = null
 velocity = 80
-acceleration = null
 bullet_data = SubResource("Resource_uqup4")
 bullet_ctrl = NodePath("Arc")
 max_repeats = 256
@@ -771,7 +828,6 @@ repeat_time = 5.0
 
 [node name="Arc" type="Node" parent="laser_arc"]
 script = ExtResource("8_x1ekb")
-angle = 35.0
 
 [node name="Sprite2D" type="Sprite2D" parent="laser_arc"]
 z_index = 22
@@ -785,22 +841,14 @@ script = ExtResource("19_gg23f")
 pattern = NodePath("../laser_arc")
 count = 8
 
-[node name="ultra_ring" type="Node2D" parent="." node_paths=PackedStringArray("pattern_ctrl", "bullet_ctrl")]
+[node name="ultra_ring" type="Node2D" parent="." node_paths=PackedStringArray("pattern_ctrl")]
 script = ExtResource("12_qys5r")
-spawn_count = 5
-stacks = null
-stack_velocity = null
-spread = null
-spread_degrees = null
-angle_type = null
-origin_offset = null
-fire_angle = null
-velocity = null
-acceleration = null
+spawn_count = 7
+velocity = 140
+acceleration = -2
 bullet_data = SubResource("Resource_hndrd")
 pattern_ctrl = NodePath("PatternSpin")
-bullet_ctrl = NodePath("")
-max_repeats = 32
+max_repeats = 64
 repeat_time = 3.0
 
 [node name="AlternateBControls" type="Node" parent="ultra_ring"]
@@ -813,11 +861,14 @@ script = ExtResource("5_p75xh")
 script = ExtResource("18_07jc4")
 frames = 40
 
+[node name="PauseMovement" type="Node" parent="ultra_ring/AlternateBControls/Sequence"]
+script = ExtResource("12_b61t1")
+duration = 20
+
 [node name="ChangeAngleRelative" type="Node" parent="ultra_ring/AlternateBControls/Sequence"]
 script = ExtResource("19_xk0pp")
-angle = 30
-velocity = 100
-acceleration = -5
+velocity = 90
+acceleration = -2
 duration = 120
 alt_bullet_data = SubResource("Resource_7ftg6")
 
@@ -826,10 +877,17 @@ script = ExtResource("20_00kps")
 duration = 120
 alt_bullet_data = SubResource("Resource_ftjqd")
 
+[node name="Arc" type="Node" parent="ultra_ring/AlternateBControls/Sequence"]
+script = ExtResource("8_x1ekb")
+angle = -120.0
+velocity = 50
+duration = 120
+
 [node name="ChangeAngleRelative2" type="Node" parent="ultra_ring/AlternateBControls/Sequence"]
 script = ExtResource("19_xk0pp")
-angle = -60
+angle = 210
 velocity = 50
+bring_to_front = true
 duration = -1
 alt_bullet_data = SubResource("Resource_jlkug")
 
@@ -840,11 +898,14 @@ script = ExtResource("5_p75xh")
 script = ExtResource("18_07jc4")
 frames = 40
 
+[node name="PauseMovement2" type="Node" parent="ultra_ring/AlternateBControls/Sequence2"]
+script = ExtResource("12_b61t1")
+duration = 20
+
 [node name="ChangeAngleRelative" type="Node" parent="ultra_ring/AlternateBControls/Sequence2"]
 script = ExtResource("19_xk0pp")
-angle = 30
-velocity = 100
-acceleration = -5
+velocity = 90
+acceleration = -2
 duration = 120
 alt_bullet_data = SubResource("Resource_mslgc")
 
@@ -853,15 +914,134 @@ script = ExtResource("20_00kps")
 duration = 120
 alt_bullet_data = SubResource("Resource_s010y")
 
+[node name="Arc2" type="Node" parent="ultra_ring/AlternateBControls/Sequence2"]
+script = ExtResource("8_x1ekb")
+angle = -120.0
+velocity = 50
+duration = 120
+
 [node name="ChangeAngleRelative2" type="Node" parent="ultra_ring/AlternateBControls/Sequence2"]
 script = ExtResource("19_xk0pp")
-angle = 60
-velocity = 50
+angle = -30
+velocity = 120
+bring_to_front = true
 duration = -1
 alt_bullet_data = SubResource("Resource_28ja3")
 
 [node name="PatternSpin" type="Node" parent="ultra_ring" node_paths=PackedStringArray("sub_control")]
 script = ExtResource("17_8xwg0")
-angle = 5
-repeats = null
+angle = 20.0
 sub_control = NodePath("../AlternateBControls")
+
+[node name="ultra_ring2" type="Node2D" parent="." node_paths=PackedStringArray("pattern_ctrl")]
+script = ExtResource("12_qys5r")
+spawn_count = 6
+velocity = 140
+acceleration = -2
+bullet_data = SubResource("Resource_hndrd")
+pattern_ctrl = NodePath("PatternSpin")
+max_repeats = 64
+repeat_time = 3.0
+
+[node name="AlternateBControls" type="Node" parent="ultra_ring2"]
+script = ExtResource("15_naqrq")
+
+[node name="Sequence" type="Node" parent="ultra_ring2/AlternateBControls"]
+script = ExtResource("5_p75xh")
+
+[node name="TravelFrames" type="Node" parent="ultra_ring2/AlternateBControls/Sequence"]
+script = ExtResource("18_07jc4")
+frames = 40
+
+[node name="PauseMovement" type="Node" parent="ultra_ring2/AlternateBControls/Sequence"]
+script = ExtResource("12_b61t1")
+duration = 10
+
+[node name="ChangeAngleRelative" type="Node" parent="ultra_ring2/AlternateBControls/Sequence"]
+script = ExtResource("19_xk0pp")
+angle = 45
+velocity = 100
+acceleration = -5
+duration = 120
+alt_bullet_data = SubResource("Resource_xkk6g")
+
+[node name="Delay" type="Node" parent="ultra_ring2/AlternateBControls/Sequence"]
+script = ExtResource("20_00kps")
+duration = 120
+alt_bullet_data = SubResource("Resource_uenu7")
+
+[node name="ChangeAngleRelative2" type="Node" parent="ultra_ring2/AlternateBControls/Sequence"]
+script = ExtResource("19_xk0pp")
+angle = 30
+velocity = 50
+bring_to_front = true
+duration = -1
+alt_bullet_data = SubResource("Resource_5ic52")
+
+[node name="Sequence2" type="Node" parent="ultra_ring2/AlternateBControls"]
+script = ExtResource("5_p75xh")
+
+[node name="TravelFrames" type="Node" parent="ultra_ring2/AlternateBControls/Sequence2"]
+script = ExtResource("18_07jc4")
+frames = 40
+
+[node name="PauseMovement2" type="Node" parent="ultra_ring2/AlternateBControls/Sequence2"]
+script = ExtResource("12_b61t1")
+duration = 10
+
+[node name="ChangeAngleRelative" type="Node" parent="ultra_ring2/AlternateBControls/Sequence2"]
+script = ExtResource("19_xk0pp")
+angle = 45
+velocity = 100
+acceleration = -5
+duration = 120
+alt_bullet_data = SubResource("Resource_cx2un")
+
+[node name="Delay" type="Node" parent="ultra_ring2/AlternateBControls/Sequence2"]
+script = ExtResource("20_00kps")
+duration = 120
+alt_bullet_data = SubResource("Resource_cx2un")
+
+[node name="ChangeAngleRelative2" type="Node" parent="ultra_ring2/AlternateBControls/Sequence2"]
+script = ExtResource("19_xk0pp")
+angle = -30
+velocity = 50
+bring_to_front = true
+duration = -1
+alt_bullet_data = SubResource("Resource_cx2un")
+
+[node name="PatternSpin" type="Node" parent="ultra_ring2" node_paths=PackedStringArray("sub_control")]
+script = ExtResource("17_8xwg0")
+sub_control = NodePath("../AlternateBControls")
+
+[node name="static_bullet_chase" type="Node2D" parent="." node_paths=PackedStringArray("pattern_ctrl", "sub_patterns")]
+script = ExtResource("12_qys5r")
+spawn_count = 6
+origin_offset = 64
+velocity = 0
+bullet_data = SubResource("Resource_tkhpe")
+pattern_ctrl = NodePath("PatternSpin")
+max_repeats = -1
+repeat_time = 10.0
+sub_patterns = [NodePath("RingPattern")]
+
+[node name="PatternSpin" type="Node" parent="static_bullet_chase" node_paths=PackedStringArray("sub_control")]
+script = ExtResource("17_8xwg0")
+angle = 1.5
+sub_control = NodePath("../OriginChase")
+
+[node name="OriginChase" type="Node" parent="static_bullet_chase"]
+script = ExtResource("21_cwha1")
+
+[node name="RingPattern" type="Node2D" parent="static_bullet_chase" node_paths=PackedStringArray("pattern_ctrl")]
+script = ExtResource("12_qys5r")
+spawn_count = 6
+velocity = 450
+bullet_data = SubResource("Resource_ssi7h")
+pattern_ctrl = NodePath("PatternSpin")
+max_repeats = -1
+repeat_time = 2.0
+
+[node name="PatternSpin" type="Node" parent="static_bullet_chase/RingPattern"]
+script = ExtResource("17_8xwg0")
+angle = 0.413

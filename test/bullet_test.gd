@@ -65,7 +65,7 @@ func _input(event: InputEvent) -> void:
 		rings[6].fire()
 	elif Input.is_key_pressed(KEY_MINUS) and just_pressed:
 		rings[7].fire()
-	elif Input.is_key_pressed(KEY_EQUAL) and just_pressed:
+	elif Input.is_key_pressed(KEY_BACKSLASH) and just_pressed:
 		rings[8].fire()
 	elif Input.is_key_pressed(KEY_Q) and just_pressed:
 		lasers[0].fire()
@@ -73,3 +73,5 @@ func _input(event: InputEvent) -> void:
 		for p in $moving_target.get_children():
 			if p is DanmakuPattern:
 				p.fire()
+	elif Input.is_key_pressed(KEY_BRACKETRIGHT) and just_pressed:
+		rings[9].fire()
