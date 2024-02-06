@@ -16,6 +16,10 @@ enum Angle {
 	TARGET
 }
 
+@onready var instance_key = "pattern_%s" % self.get_instance_id()
+@onready var calls_key = "pattern_calls_%s" % self.get_instance_id()
+
+
 ## If bullet should chase the player's position
 @export var angle_type : Angle = Angle.FIXED
 @export var target : Node2D
@@ -69,6 +73,7 @@ func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
 	can_update = false
 	bulletin_board = BulletinBoard.new()
+	bulletin_board.set_value(calls_key, 0)
 	set_physics_process(false)
 
 
@@ -126,11 +131,13 @@ func _base_update(delta : float) -> int:
 	if !can_update: return FINISHED
 	if max_repeats == 0:
 		_handle_pattern(delta)
+		bulletin_board.set_value(calls_key, bulletin_board.get_value(calls_key) + 1)
 		stop()
 		return SUCCESS
 	else:
 		if repeat_count == 0 and total_time == 0:
 			_handle_pattern(delta)
+			bulletin_board.set_value(calls_key, bulletin_board.get_value(calls_key) + 1)
 			custom_repeat.call(delta, self, bulletin_board)
 		elif max_repeats > 0 and max_repeats <= repeat_count: 
 			stop()
@@ -141,6 +148,7 @@ func _base_update(delta : float) -> int:
 		else:
 			total_time = 0
 			repeat_count += 1
+			bulletin_board.set_value(calls_key, bulletin_board.get_value(calls_key) + 1)
 			_handle_pattern(delta)
 			# Fire sub patterns
 			custom_repeat.call(delta, self, bulletin_board)

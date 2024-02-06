@@ -31,16 +31,16 @@ func _input(event: InputEvent) -> void:
 	# debugging
 	var just_pressed = event.is_pressed() and not event.is_echo()
 	if Input.is_key_pressed(KEY_1) and just_pressed:
-		var b = BulletPool.get_next_bullet(data_1, PI, 60, 0, Vector2.ZERO, z)
+		var b = BulletPool.get_next_bullet(data_1, PI, 60, 0, Vector2.ZERO, z, "test_key")
 		
 		b.fire()
 	elif Input.is_key_pressed(KEY_2) and just_pressed:
 		pass
 	elif Input.is_key_pressed(KEY_3) and just_pressed:
-		var b = BulletPool.get_next_bullet(data_1, PI, 60, 0, Vector2.ZERO, seq_1)
+		var b = BulletPool.get_next_bullet(data_1, PI, 60, 0, Vector2.ZERO, seq_1, "test_key")
 		
 		b.fire()
-	elif Input.is_key_pressed(KEY_4) and just_pressed:
+	#elif Input.is_key_pressed(KEY_4) and just_pressed:
 		#ring_1.bulletin_board.set_value("test", 0)
 		#ring_1.custom_update = func(delta, pattern, board):
 			#board.set_value("test", board.get_value("test") + 1)
@@ -50,7 +50,7 @@ func _input(event: InputEvent) -> void:
 		#ring_1.angle_offset = 0
 		#ring_1.custom_repeat = func(delta, pattern, board):
 			#pattern.angle_offset += (PI / 24)
-		rings[0].fire()
+		#rings[0].fire()
 	elif Input.is_key_pressed(KEY_5) and just_pressed:
 		rings[1].fire()
 	elif Input.is_key_pressed(KEY_6) and just_pressed:

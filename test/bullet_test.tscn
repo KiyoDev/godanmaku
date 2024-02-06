@@ -324,7 +324,7 @@ t_1 = ExtResource("2_fa3y2")
 z = NodePath("RingPattern/Sequence/ZigZag")
 seq_1 = NodePath("RingPattern/Sequence")
 data_1 = SubResource("Resource_42l12")
-rings = [NodePath("RingPattern"), NodePath("SinglePattern"), NodePath("PatternRepeater"), NodePath("SinglePattern2"), NodePath("Arcing"), NodePath("Delay Zig"), NodePath("RingPattern3"), NodePath("Arcing2")]
+rings = [NodePath("RingPattern"), NodePath("SinglePattern"), NodePath("SinglePattern2"), NodePath("PatternRepeater"), NodePath("Arcing"), NodePath("Arcing2"), NodePath("Delay Zig"), NodePath("ring_spinning_directed")]
 lasers = [NodePath("DelayLaserPattern")]
 
 [node name="RingPattern" type="Node2D" parent="." node_paths=PackedStringArray("bullet_ctrl")]
@@ -507,7 +507,7 @@ angle = 50.0
 delay = 10
 velocity = 200
 
-[node name="RingPattern3" type="Node2D" parent="." node_paths=PackedStringArray("pattern_ctrl")]
+[node name="ring_spinning_directed" type="Node2D" parent="." node_paths=PackedStringArray("pattern_ctrl")]
 script = ExtResource("12_qys5r")
 spawn_count = 16
 origin_offset = 32
@@ -517,7 +517,7 @@ pattern_ctrl = NodePath("PatternSpin")
 max_repeats = 16
 repeat_time = 15.0
 
-[node name="PatternSpin" type="Node" parent="RingPattern3"]
+[node name="PatternSpin" type="Node" parent="ring_spinning_directed"]
 script = ExtResource("17_8xwg0")
 angle = 40
 

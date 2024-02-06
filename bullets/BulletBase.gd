@@ -8,7 +8,11 @@ signal expired
 
 ## Dictionary wrapper that can be used by updates for additional parameters and properties
 var bulletin_board : BulletinBoard
-var pattern : DanmakuPattern
+## Reference to a pattern's BulletinBoard to read any shared data from the pattern firing this bullet
+var pattern_bulletin_board : BulletinBoard
+var pattern_key : String
+
+## Camera and bounds stuff
 var camera : Camera2D
 var screen_extents : Vector2
 
@@ -35,12 +39,14 @@ var max_bounces : int = 0
 var duration : int = 1200:
 	set(value):
 		duration = maxi(0, value) # never let duration go lower than 0
+
 ## If the bullet should fade after a certain time
 var fade : bool = false
 var hide_on_hit : bool = true
 var grazeable : bool = true
 var can_graze : bool = false
 
+## Animation
 var animated : bool = false
 var start_frame : int = 0
 var end_frame : int = 0
@@ -55,8 +61,6 @@ var position_offset : Vector2 = Vector2.ZERO
 var current_bounces : int = 0
 ## How long the bullet has been alive for
 var up_time : int = 0
-
-
 
 var tmp_velocity : int = 0
 var tmp_acceleration : int = 0
@@ -127,7 +131,8 @@ func reset(position : Vector2) -> void:
 	position_offset = Vector2.ZERO
 
 
-func before_spawn(data : BulletData, angle : float, v : int, a : int, position : Vector2) -> void:
+func before_spawn(key : String, data : BulletData, angle : float, v : int, a : int, position : Vector2) -> void:
+	pattern_key = key
 	reset(position)
 	_swap(data, a, v)
 	self.angle = angle

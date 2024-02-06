@@ -24,7 +24,7 @@ func _handle_pattern(delta : float) -> int:
 		start_angle = angle_to_player(pattern_origin) if angle_type == Angle.CHASE_PLAYER else angle_to_target(pattern_origin, target) if angle_type == Angle.TARGET else (fire_angle * PI / 180) # angle of main bullet to fire
 	for line in range(1, spawn_count + 1):
 		angle = start_angle + angle_offset
-		var laser = BulletPool.get_next_bullet(get_bullet_data.call(), angle, v, acceleration, pattern_origin, bullet_ctrl) as BulletBase
+		var laser = BulletPool.get_next_bullet(get_bullet_data.call(), angle, v, acceleration, pattern_origin, bullet_ctrl, instance_key) as BulletBase
 		laser.disable_collision()
 		laser.animation_update = custom_animation_update
 		laser.fire()
