@@ -154,6 +154,11 @@ func fire() -> void:
 	#col.global_transform = global_transform
 
 
+func update_rotation() -> void:
+	if directed:
+		look_at(global_position + Vector2.RIGHT.rotated(angle))
+
+
 func timeout(bullet : BulletBase) -> void:
 	_disable()
 

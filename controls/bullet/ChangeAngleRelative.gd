@@ -15,8 +15,13 @@ class_name ChangeAngleRelative extends ControlNode
 
 
 func _before_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
-	super._before_update(bullet, bulletin_board)
 	bulletin_board.set_value(instance_key, 0)
+	bullet.angle += angle * PI / 180.0
+	bullet.velocity = velocity
+	bullet.acceleration = acceleration
+	bullet.update_rotation()
+	# TODO: fix updating the angle -> rotation -> swapping the texture
+	super._before_update(bullet, bulletin_board)
 
 
 func _set_custom_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
@@ -25,10 +30,11 @@ func _set_custom_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> 
 
 
 func _custom_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> int:
-	if bulletin_board.get_value(instance_key) == 0:
-		bullet.angle += angle * PI / 180.0
-		bullet.velocity = velocity
-		bullet.acceleration = acceleration
+	#if bulletin_board.get_value(instance_key) == 0:
+		#bullet.angle += angle * PI / 180.0
+		#bullet.velocity = velocity
+		#bullet.acceleration = acceleration
+		#bullet.update_rotation()
 		
 	if duration >= 0 and bulletin_board.get_value(instance_key) >= duration or bullet.velocity == 0:
 		return SUCCESS
