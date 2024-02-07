@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://c41gs2sfa6tvd"]
+[gd_scene load_steps=64 format=3 uid="uid://c41gs2sfa6tvd"]
 
 [ext_resource type="Script" path="res://addons/godanmaku/test/bullet_test.gd" id="1_ap1po"]
 [ext_resource type="Texture2D" uid="uid://clev7jb1fmmjj" path="res://addons/godanmaku/textures/enemy_bullets.png" id="2_fa3y2"]
@@ -504,7 +504,7 @@ hide_on_hit = true
 hitbox_layer = 1
 graze_layer = 2
 
-[sub_resource type="Resource" id="Resource_uenu7"]
+[sub_resource type="Resource" id="Resource_boj3o"]
 script = ExtResource("3_8t27t")
 texture = ExtResource("2_fa3y2")
 hframes = 16
@@ -548,13 +548,57 @@ hide_on_hit = true
 hitbox_layer = 1
 graze_layer = 2
 
-[sub_resource type="Resource" id="Resource_cx2un"]
+[sub_resource type="Resource" id="Resource_wbvbw"]
 script = ExtResource("3_8t27t")
 texture = ExtResource("2_fa3y2")
 hframes = 8
 vframes = 8
-frame = 20
-frame_coords = Vector2i(4, 2)
+frame = 1
+frame_coords = Vector2i(1, 0)
+animated = false
+start_frame = 0
+end_frame = 0
+ani_rate = 10
+shape = SubResource("ConvexPolygonShape2D_reqlt")
+size = Vector2i(1, 1)
+damage = 10
+grazeable = true
+directed = true
+bounces = 0
+duration = 0
+hide_on_hit = true
+hitbox_layer = 1
+graze_layer = 2
+
+[sub_resource type="Resource" id="Resource_obskb"]
+script = ExtResource("3_8t27t")
+texture = ExtResource("2_fa3y2")
+hframes = 16
+vframes = 16
+frame = 0
+frame_coords = Vector2i(0, 0)
+animated = false
+start_frame = 0
+end_frame = 0
+ani_rate = 10
+shape = SubResource("ConvexPolygonShape2D_reqlt")
+size = Vector2i(1, 1)
+damage = 10
+grazeable = true
+directed = false
+bounces = 0
+duration = 0
+hide_on_hit = true
+hitbox_layer = 1
+graze_layer = 2
+
+[sub_resource type="Resource" id="Resource_6f3yb"]
+script = ExtResource("3_8t27t")
+texture = ExtResource("2_fa3y2")
+hframes = 8
+vframes = 8
+frame = 16
+frame_coords = Vector2i(0, 2)
 animated = false
 start_frame = 0
 end_frame = 0
@@ -623,7 +667,7 @@ t_1 = ExtResource("2_fa3y2")
 z = NodePath("RingPattern/Sequence/ZigZag")
 seq_1 = NodePath("RingPattern/Sequence")
 data_1 = SubResource("Resource_42l12")
-rings = [NodePath("RingPattern"), NodePath("SinglePattern"), NodePath("SinglePattern2"), NodePath("PatternRepeater"), NodePath("Arcing"), NodePath("Arcing2"), NodePath("Delay Zig"), NodePath("ring_spinning_directed"), NodePath("ultra_ring"), NodePath("static_bullet_chase")]
+rings = [NodePath("RingPattern"), NodePath("SinglePattern"), NodePath("SinglePattern2"), NodePath("PatternRepeater"), NodePath("Arcing"), NodePath("Arcing2"), NodePath("Delay Zig"), NodePath("ring_spinning_directed"), NodePath("ultra_ring2"), NodePath("static_bullet_chase"), NodePath("ultra_ring")]
 lasers = [NodePath("DelayLaserPattern")]
 
 [node name="RingPattern" type="Node2D" parent="." node_paths=PackedStringArray("bullet_ctrl")]
@@ -756,10 +800,12 @@ script = ExtResource("15_naqrq")
 
 [node name="Arc" type="Node" parent="Arcing/AlternateBControls"]
 script = ExtResource("8_x1ekb")
+angle = 20.0
 alt_bullet_data = SubResource("Resource_hi6wo")
 
 [node name="-Arc" type="Node" parent="Arcing/AlternateBControls"]
 script = ExtResource("8_x1ekb")
+angle = -20.0
 alt_bullet_data = SubResource("Resource_d7148")
 
 [node name="Arcing2" type="Node2D" parent="." node_paths=PackedStringArray("pattern_ctrl")]
@@ -775,10 +821,12 @@ script = ExtResource("15_naqrq")
 
 [node name="Arc" type="Node" parent="Arcing2/AlternateBControls"]
 script = ExtResource("8_x1ekb")
+angle = 20.0
 alt_bullet_data = SubResource("Resource_8miuh")
 
 [node name="-Arc" type="Node" parent="Arcing2/AlternateBControls"]
 script = ExtResource("8_x1ekb")
+angle = -20.0
 alt_bullet_data = SubResource("Resource_2pcmu")
 
 [node name="Delay Zig" type="Node2D" parent="." node_paths=PackedStringArray("bullet_ctrl")]
@@ -930,7 +978,7 @@ alt_bullet_data = SubResource("Resource_28ja3")
 
 [node name="PatternSpin" type="Node" parent="ultra_ring" node_paths=PackedStringArray("sub_control")]
 script = ExtResource("17_8xwg0")
-angle = 20.0
+angle = 5.0
 sub_control = NodePath("../AlternateBControls")
 
 [node name="ultra_ring2" type="Node2D" parent="." node_paths=PackedStringArray("pattern_ctrl")]
@@ -951,7 +999,7 @@ script = ExtResource("5_p75xh")
 
 [node name="TravelFrames" type="Node" parent="ultra_ring2/AlternateBControls/Sequence"]
 script = ExtResource("18_07jc4")
-frames = 40
+frames = 20
 
 [node name="PauseMovement" type="Node" parent="ultra_ring2/AlternateBControls/Sequence"]
 script = ExtResource("12_b61t1")
@@ -968,7 +1016,7 @@ alt_bullet_data = SubResource("Resource_xkk6g")
 [node name="Delay" type="Node" parent="ultra_ring2/AlternateBControls/Sequence"]
 script = ExtResource("20_00kps")
 duration = 120
-alt_bullet_data = SubResource("Resource_uenu7")
+alt_bullet_data = SubResource("Resource_boj3o")
 
 [node name="ChangeAngleRelative2" type="Node" parent="ultra_ring2/AlternateBControls/Sequence"]
 script = ExtResource("19_xk0pp")
@@ -983,7 +1031,7 @@ script = ExtResource("5_p75xh")
 
 [node name="TravelFrames" type="Node" parent="ultra_ring2/AlternateBControls/Sequence2"]
 script = ExtResource("18_07jc4")
-frames = 40
+frames = 20
 
 [node name="PauseMovement2" type="Node" parent="ultra_ring2/AlternateBControls/Sequence2"]
 script = ExtResource("12_b61t1")
@@ -995,23 +1043,24 @@ angle = 45
 velocity = 100
 acceleration = -5
 duration = 120
-alt_bullet_data = SubResource("Resource_cx2un")
+alt_bullet_data = SubResource("Resource_wbvbw")
 
 [node name="Delay" type="Node" parent="ultra_ring2/AlternateBControls/Sequence2"]
 script = ExtResource("20_00kps")
 duration = 120
-alt_bullet_data = SubResource("Resource_cx2un")
+alt_bullet_data = SubResource("Resource_obskb")
 
 [node name="ChangeAngleRelative2" type="Node" parent="ultra_ring2/AlternateBControls/Sequence2"]
 script = ExtResource("19_xk0pp")
-angle = -30
+angle = 150
 velocity = 50
 bring_to_front = true
 duration = -1
-alt_bullet_data = SubResource("Resource_cx2un")
+alt_bullet_data = SubResource("Resource_6f3yb")
 
 [node name="PatternSpin" type="Node" parent="ultra_ring2" node_paths=PackedStringArray("sub_control")]
 script = ExtResource("17_8xwg0")
+angle = 5.0
 sub_control = NodePath("../AlternateBControls")
 
 [node name="static_bullet_chase" type="Node2D" parent="." node_paths=PackedStringArray("pattern_ctrl", "sub_patterns")]
@@ -1027,7 +1076,7 @@ sub_patterns = [NodePath("RingPattern")]
 
 [node name="PatternSpin" type="Node" parent="static_bullet_chase" node_paths=PackedStringArray("sub_control")]
 script = ExtResource("17_8xwg0")
-angle = 1.5
+angle = 3.0
 sub_control = NodePath("../OriginChase")
 
 [node name="OriginChase" type="Node" parent="static_bullet_chase"]
@@ -1044,4 +1093,4 @@ repeat_time = 2.0
 
 [node name="PatternSpin" type="Node" parent="static_bullet_chase/RingPattern"]
 script = ExtResource("17_8xwg0")
-angle = 0.413
+angle = 0.825

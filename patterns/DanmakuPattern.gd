@@ -58,7 +58,8 @@ var custom_update : Callable
 var custom_repeat : Callable
 var get_bullet_data : Callable
 
-var total_time : float = 0.0
+var up_time : int = 0
+var total_time : int = 0
 var repeat_count : int = 0
 var can_update : bool = false
 var angle_offset : float = 0
@@ -112,7 +113,6 @@ func angle_to_player(pattern_origin : Vector2) -> float:
 
 
 func angle_to_target(pattern_origin : Vector2, target : Node2D) -> float:
-	#print_debug("a=%s, %s --- %s, %s" % [pattern_origin, pattern_origin.normalized(), target.global_position, pattern_origin.angle_to_point(target.global_position if target else Vector2(-69.69, -69.69))])
 	return pattern_origin.angle_to_point(target.global_position if target else global_position + Vector2.LEFT)
 
 
@@ -132,14 +132,12 @@ func _base_update(delta : float) -> int:
 	if !can_update: return FINISHED
 	if max_repeats == 0:
 		_handle_pattern(delta)
-		#bulletin_board.set_value(calls_key, bulletin_board.get_value(calls_key) + 1)
 		call_count += 1
 		stop()
 		return SUCCESS
 	else:
-		if repeat_count >= -1 and total_time == 0:
+		if up_time == 0:
 			_handle_pattern(delta)
-			#bulletin_board.set_value(calls_key, bulletin_board.get_value(calls_key) + 1)
 			custom_repeat.call(delta, self, bulletin_board)
 			call_count += 1
 		elif max_repeats > 0 and max_repeats <= repeat_count: 
@@ -151,11 +149,11 @@ func _base_update(delta : float) -> int:
 		else:
 			total_time = 0
 			repeat_count += 1
-			#bulletin_board.set_value(calls_key, bulletin_board.get_value(calls_key) + 1)
 			_handle_pattern(delta)
 			# Fire sub patterns
 			custom_repeat.call(delta, self, bulletin_board)
 			call_count += 1
+	up_time += 1
 	return RUNNING
 
 

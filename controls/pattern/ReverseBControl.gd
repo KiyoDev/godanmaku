@@ -30,7 +30,7 @@ func _set_custom_repeat(pattern : DanmakuPattern, bulletin_board : BulletinBoard
 
 
 func _custom_repeat(delta : float, pattern : DanmakuPattern, bulletin_board : BulletinBoard) -> int:
-	if duration > 0 and bulletin_board.get_value(reverse_key) >= duration:
+	if duration > 0 and bulletin_board.get_value(timer_key) >= duration:
 		return SUCCESS
 	
 	if bulletin_board.get_value(timer_key) % (2 * frames) == 0:
@@ -40,5 +40,5 @@ func _custom_repeat(delta : float, pattern : DanmakuPattern, bulletin_board : Bu
 		reverse = false
 	
 	bulletin_board.set_value(reverse_key, reverse)
-	bulletin_board.set_value(timer_key, bulletin_board.get_value(reverse_key) + 1)
+	bulletin_board.set_value(timer_key, bulletin_board.get_value(timer_key) + 1)
 	return RUNNING
