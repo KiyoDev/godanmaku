@@ -548,7 +548,7 @@ hide_on_hit = true
 hitbox_layer = 1
 graze_layer = 2
 
-[sub_resource type="Resource" id="Resource_wbvbw"]
+[sub_resource type="Resource" id="Resource_hoehr"]
 script = ExtResource("3_8t27t")
 texture = ExtResource("2_fa3y2")
 hframes = 8
@@ -563,7 +563,7 @@ shape = SubResource("ConvexPolygonShape2D_reqlt")
 size = Vector2i(1, 1)
 damage = 10
 grazeable = true
-directed = true
+directed = false
 bounces = 0
 duration = 0
 hide_on_hit = true
@@ -876,6 +876,7 @@ repeat_time = 5.0
 
 [node name="Arc" type="Node" parent="laser_arc"]
 script = ExtResource("8_x1ekb")
+angle = 30.0
 
 [node name="Sprite2D" type="Sprite2D" parent="laser_arc"]
 z_index = 22
@@ -1043,7 +1044,7 @@ angle = 45
 velocity = 100
 acceleration = -5
 duration = 120
-alt_bullet_data = SubResource("Resource_wbvbw")
+alt_bullet_data = SubResource("Resource_hoehr")
 
 [node name="Delay" type="Node" parent="ultra_ring2/AlternateBControls/Sequence2"]
 script = ExtResource("20_00kps")
