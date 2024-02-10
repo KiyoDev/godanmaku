@@ -72,7 +72,7 @@ func _ready() -> void:
 	custom_update = _custom_update
 	custom_repeat = _custom_repeat
 	get_bullet_data = _get_bullet_data
-	player = get_tree().get_first_node_in_group("player")
+	player = Godanmaku.get_player()
 	can_update = false
 	bulletin_board = BulletinBoard.new()
 	bulletin_board.set_value(calls_key, 0)

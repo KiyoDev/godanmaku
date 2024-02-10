@@ -6,6 +6,7 @@ var frames: RefCounted
 func _init():
 	name = "GodanmakuPlugin"
 	add_autoload_singleton("BulletPool", "bullets/BulletPool.gd")
+	add_autoload_singleton("Godanmaku", "Godanmaku.gd")
 	print("Godanmaku initialized")
 
 

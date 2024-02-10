@@ -876,7 +876,7 @@ repeat_time = 5.0
 
 [node name="Arc" type="Node" parent="laser_arc"]
 script = ExtResource("8_x1ekb")
-angle = 30.0
+angle = 20.0
 
 [node name="Sprite2D" type="Sprite2D" parent="laser_arc"]
 z_index = 22
@@ -885,8 +885,8 @@ region_enabled = true
 region_rect = Rect2(96, 32, 32, 32)
 
 [node name="moving_target" type="Sprite2D" parent="." node_paths=PackedStringArray("pattern")]
-visible = false
 script = ExtResource("19_gg23f")
+origin_offset = 150
 pattern = NodePath("../laser_arc")
 count = 8
 
