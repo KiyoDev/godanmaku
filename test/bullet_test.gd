@@ -1,7 +1,7 @@
 extends Camera2D
 
 @export var texture : CurveTexture
-
+@export var moving_target : Node2D
 @export var count_2 := 20
 @export var t_1 : Texture2D
 @export var z : ZigZag
@@ -70,7 +70,7 @@ func _input(event: InputEvent) -> void:
 	elif Input.is_key_pressed(KEY_Q) and just_pressed:
 		lasers[0].fire()
 	elif Input.is_key_pressed(KEY_W) and just_pressed:
-		for p in $moving_target.get_children():
+		for p in moving_target.get_children():
 			if p is DanmakuPattern:
 				p.fire()
 	elif Input.is_key_pressed(KEY_BRACKETRIGHT) and just_pressed:
