@@ -16,7 +16,7 @@ var camera : Camera2D
 var screen_extents : Vector2
 
 ## Damage
-var damage : int = 10
+var damage : int = 1
 ## Query collision layer
 var hitbox_layer : int = 0
 ## Query graze collision layer
