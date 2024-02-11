@@ -672,7 +672,7 @@ rings = [NodePath("Node2D/RingPattern"), NodePath("Node2D/SinglePattern"), NodeP
 lasers = [NodePath("Node2D/DelayLaserPattern")]
 
 [node name="Node2D" type="Node2D" parent="."]
-position = Vector2(48, 0)
+position = Vector2(64, 0)
 
 [node name="RingPattern" type="Node2D" parent="Node2D" node_paths=PackedStringArray("bullet_ctrl")]
 script = ExtResource("12_qys5r")
@@ -889,6 +889,7 @@ region_enabled = true
 region_rect = Rect2(96, 32, 32, 32)
 
 [node name="moving_target" type="Sprite2D" parent="Node2D" node_paths=PackedStringArray("pattern")]
+visible = false
 script = ExtResource("19_gg23f")
 origin_offset = 150
 pattern = NodePath("../laser_arc")
