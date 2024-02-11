@@ -93,6 +93,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _swap_data(data : BulletData) -> void:
+	damage = data.damage
 	data.set_texture(self)
 	hitbox_layer = data.hitbox_layer
 	graze_layer = data.graze_layer

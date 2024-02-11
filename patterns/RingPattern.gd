@@ -25,7 +25,7 @@ func _handle_pattern(delta : float) -> int:
 	# calculate origin offset
 	pattern_origin = Vector2(pos.x + (origin_offset * cos(360.0/spawn_count)), pos.y + (origin_offset * sin(360.0/spawn_count)))
 	var spread_rad : float = spread_degrees * PI / 180 # angle to shoot spread
-	var start_angle = angle_to_player(pattern_origin) if angle_type == Angle.CHASE_PLAYER else (fire_angle * PI / 180) # angle of main bullet to fire
+	var start_angle = angle_to_player(pos) if angle_type == Angle.CHASE_PLAYER else (fire_angle * PI / 180) # angle of main bullet to fire
 	#var start_angle = angle_to_player(pattern_origin) if angle_type == Angle.CHASE_PLAYER else angle_to_target(pattern_origin, target) if angle_type == Angle.TARGET else (fire_angle * PI / 180) # angle of main bullet to fire
 	start_angle = start_angle if spread % 2 != 0 else start_angle + (spread_rad / 2)
 	var radians : float = 2 * PI / spawn_count # convert to radians for function params

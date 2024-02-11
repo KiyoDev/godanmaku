@@ -50,7 +50,7 @@ class_name BulletData extends Resource
 
 @export_group("Properties")
 ## Damage
-@export var damage : int = 10
+@export var damage : int = 1
 @export var grazeable : bool = true
 ## If bullet should be directed
 @export var directed : bool = false
