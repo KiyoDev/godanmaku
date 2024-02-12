@@ -34,8 +34,11 @@ class_name BulletData extends Resource
 @export var frame_coords : Vector2i:
 	set(value):
 		if frame_coords == value: return
+		print_debug("v=%s, (%s, %s)" % [value, hframes, vframes])
 		frame_coords.x = clampi(value.x, 0, hframes)
 		frame_coords.y = clampi(value.y, 0, vframes)
+		if frame_coords == value: return
+		print_debug("frame_coords=%s" % [frame_coords])
 		frame = (hframes * value.y) + value.x
 		notify_property_list_changed()
 @export var animated : bool = false
