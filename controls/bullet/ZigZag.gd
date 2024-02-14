@@ -12,6 +12,10 @@ class_name ZigZag extends ControlNode
 @export_range(1, 16383) var frames : int = 30
 ## Bullet angle modifier in degrees
 @export var angle : float = 0
+## Bullet velocity
+@export var velocity : int = 0
+## If should zigzag right away or start from the angle it begins at
+@export var start_straight : bool = true
 ## How many frames should zig zag for
 @export var duration : int = 0
 
@@ -19,7 +23,6 @@ class_name ZigZag extends ControlNode
 @export_group("Delay Settings")
 ## Delay upon reaching the point to switch
 @export_range(0, 16383) var delay : int = 0
-@export var velocity : int = 0
 
 
 
@@ -30,6 +33,10 @@ func _before_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void
 		bulletin_board.set_value(pause_key, false)
 		bulletin_board.set_value(pause_time_key, 0)
 		bulletin_board.set_value(radians_key, (angle * PI / 180))
+	else:
+		# if not delaying, then set velocity before updating
+		if velocity != 0:
+			bullet.velocity = velocity
 
 
 func _set_custom_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
@@ -64,8 +71,12 @@ func _custom_update(delta : float, bullet : BulletBase, bulletin_board : Bulleti
 		if bulletin_board.get_value(uptime_key) % (2 * frames) == frames:
 			bullet.angle -= (angle * PI / 180)
 			
-		if bulletin_board.get_value(uptime_key) % (2 * frames) == 0:
-			bullet.angle += (angle * PI / 180)
+		if start_straight:
+			if bulletin_board.get_value(uptime_key) > 0 and (bulletin_board.get_value(uptime_key) % (2 * frames) == 0):
+				bullet.angle += (angle * PI / 180)
+		else:
+			if (bulletin_board.get_value(uptime_key) % (2 * frames) == 0):
+				bullet.angle += (angle * PI / 180)
 			
 		bulletin_board.set_value(uptime_key, bulletin_board.get_value(uptime_key) + 1)
 	return RUNNING

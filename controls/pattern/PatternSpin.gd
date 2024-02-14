@@ -2,6 +2,7 @@ class_name PatternSpin extends PatternControl
 
 
 @onready var repeat_key = "pattern_spin_repeats_%s" % self.get_instance_id()
+#@onready var count_key = "pattern_spin_repeats_%s" % self.get_instance_id()
 
 ## Angle in degrees
 @export var angle : float = 0
@@ -27,6 +28,7 @@ func _set_custom_repeat(pattern : DanmakuPattern, bulletin_board : BulletinBoard
 
 func _custom_repeat(delta : float, pattern : DanmakuPattern, bulletin_board : BulletinBoard) -> int:
 	if repeats > 0 and bulletin_board.get_value(repeat_key) >= repeats:
+		bulletin_board.set_value(repeat_key, 0)
 		return SUCCESS
 	
 	pattern.angle_offset += (angle * PI / 180)

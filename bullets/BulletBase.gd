@@ -28,7 +28,10 @@ var max_velocity : int = 1000
 ## Bullet acceleration
 var acceleration : int = 0
 ## Angle of travel
-var angle : float = 0
+var angle : float = 0:
+	set(value):
+		angle = value
+		update_rotation()
 ## If true, bullet rotates to look at the direction it's traveling
 var directed : bool = false
 ## How many times bullet should bounce off the edges of the screen
@@ -67,9 +70,13 @@ var tmp_acceleration : int = 0
 #/--------------------------------------------------/
 #/---------------- CUSTOM FUNCTIONS ----------------/
 #/--------------------------------------------------/
+## Callable used handle bullet movement
 var move_update : Callable = _move_update
+## Callable used handle custom bullet updates
 var custom_update : Callable = _custom_update
+## Callable used handle bullet animation updates
 var animation_update : Callable = _animation_update
+## Callable used handle bullet collisions
 var handle_collision : Callable = _handle_collision
 
 
@@ -87,14 +94,21 @@ func _ready() -> void:
 	bulletin_board = BulletinBoard.new()
 
 
-# update_function(bullet, ...) # <- other args via .bind(...)
 func _physics_process(delta: float) -> void:
 	update(delta, self, bulletin_board) # asks the controler how it should behave each tick
 
 
+## Swap data to the BulletData's properties
 func _swap_data(data : BulletData) -> void:
 	damage = data.damage
-	data.set_texture(self)
+	# texture info
+	if texture != data.texture:
+		texture = data.texture
+	hframes = data.hframes
+	vframes = data.vframes
+	frame = data.frame
+	frame_coords = data.frame_coords
+	
 	hitbox_layer = data.hitbox_layer
 	graze_layer = data.graze_layer
 	query.shape = data.shape
@@ -105,6 +119,7 @@ func _swap_data(data : BulletData) -> void:
 	duration = data.duration
 	hide_on_hit = data.hide_on_hit
 	max_bounces = data.bounces
+	offset = data.offset
 	ani_time = 0
 	animated = data.animated
 	start_frame = data.start_frame
@@ -113,12 +128,14 @@ func _swap_data(data : BulletData) -> void:
 	scale = data.size
 
 
+## Swap bullet data
 func _swap(data : BulletData, v : int, a : int) -> void:
 	_swap_data(data)
 	velocity = v
 	acceleration = a
 
 
+## Reset various bullet info tp defai;t va;ies
 func reset(position : Vector2) -> void:
 	bulletin_board.clear()
 	virtual_position = position
@@ -131,6 +148,7 @@ func reset(position : Vector2) -> void:
 	position_offset = Vector2.ZERO
 
 
+## Called to setup bullet data before firing
 func before_spawn(_pattern : DanmakuPattern, data : BulletData, angle : float, v : int, a : int, position : Vector2) -> void:
 	if _pattern:
 		pattern = _pattern
@@ -140,10 +158,9 @@ func before_spawn(_pattern : DanmakuPattern, data : BulletData, angle : float, v
 	if directed:
 		# global_position + angle to look at the direction properly
 		look_at(global_position + Vector2.RIGHT.rotated(angle))
-		#query.transform.looking_at(global_position + global_position)
-		#look_at(global_position + global_position)
 
 
+## Start firing the pattern
 func fire() -> void:
 	show()
 	set_physics_process(true)
@@ -155,6 +172,7 @@ func fire() -> void:
 	#col.global_transform = global_transform
 
 
+## Update the bullet's rotation to face the angle relative to its position
 func update_rotation() -> void:
 	if directed:
 		look_at(global_position + Vector2.RIGHT.rotated(angle))
@@ -164,6 +182,7 @@ func timeout(bullet : BulletBase) -> void:
 	_disable()
 
 
+## Resume bullet movement
 func resume() -> void:
 	if tmp_velocity != 0:
 		velocity = tmp_velocity
@@ -174,6 +193,7 @@ func resume() -> void:
 		tmp_acceleration = 0
 
 
+## Stop bullet movement
 func stop() -> void:
 	if tmp_velocity == 0:
 		tmp_velocity = velocity
@@ -184,6 +204,7 @@ func stop() -> void:
 		acceleration = 0
 
 
+## Disable the bullet.
 func _disable() -> void:
 	expired.emit(self)
 	reset(Vector2.ZERO)
@@ -200,12 +221,17 @@ func enable_collision() -> void:
 	handle_collision = _handle_collision
 
 
+## Calls all relevant update methods to handle movement, collision, animation, and other optional custom functionality
 func update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
+	# call movement updates
 	move_update.call(delta, bullet, bulletin_board)
+	# try to call custom updates
 	var status : int = custom_update.call(delta, bullet, bulletin_board) # called for any additional processing
 	if status == 1 and custom_update != _custom_update:
 		custom_update = _custom_update
+	# call animation updates
 	animation_update.call(delta, bullet, bulletin_board) # can be overwritten for custom animation updates
+	# call collision updates
 	handle_collision.call(delta)
 	
 	if fade and duration > 0 and up_time >= duration * 0.75:
@@ -219,6 +245,7 @@ func update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) 
 		timeout.call(bullet)
 		return
 
+# default update functions
 
 func _handle_collision(delta : float) -> void:
 	query.collision_mask = hitbox_layer

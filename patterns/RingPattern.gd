@@ -21,7 +21,9 @@ func _handle_pattern(delta : float) -> int:
 	var fire_origin : Vector2
 	var bullet : BulletBase
 	var v : int
-	var pos = global_position
+	var pos : Vector2 = global_position
+	var props : Dictionary = {}
+	props["bullet_count"] = 0
 	# calculate origin offset
 	pattern_origin = Vector2(pos.x + (origin_offset * cos(360.0/spawn_count)), pos.y + (origin_offset * sin(360.0/spawn_count)))
 	var spread_rad : float = spread_degrees * PI / 180 # angle to shoot spread
@@ -36,12 +38,13 @@ func _handle_pattern(delta : float) -> int:
 		for i in range(ceil(-spread / 2.0), ceil(spread / 2.0)):
 			# spawn all bullets in ring
 			for line in range(1, spawn_count + 1):
+				props["bullet_count"] += 1
 				# calculate fire angle, taking spread, and angle offset modifiers
 				angle = start_angle + (radians * line) + angle_offset + (i * spread_rad)
 				fire_origin = pos + (pattern_origin.from_angle(angle) * origin_offset)
 				#print(fire_origin)
 				#print(angle_to_target(fire_origin, target))
-				
 				bullet = BulletPool.get_next_bullet(get_bullet_data.call(), angle_to_target(fire_origin, target) if angle_type == Angle.TARGET else angle, v, acceleration, fire_origin, bullet_ctrl, self) as BulletBase
+				custom_modify_bullet.call(bullet, props, bulletin_board)
 				bullet.fire()
 	return SUCCESS

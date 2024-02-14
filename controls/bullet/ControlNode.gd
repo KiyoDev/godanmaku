@@ -20,6 +20,7 @@ var reverse : bool = false
 
 func _before_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
 	if alt_bullet_data:
+		#bullet.update_rotation()
 		bullet._swap_data(alt_bullet_data)
 
 

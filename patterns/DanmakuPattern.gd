@@ -56,6 +56,7 @@ var bulletin_board : BulletinBoard
 
 var custom_update : Callable
 var custom_repeat : Callable
+var custom_modify_bullet : Callable
 var get_bullet_data : Callable
 
 var up_time : int = 0
@@ -71,6 +72,7 @@ var player : Player
 func _ready() -> void:
 	custom_update = _custom_update
 	custom_repeat = _custom_repeat
+	custom_modify_bullet = _custom_modify_bullet
 	get_bullet_data = _get_bullet_data
 	player = Godanmaku.get_player()
 	can_update = false
@@ -171,3 +173,7 @@ func _get_bullet_data() -> BulletData:
 
 func _handle_pattern(delta : float) -> int:
 	return RUNNING
+
+
+func _custom_modify_bullet(bullet : BulletBase, properties : Dictionary, board : BulletinBoard) -> void:
+	pass
