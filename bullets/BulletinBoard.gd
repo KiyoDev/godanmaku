@@ -17,9 +17,7 @@ func set_value(key : Variant, value : Variant) -> void:
 
 
 func get_value(key : Variant, default_value : Variant = null) -> Variant:
-	if has_value(key):
-		return board.get(key, default_value)
-	return default_value
+	return board.get(key, default_value) if board.has(key) and board[key] != null else default_value
 
 
 func has_value(key : Variant) -> bool:

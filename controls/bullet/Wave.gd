@@ -30,5 +30,6 @@ func _custom_update(delta : float, bullet : BulletBase, bulletin_board : Bulleti
 	
 	bullet.position_offset = Vector2(cos(bullet.angle), sin(bullet.angle)).orthogonal() * sin(bulletin_board.get_value(instance_key) * delta * frequency) * amplitude
 	
-	bulletin_board.set_value(instance_key, bulletin_board.get_value(instance_key) + 1)
+	if duration > 0:
+		bulletin_board.set_value(instance_key, bulletin_board.get_value(instance_key) + 1)
 	return RUNNING

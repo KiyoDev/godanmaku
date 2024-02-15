@@ -19,10 +19,10 @@ func _set_custom_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> 
 
 
 func _custom_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> int:
-	if bulletin_board.get_value(instance_key) >= duration:
+	var up_time : int = bulletin_board.get_value(instance_key)
+	if up_time >= duration:
 		return SUCCESS
 	
-	#bullet.position_offset = Vector2(cos(bullet.angle), sin(bullet.angle)).orthogonal() * sin(bulletin_board.get_value(instance_key) * delta * frequency) * amplitude
-	
-	bulletin_board.set_value(instance_key, bulletin_board.get_value(instance_key) + 1)
+	if duration > 0:
+		bulletin_board.set_value(instance_key, up_time + 1)
 	return RUNNING

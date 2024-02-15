@@ -7,11 +7,17 @@ enum {
 }
 
 
-const MAX_BULLETS := 10000
+const MAX_BULLETS := 5000
 
 @onready var direct_space_state : PhysicsDirectSpaceState2D = get_world_2d().direct_space_state
 
 var bullet_index := 0
+
+
+func _ready() -> void:
+	for i in MAX_BULLETS:
+		var b = BulletBase.new()
+		add_child(b)
 
 
 func _exit_tree() -> void:
@@ -22,15 +28,15 @@ func get_next_bullet(data : BulletData, angle : float, v : int, a : int, positio
 	var bullet : BulletBase
 	if get_child_count() >= MAX_BULLETS:
 		bullet_index = (bullet_index + 1) % get_child_count()
-		bullet = get_child(bullet_index) as BulletBase
-		bullet.before_spawn(pattern, data, angle, a, v, position)
+		bullet = get_child(bullet_index)
+		bullet.before_spawn(pattern, data, angle, v, a, position)
 		#active_enemy_bullets.append(bullet)
 	else:
 		# if not enough bullets, add more
 		while bullet_index >= get_child_count():
 			var b = BulletBase.new()
 			add_child(b)
-			b.before_spawn(pattern, data, angle, a, v, position)
+			b.before_spawn(pattern, data, angle, v, a, position)
 		bullet = get_child(bullet_index)
 		bullet_index += 1
 		#active_enemy_bullets.append(b)
@@ -39,7 +45,7 @@ func get_next_bullet(data : BulletData, angle : float, v : int, a : int, positio
 	return bullet
 
 
-func intersect_shape(query : PhysicsShapeQueryParameters2D, max_results := 32) -> Array[Dictionary]:
+func intersect_shape(query : PhysicsShapeQueryParameters2D, max_results := 1) -> Array[Dictionary]:
 	return direct_space_state.intersect_shape(query, max_results)
 
 

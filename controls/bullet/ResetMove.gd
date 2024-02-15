@@ -24,5 +24,6 @@ func _custom_update(delta : float, bullet : BulletBase, bulletin_board : Bulleti
 		
 	bullet._custom_update(delta, bullet, bulletin_board)
 	
-	bulletin_board.set_value(instance_key, bulletin_board.get_value(instance_key) + 1)
+	if duration > 0:
+		bulletin_board.set_value(instance_key, bulletin_board.get_value(instance_key) + 1)
 	return RUNNING

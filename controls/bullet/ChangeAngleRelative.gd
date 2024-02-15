@@ -26,7 +26,6 @@ func _before_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void
 	bullet.update_rotation()
 	if alt_bullet_data:
 		bullet._swap_data(alt_bullet_data)
-	if alt_bullet_data:
 		bullet.move_to_front()
 	# TODO: fix updating the angle -> rotation -> swapping the texture
 	#super._before_update(bullet, bulletin_board)
@@ -38,16 +37,12 @@ func _set_custom_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> 
 
 
 func _custom_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> int:
-	#if bulletin_board.get_value(instance_key) == 0:
-		#bullet.angle += angle * PI / 180.0
-		#bullet.velocity = velocity
-		#bullet.acceleration = acceleration
-		#bullet.update_rotation()
-		
-	if duration >= 0 and bulletin_board.get_value(instance_key) >= duration or bullet.velocity == 0:
+	var up_time : int = bulletin_board.get_value(instance_key)
+	if duration >= 0 and up_time >= duration or bullet.velocity == 0:
 		return SUCCESS
 	
 	#bullet.position_offset = Vector2(cos(bullet.angle), sin(bullet.angle)).orthogonal() * sin(bulletin_board.get_value(instance_key) * delta * frequency) * amplitude
 	
-	bulletin_board.set_value(instance_key, bulletin_board.get_value(instance_key) + 1)
+	if duration > 0:
+		bulletin_board.set_value(instance_key, up_time + 1)
 	return RUNNING

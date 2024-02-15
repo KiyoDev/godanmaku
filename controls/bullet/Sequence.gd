@@ -2,9 +2,11 @@ class_name Sequence extends ControlNode
 
 
 @onready var instance_key = "sequence_%s" % self.get_instance_id()
+@onready var child_key = "sequence_child_%s" % self.get_instance_id()
 
 
 func _before_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
+	bulletin_board.set_value(child_key, get_child(0))
 	bulletin_board.set_value(instance_key, 0)
 	get_child(0)._before_update(bullet, bulletin_board)
 
@@ -17,17 +19,25 @@ func _set_custom_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> 
 
 
 func _custom_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> int:
-	var child : ControlNode = get_child(bulletin_board.get_value(instance_key, 0))
-	var status : int = child._custom_update.call(delta, bullet, bulletin_board)
+	#var i : int = bulletin_board.get_value(instance_key)
+	var child : ControlNode = bulletin_board.get_value(child_key)
+	#var child : ControlNode = get_child(i)
 	
-	if status == SUCCESS:
-		bulletin_board.set_value(instance_key, wrapi(bulletin_board.get_value(instance_key, 0) + 1, 0, get_child_count()))
-	
-		if bulletin_board.get_value(instance_key, 0) == get_child_count():
-			bulletin_board.set_value(instance_key, 0)
+	if child._custom_update(delta, bullet, bulletin_board) == SUCCESS:
+		var i : int = wrapi(child.get_index() + 1, 0, get_child_count())
+		var next : ControlNode = get_child(i)
+		bulletin_board.set_value(child_key, next)
+		if i == get_child_count():
 			return SUCCESS
-		
-		get_child(bulletin_board.get_value(instance_key, 0))._before_update(bullet, bulletin_board)
+		next._before_update(bullet, bulletin_board)
+		#var next : int = wrapi(child.get_index() + 1, 0, get_child_count())
+		#bulletin_board.set_value(instance_key, next)
+	#
+		#if i == get_child_count() - 1:
+			#bulletin_board.set_value(instance_key, 0)
+			#return SUCCESS
+		#
+		#get_child(next)._before_update(bullet, bulletin_board)
 	
 	return RUNNING
 

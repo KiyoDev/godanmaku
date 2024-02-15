@@ -29,10 +29,12 @@ func _set_custom_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> 
 
 
 func _custom_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> int:
-	if duration > 0 and bulletin_board.get_value(instance_key) >= duration:
+	var f = bulletin_board.get_value(instance_key)
+	if duration > 0 and f >= duration:
 		return SUCCESS
 	
 	bullet.angle += (angle * PI / 180)  * delta
 	
-	bulletin_board.set_value(instance_key, bulletin_board.get_value(instance_key) + 1)
+	if duration > 0:
+		bulletin_board.set_value(instance_key, f + 1)
 	return RUNNING

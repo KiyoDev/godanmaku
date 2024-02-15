@@ -45,19 +45,20 @@ func _set_custom_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> 
 
 
 func _custom_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> int:
+	var up_time : int = bulletin_board.get_value(uptime_key)
 	# stop zig zag
-	if duration > 0 and bulletin_board.get_value(uptime_key) >= duration:
+	if duration > 0 and up_time >= duration:
 		return SUCCESS
 	
 	if delay > 0:
 		if !bulletin_board.get_value(pause_key):
-			if bulletin_board.get_value(uptime_key) > 0 and (bulletin_board.get_value(uptime_key) % (2 * frames) == frames or bulletin_board.get_value(uptime_key) % (2 * frames) == 0):
+			if up_time > 0 and (up_time % (2 * frames) == frames or up_time % (2 * frames) == 0):
 				bullet.angle += bulletin_board.get_value(radians_key)
 				bulletin_board.set_value(radians_key, -bulletin_board.get_value(radians_key))
 				bulletin_board.set_value(pause_key, true)
 				bullet.stop()
 			
-			bulletin_board.set_value(uptime_key, bulletin_board.get_value(uptime_key) + 1)
+			bulletin_board.set_value(uptime_key, up_time + 1)
 		else:
 			bulletin_board.set_value(pause_time_key, bulletin_board.get_value(pause_time_key) + 1)
 			
@@ -68,15 +69,15 @@ func _custom_update(delta : float, bullet : BulletBase, bulletin_board : Bulleti
 			if velocity != 0:
 				bullet.velocity = velocity
 	else:
-		if bulletin_board.get_value(uptime_key) % (2 * frames) == frames:
+		if up_time % (2 * frames) == frames:
 			bullet.angle -= (angle * PI / 180)
 			
 		if start_straight:
-			if bulletin_board.get_value(uptime_key) > 0 and (bulletin_board.get_value(uptime_key) % (2 * frames) == 0):
+			if up_time > 0 and (up_time % (2 * frames) == 0):
 				bullet.angle += (angle * PI / 180)
 		else:
-			if (bulletin_board.get_value(uptime_key) % (2 * frames) == 0):
+			if (up_time % (2 * frames) == 0):
 				bullet.angle += (angle * PI / 180)
-			
-		bulletin_board.set_value(uptime_key, bulletin_board.get_value(uptime_key) + 1)
+		
+		bulletin_board.set_value(uptime_key, up_time + 1)
 	return RUNNING

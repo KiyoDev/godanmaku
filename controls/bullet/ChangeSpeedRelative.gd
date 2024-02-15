@@ -26,8 +26,10 @@ func _set_custom_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> 
 
 
 func _custom_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> int:
-	if duration > 0 and bulletin_board.get_value(instance_key) >= duration:
+	var up_time : int = bulletin_board.get_value(instance_key)
+	if duration > 0 and up_time >= duration:
 		return SUCCESS
 	
-	bulletin_board.set_value(instance_key, bulletin_board.get_value(instance_key) + 1)
+	if duration > 0:
+		bulletin_board.set_value(instance_key, up_time + 1)
 	return RUNNING

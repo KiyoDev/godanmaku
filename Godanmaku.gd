@@ -1,5 +1,8 @@
 extends Node
 
+## Emitted when need to disable all active bullets
+signal disable_active_bullets
+
 
 var player : Node2D:
 	get = get_player

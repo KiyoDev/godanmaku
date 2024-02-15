@@ -4,6 +4,7 @@ class_name BulletBase extends Sprite2D
 signal expired
 
 
+@onready var direct_space_state : PhysicsDirectSpaceState2D = get_world_2d().direct_space_state
 @onready var query : PhysicsShapeQueryParameters2D = PhysicsShapeQueryParameters2D.new()
 
 ## Dictionary wrapper that can be used by updates for additional parameters and properties
@@ -67,6 +68,9 @@ var up_time : int = 0
 var tmp_velocity : int = 0
 var tmp_acceleration : int = 0
 
+var disabled : bool = false
+var expiration_timer : int = 0
+
 #/--------------------------------------------------/
 #/---------------- CUSTOM FUNCTIONS ----------------/
 #/--------------------------------------------------/
@@ -82,20 +86,110 @@ var handle_collision : Callable = _handle_collision
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	disabled = true
+	set_physics_process(false)
 	add_to_group("bullets")
 	hide()
 	z_index = 10
-	set_physics_process(false)
 	set_as_top_level(true)
 	camera = get_tree().get_first_node_in_group("camera")
 	screen_extents = get_viewport_rect().size / (2 * camera.zoom)
 	screen_extents.x += 16
 	screen_extents.y += 16
 	bulletin_board = BulletinBoard.new()
+	#Godanmaku.disable_active_bullets.connect(_on_disable_active_bullets)
 
 
 func _physics_process(delta: float) -> void:
-	update(delta, self, bulletin_board) # asks the controler how it should behave each tick
+	if disabled:
+		if expiration_timer == 600:
+			set_physics_process(false)
+			queue_free()
+			return
+		expiration_timer += 1
+		return
+	#update(delta, self, bulletin_board) # asks the controler how it should behave each tick
+	
+	# call movement updates
+	if !camera: 
+		_disable()
+		return
+	
+	# frame up time
+	up_time += 1
+	
+	#print("v=%s,a=%s" % [velocity, acceleration])
+	velocity = max(min(velocity + acceleration, max_velocity), 0)
+	
+	# Take into consideration angle to arc
+	virtual_position = Vector2(virtual_position.x + (velocity * delta) * cos(angle), virtual_position.y + (velocity * delta) * sin(angle))
+	# update rotation of texture and transform if bullet is directed
+	if directed:
+		look_at(virtual_position)
+	
+	query.transform = global_transform
+	global_position = virtual_position + position_offset
+	
+	if global_position.y <= -(camera.global_position + screen_extents).y or global_position.y >= (camera.global_position + screen_extents).y or global_position.x <= -(camera.global_position + screen_extents).x or global_position.x >= (camera.global_position + screen_extents).x:
+		# FIXME: need to properly handle bouncing boundary
+		# when reaching edge of screen, disable bullet or bounce if applicable
+		if max_bounces > 0 and current_bounces < max_bounces:
+			if global_position.y <= -(camera.global_position + screen_extents).y or global_position.y >= (camera.global_position + screen_extents).y:
+				angle = -angle
+			elif global_position.x <= -(camera.global_position + screen_extents).x or global_position.x >= (camera.global_position + screen_extents).x:
+				angle = -PI - angle
+			current_bounces += 1
+		else:
+			_disable()
+			
+			
+	#_move_update(delta, self, bulletin_board)
+	#move_update.call(delta, self, bulletin_board)
+	# FIXME: if referenced control node is destroyed, will cause error
+	# try to call custom updates
+	var status : int = custom_update.call(delta, self, bulletin_board) # called for any additional processing
+	if status == 1 and custom_update != _custom_update:
+		custom_update = _custom_update
+	# call animation updates
+	if animated:
+		animation_update.call(delta, self, bulletin_board) # can be overwritten for custom animation updates
+	# call collision updates
+	
+	query.collision_mask = hitbox_layer
+	
+	var hit : Array[Dictionary] = direct_space_state.intersect_shape(query, 1)
+	#var hit : Array[Dictionary] = BulletPool.intersect_shape(query, 1)
+	if hit:
+		var coll : Node2D = hit[0]["collider"]
+		
+		#print("rest_info=%s" % [BulletUtil.direct_space_state.get_rest_info(query)])
+		if coll.has_method("_on_hit"):
+			coll._on_hit(self)
+		
+		if hide_on_hit:
+			_disable()
+	else:
+		if !grazeable: return
+		query.collision_mask = graze_layer
+		hit = BulletPool.intersect_shape(query, 1)
+		if hit and can_graze:
+			can_graze = false
+			var coll = hit[0]["collider"]
+			if coll.has_method("_on_grazed"):
+				coll._on_grazed()
+	#_handle_collision(delta)
+	#handle_collision.call(delta)
+	
+	if fade and duration > 0 and up_time >= duration * 0.75:
+		self_modulate.a8 -= 15
+		if self_modulate.a8 == 0:
+			timeout.call(self)
+			return
+	
+	# if been alive for duration, expire bullet
+	if duration > 0 and up_time >= duration:
+		timeout.call(self)
+		return
 
 
 ## Swap data to the BulletData's properties
@@ -128,41 +222,27 @@ func _swap_data(data : BulletData) -> void:
 	scale = data.size
 
 
-## Swap bullet data
-func _swap(data : BulletData, v : int, a : int) -> void:
-	_swap_data(data)
-	velocity = v
-	acceleration = a
-
-
-## Reset various bullet info tp defai;t va;ies
-func reset(position : Vector2) -> void:
-	bulletin_board.clear()
-	virtual_position = position
-	global_position = position
-	query.transform = global_transform
-	query.collide_with_areas = true
-	custom_update = _custom_update
-	up_time = 0
-	current_bounces = 0
-	position_offset = Vector2.ZERO
-
-
 ## Called to setup bullet data before firing
-func before_spawn(_pattern : DanmakuPattern, data : BulletData, angle : float, v : int, a : int, position : Vector2) -> void:
+func before_spawn(_pattern : DanmakuPattern, data : BulletData, _angle : float, _velocity : int, _acceleration : int, _position : Vector2) -> void:
 	if _pattern:
 		pattern = _pattern
-	reset(position)
-	self.angle = angle
-	_swap(data, a, v)
+	reset(_position)
+	angle = _angle
+	#_swap(data, a, v)
+	_swap_data(data)
+	velocity = _velocity
+	acceleration = _acceleration
+	# global_position + angle to look at the direction properly
 	if directed:
-		# global_position + angle to look at the direction properly
 		look_at(global_position + Vector2.RIGHT.rotated(angle))
 
 
 ## Start firing the pattern
 func fire() -> void:
 	show()
+	Godanmaku.disable_active_bullets.connect(_on_disable_active_bullets)
+	expiration_timer = 0
+	disabled = false
 	set_physics_process(true)
 	
 	# view shape debug
@@ -180,6 +260,25 @@ func update_rotation() -> void:
 
 func timeout(bullet : BulletBase) -> void:
 	_disable()
+
+
+## Reset various bullet info tp defai;t va;ies
+func reset(position : Vector2) -> void:
+	bulletin_board.clear()
+	virtual_position = position
+	global_position = position
+	query.transform = global_transform
+	query.collide_with_areas = true
+	custom_update = _custom_update
+	animation_update = _animation_update
+	up_time = 0
+	current_bounces = 0
+	velocity = 0
+	acceleration = 0
+	angle = 0
+	position_offset = Vector2.ZERO
+	animated = false
+	ani_time = 0
 
 
 ## Resume bullet movement
@@ -210,7 +309,9 @@ func _disable() -> void:
 	reset(Vector2.ZERO)
 	query.collide_with_areas = false
 	hide()
-	set_physics_process(false)
+	Godanmaku.disable_active_bullets.disconnect(_on_disable_active_bullets)
+	disabled = true
+	#set_physics_process(false)
 
 
 func disable_collision() -> void:
@@ -222,28 +323,29 @@ func enable_collision() -> void:
 
 
 ## Calls all relevant update methods to handle movement, collision, animation, and other optional custom functionality
-func update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
-	# call movement updates
-	move_update.call(delta, bullet, bulletin_board)
-	# try to call custom updates
-	var status : int = custom_update.call(delta, bullet, bulletin_board) # called for any additional processing
-	if status == 1 and custom_update != _custom_update:
-		custom_update = _custom_update
-	# call animation updates
-	animation_update.call(delta, bullet, bulletin_board) # can be overwritten for custom animation updates
-	# call collision updates
-	handle_collision.call(delta)
-	
-	if fade and duration > 0 and up_time >= duration * 0.75:
-		self_modulate.a8 -= 15
-		if self_modulate.a8 == 0:
-			timeout.call(bullet)
-			return
-	
-	# if been alive for duration, expire bullet
-	if duration > 0 and up_time >= duration:
-		timeout.call(bullet)
-		return
+#func update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
+	## call movement updates
+	#move_update.call(delta, bullet, bulletin_board)
+	## try to call custom updates
+	#var status : int = custom_update.call(delta, bullet, bulletin_board) # called for any additional processing
+	#if status == 1 and custom_update != _custom_update:
+		#custom_update = _custom_update
+	## call animation updates
+	#if animated:
+		#animation_update.call(delta, bullet, bulletin_board) # can be overwritten for custom animation updates
+	## call collision updates
+	#handle_collision.call(delta)
+	#
+	#if fade and duration > 0 and up_time >= duration * 0.75:
+		#self_modulate.a8 -= 15
+		#if self_modulate.a8 == 0:
+			#timeout.call(bullet)
+			#return
+	#
+	## if been alive for duration, expire bullet
+	#if duration > 0 and up_time >= duration:
+		#timeout.call(bullet)
+		#return
 
 # default update functions
 
@@ -272,11 +374,10 @@ func _handle_collision(delta : float) -> void:
 
 
 func _animation_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
-	if animated:
-		ani_time += 1
-		if ani_time == ani_rate:
-			ani_time = 0
-			frame = wrapi(frame + 1, start_frame, end_frame + 1)
+	ani_time += 1
+	if ani_time == ani_rate:
+		ani_time = 0
+		frame = wrapi(frame + 1, start_frame, end_frame + 1)
 	
 
 # Default functionality for custom updates
@@ -302,6 +403,7 @@ func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinB
 	global_position = virtual_position + position_offset
 	
 	if global_position.y <= -(camera.global_position + screen_extents).y or global_position.y >= (camera.global_position + screen_extents).y or global_position.x <= -(camera.global_position + screen_extents).x or global_position.x >= (camera.global_position + screen_extents).x:
+		# FIXME: need to properly handle bouncing boundary
 		# when reaching edge of screen, disable bullet or bounce if applicable
 		if max_bounces > 0 and current_bounces < max_bounces:
 			if global_position.y <= -(camera.global_position + screen_extents).y or global_position.y >= (camera.global_position + screen_extents).y:
@@ -319,4 +421,7 @@ func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinB
 func _custom_update(delta : float, bullet : BulletBase, bulletin_board) -> int: 
 	return 0
 
+
+func _on_disable_active_bullets() -> void:
+	pass
 
