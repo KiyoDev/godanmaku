@@ -90,8 +90,7 @@ signal expired
 var updating_coords : bool = false
 var updating_frame : bool = false
 
-#var direct_space_state : PhysicsDirectSpaceState2D = get_world_2d().direct_space_state
-var query : PhysicsShapeQueryParameters2D = PhysicsShapeQueryParameters2D.new()
+var properties : Dictionary = {}
 
 # Physics properties
 ## Reference to the bullet's transform
@@ -112,8 +111,8 @@ var position_offset : Vector2 = Vector2.ZERO
 #var fade : bool = false
 var can_graze : bool = false
 
-var camera : Camera2D
-var screen_extents : Vector2
+#var camera : Camera2D
+#var screen_extents : Vector2
 
 # internal properties
 
@@ -133,14 +132,21 @@ func update_rotation() -> void:
 	pass
 
 
-func _disable() -> void:
-	pass
+func bounce(boundary : Rect2) -> bool:
+	if max_bounces > 0 and current_bounces < max_bounces:
+		if position.y <= -(boundary.position + (boundary.size / 2)).y or position.y >= (boundary.position + (boundary.size / 2)).y:
+			angle = -angle
+		elif position.x <= -(boundary.position + (boundary.size / 2)).x or position.x >= (boundary.position + (boundary.size / 2)).x:
+			angle = -PI - angle
+		current_bounces += 1
+		return true
+	return false
 
 
 func _move_update(delta : float, bullet : Bullet, props : Dictionary) -> void:
-	if !camera: 
-		_disable()
-		return
+	#if !camera: 
+		#_disable()
+		#return
 	
 	# frame up time
 	up_time += 1
@@ -155,25 +161,6 @@ func _move_update(delta : float, bullet : Bullet, props : Dictionary) -> void:
 	#if directed:
 		#look_at(virtual_position)
 	
-	query.transform = transform
 	position = virtual_position + position_offset
-	
-	if position.y <= -(camera.global_position + screen_extents).y or position.y >= (camera.global_position + screen_extents).y or position.x <= -(camera.global_position + screen_extents).x or position.x >= (camera.global_position + screen_extents).x:
-		# FIXME: need to properly handle bouncing boundary
-		# when reaching edge of screen, disable bullet or bounce if applicable
-		if max_bounces > 0 and current_bounces < max_bounces:
-			if position.y <= -(camera.global_position + screen_extents).y or position.y >= (camera.global_position + screen_extents).y:
-				angle = -angle
-			elif position.x <= -(camera.global_position + screen_extents).x or position.x >= (camera.global_position + screen_extents).x:
-				angle = -PI - angle
-			current_bounces += 1
-		else:
-			_disable()
-		return
-
-
-func _animation_update(delta : float, bullet : Bullet, props : Dictionary) -> void:
-	ani_time += 1
-	if ani_time == ani_rate:
-		ani_time = 0
-		frame = wrapi(frame + 1, start_frame, end_frame + 1)
+	#print("bullet[%s] - pos=%s" % [get_instance_id(), position])
+	transform.origin = bullet.position

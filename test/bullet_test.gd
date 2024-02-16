@@ -29,7 +29,7 @@ func _input(event: InputEvent) -> void:
 	if not event is InputEventKey and not event is InputEventAction and not event is InputEventJoypadButton and not event is InputEventJoypadMotion: return
 	
 	# debugging
-	var just_pressed = event.is_pressed() and not event.is_echo()
+	var just_pressed : bool = event.is_pressed() and not event.is_echo()
 	if Input.is_key_pressed(KEY_1) and just_pressed:
 		var b = BulletPool.get_next_bullet(data_1, PI, 60, 0, Vector2.ZERO, z)
 		
@@ -70,10 +70,12 @@ func _input(event: InputEvent) -> void:
 	elif Input.is_key_pressed(KEY_Q) and just_pressed:
 		lasers[0].fire()
 	elif Input.is_key_pressed(KEY_W) and just_pressed:
-		for p in moving_target.get_children():
+		for p : Node in moving_target.get_children():
 			if p is DanmakuPattern:
 				p.fire()
 	elif Input.is_key_pressed(KEY_BRACKETRIGHT) and just_pressed:
 		rings[9].fire()
 	elif Input.is_key_pressed(KEY_BRACKETLEFT) and just_pressed:
 		rings[10].fire()
+	elif Input.is_key_pressed(KEY_P) and just_pressed:
+		rings[11].fire()

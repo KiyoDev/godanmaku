@@ -1,7 +1,7 @@
-class_name ChangeAngleRelative extends ControlNode
+class_name ChangeAngle extends ControlNode
 
 
-@onready var instance_key = "change_angle_relative_%s" % self.get_instance_id()
+@onready var instance_key = "change_angle_%s" % self.get_instance_id()
 
 
 ## Angle to add to bullet's current angle
@@ -17,7 +17,7 @@ class_name ChangeAngleRelative extends ControlNode
 
 func _before_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
 	bulletin_board.set_value(instance_key, 0)
-	bullet.angle += angle * PI / 180.0
+	bullet.angle_offset = angle * PI / 180.0
 	if velocity > 0:
 		bullet.velocity = velocity
 	if acceleration > 0:

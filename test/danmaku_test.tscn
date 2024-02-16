@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3 uid="uid://drdpn2dddwbpg"]
+
+[ext_resource type="Script" path="res://addons/godanmaku/bullets/Danmaku.gd" id="1_5cyy4"]
+[ext_resource type="Script" path="res://addons/godanmaku/test/danmaku_test.gd" id="1_rlrmt"]
+[ext_resource type="Script" path="res://addons/godanmaku/bullets/Bullet.gd" id="2_uhvjn"]
+[ext_resource type="Texture2D" uid="uid://io4wey6dqj2b" path="res://assets/bullets/boss_ame_bullets.png" id="3_e8j7e"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t11ww"]
+radius = 12.0
+
+[sub_resource type="Resource" id="Resource_0g0a3"]
+script = ExtResource("2_uhvjn")
+velocity = 100
+max_velocity = 1000
+acceleration = 0
+damage = 1
+grazeable = true
+directed = false
+bounces = 0
+duration = 0
+hide_on_hit = true
+hitbox_layer = 1
+graze_layer = 2
+texture = ExtResource("3_e8j7e")
+animated = true
+start_frame = 12
+end_frame = 15
+ani_rate = 2
+hframes = 4
+vframes = 4
+frame = 12
+frame_coords = Vector2i(0, 3)
+offset = Vector2(0, 0)
+shape = SubResource("CircleShape2D_t11ww")
+size = Vector2i(1, 1)
+
+[node name="Camera2D" type="Camera2D"]
+offset = Vector2(-56, 0)
+
+[node name="Node2D" type="Node2D" parent="." node_paths=PackedStringArray("patterns")]
+script = ExtResource("1_rlrmt")
+patterns = [NodePath("Danmaku")]
+
+[node name="Danmaku" type="Node2D" parent="Node2D"]
+script = ExtResource("1_5cyy4")
+bullet_data = SubResource("Resource_0g0a3")
+max_repeats = 64
+repeat_time = 5.0
+spawn_count = 32
+stack_velocity = 30
+spread_degrees = 20.0

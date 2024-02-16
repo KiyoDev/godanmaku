@@ -12,10 +12,6 @@ var bulletin_board : BulletinBoard
 ## Reference to a pattern's BulletinBoard to read any shared data from the pattern firing this bullet
 var pattern : DanmakuPattern
 
-## Camera and bounds stuff
-var camera : Camera2D
-var screen_extents : Vector2
-
 ## Damage
 var damage : int = 1
 ## Query collision layer
@@ -33,6 +29,7 @@ var angle : float = 0:
 	set(value):
 		angle = value
 		update_rotation()
+var angle_offset : float = 0
 ## If true, bullet rotates to look at the direction it's traveling
 var directed : bool = false
 ## How many times bullet should bounce off the edges of the screen
@@ -71,6 +68,9 @@ var tmp_acceleration : int = 0
 var disabled : bool = false
 var expiration_timer : int = 0
 
+var boundary : Rect2:
+	set = set_boundary
+
 #/--------------------------------------------------/
 #/---------------- CUSTOM FUNCTIONS ----------------/
 #/--------------------------------------------------/
@@ -92,11 +92,9 @@ func _ready() -> void:
 	hide()
 	z_index = 10
 	set_as_top_level(true)
-	camera = get_tree().get_first_node_in_group("camera")
-	screen_extents = get_viewport_rect().size / (2 * camera.zoom)
-	screen_extents.x += 16
-	screen_extents.y += 16
 	bulletin_board = BulletinBoard.new()
+	var coll : CollisionShape2D = Godanmaku.get_bullet_area().get_child(0) as CollisionShape2D
+	set_boundary(coll.shape.get_rect())
 	#Godanmaku.disable_active_bullets.connect(_on_disable_active_bullets)
 
 
@@ -110,11 +108,6 @@ func _physics_process(delta: float) -> void:
 		return
 	#update(delta, self, bulletin_board) # asks the controler how it should behave each tick
 	
-	# call movement updates
-	if !camera: 
-		_disable()
-		return
-	
 	# frame up time
 	up_time += 1
 	
@@ -122,7 +115,7 @@ func _physics_process(delta: float) -> void:
 	velocity = max(min(velocity + acceleration, max_velocity), 0)
 	
 	# Take into consideration angle to arc
-	virtual_position = Vector2(virtual_position.x + (velocity * delta) * cos(angle), virtual_position.y + (velocity * delta) * sin(angle))
+	virtual_position = Vector2(virtual_position.x + (velocity * delta) * cos(angle + angle_offset), virtual_position.y + (velocity * delta) * sin(angle + angle_offset))
 	# update rotation of texture and transform if bullet is directed
 	if directed:
 		look_at(virtual_position)
@@ -130,17 +123,12 @@ func _physics_process(delta: float) -> void:
 	query.transform = global_transform
 	global_position = virtual_position + position_offset
 	
-	if global_position.y <= -(camera.global_position + screen_extents).y or global_position.y >= (camera.global_position + screen_extents).y or global_position.x <= -(camera.global_position + screen_extents).x or global_position.x >= (camera.global_position + screen_extents).x:
-		# FIXME: need to properly handle bouncing boundary
-		# when reaching edge of screen, disable bullet or bounce if applicable
-		if max_bounces > 0 and current_bounces < max_bounces:
-			if global_position.y <= -(camera.global_position + screen_extents).y or global_position.y >= (camera.global_position + screen_extents).y:
-				angle = -angle
-			elif global_position.x <= -(camera.global_position + screen_extents).x or global_position.x >= (camera.global_position + screen_extents).x:
-				angle = -PI - angle
-			current_bounces += 1
-		else:
-			_disable()
+	
+	if !boundary.has_point(global_position) or (duration > 0 and up_time == duration):
+		if !bounce(boundary):
+			queue_free()
+			return
+	
 			
 			
 	#_move_update(delta, self, bulletin_board)
@@ -158,7 +146,7 @@ func _physics_process(delta: float) -> void:
 	query.collision_mask = hitbox_layer
 	
 	var hit : Array[Dictionary] = direct_space_state.intersect_shape(query, 1)
-	#var hit : Array[Dictionary] = BulletPool.intersect_shape(query, 1)
+	#var hit : Array[Dictionary] = direct_space_state.intersect_shape(query, 1)
 	if hit:
 		var coll : Node2D = hit[0]["collider"]
 		
@@ -171,7 +159,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		if !grazeable: return
 		query.collision_mask = graze_layer
-		hit = BulletPool.intersect_shape(query, 1)
+		hit = direct_space_state.intersect_shape(query, 1)
 		if hit and can_graze:
 			can_graze = false
 			var coll = hit[0]["collider"]
@@ -190,6 +178,21 @@ func _physics_process(delta: float) -> void:
 	if duration > 0 and up_time >= duration:
 		timeout.call(self)
 		return
+
+
+## Start firing the pattern
+func fire() -> void:
+	show()
+	Godanmaku.disable_active_bullets.connect(_on_disable_active_bullets)
+	expiration_timer = 0
+	disabled = false
+	set_physics_process(true)
+	
+	# view shape debug
+	#var col = CollisionShape2D.new()
+	#add_child(col)
+	#col.shape = query.shape
+	#col.global_transform = global_transform
 
 
 ## Swap data to the BulletData's properties
@@ -236,20 +239,8 @@ func before_spawn(_pattern : DanmakuPattern, data : BulletData, _angle : float, 
 	if directed:
 		look_at(global_position + Vector2.RIGHT.rotated(angle))
 
-
-## Start firing the pattern
-func fire() -> void:
-	show()
-	Godanmaku.disable_active_bullets.connect(_on_disable_active_bullets)
-	expiration_timer = 0
-	disabled = false
-	set_physics_process(true)
-	
-	# view shape debug
-	#var col = CollisionShape2D.new()
-	#add_child(col)
-	#col.shape = query.shape
-	#col.global_transform = global_transform
+func set_boundary(rect : Rect2) -> void:
+	boundary = rect
 
 
 ## Update the bullet's rotation to face the angle relative to its position
@@ -311,6 +302,7 @@ func _disable() -> void:
 	hide()
 	Godanmaku.disable_active_bullets.disconnect(_on_disable_active_bullets)
 	disabled = true
+	queue_free()
 	#set_physics_process(false)
 
 
@@ -320,6 +312,17 @@ func disable_collision() -> void:
 
 func enable_collision() -> void:
 	handle_collision = _handle_collision
+
+
+func bounce(boundary : Rect2) -> bool:
+	if max_bounces > 0 and current_bounces < max_bounces:
+		if position.y <= -(boundary.position + (boundary.size / 2)).y or position.y >= (boundary.position + (boundary.size / 2)).y:
+			angle = -angle
+		elif position.x <= -(boundary.position + (boundary.size / 2)).x or position.x >= (boundary.position + (boundary.size / 2)).x:
+			angle = -PI - angle
+		current_bounces += 1
+		return true
+	return false
 
 
 ## Calls all relevant update methods to handle movement, collision, animation, and other optional custom functionality
@@ -352,7 +355,7 @@ func enable_collision() -> void:
 func _handle_collision(delta : float) -> void:
 	query.collision_mask = hitbox_layer
 	
-	var hit : Array[Dictionary] = BulletPool.intersect_shape(query, 1)
+	var hit : Array[Dictionary] = direct_space_state.intersect_shape(query, 1)
 	if hit:
 		var coll : Node2D = hit[0]["collider"]
 		
@@ -365,7 +368,7 @@ func _handle_collision(delta : float) -> void:
 	else:
 		if !grazeable: return
 		query.collision_mask = graze_layer
-		hit = BulletPool.intersect_shape(query, 1)
+		hit = direct_space_state.intersect_shape(query, 1)
 		if hit and can_graze:
 			can_graze = false
 			var coll = hit[0]["collider"]
@@ -383,10 +386,6 @@ func _animation_update(delta : float, bullet : BulletBase, bulletin_board : Bull
 # Default functionality for custom updates
 
 func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
-	if !camera: 
-		_disable()
-		return
-	
 	# frame up time
 	up_time += 1
 	
@@ -401,19 +400,6 @@ func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinB
 	
 	query.transform = global_transform
 	global_position = virtual_position + position_offset
-	
-	if global_position.y <= -(camera.global_position + screen_extents).y or global_position.y >= (camera.global_position + screen_extents).y or global_position.x <= -(camera.global_position + screen_extents).x or global_position.x >= (camera.global_position + screen_extents).x:
-		# FIXME: need to properly handle bouncing boundary
-		# when reaching edge of screen, disable bullet or bounce if applicable
-		if max_bounces > 0 and current_bounces < max_bounces:
-			if global_position.y <= -(camera.global_position + screen_extents).y or global_position.y >= (camera.global_position + screen_extents).y:
-				angle = -angle
-			elif global_position.x <= -(camera.global_position + screen_extents).x or global_position.x >= (camera.global_position + screen_extents).x:
-				angle = -PI - angle
-			current_bounces += 1
-		else:
-			_disable()
-		return
 
 
 ## set custom behavior for the bullet
