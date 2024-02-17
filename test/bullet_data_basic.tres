@@ -3,22 +3,22 @@
 [ext_resource type="Script" path="res://addons/godanmaku/bullets/BulletData.gd" id="1_2nhg0"]
 [ext_resource type="Texture2D" uid="uid://clev7jb1fmmjj" path="res://addons/godanmaku/textures/enemy_bullets.png" id="2_g186w"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_spjcb"]
-radius = 8.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_a6ykc"]
+radius = 3.0
 
 [resource]
 script = ExtResource("1_2nhg0")
 texture = ExtResource("2_g186w")
-hframes = 16
-vframes = 16
-frame = 0
-frame_coords = Vector2i(0, 0)
+hframes = 8
+vframes = 8
+frame = 5
+frame_coords = Vector2i(5, 0)
 offset = Vector2(0, 0)
 animated = false
 start_frame = 0
 end_frame = 0
 ani_rate = 10
-shape = SubResource("CircleShape2D_spjcb")
+shape = SubResource("CircleShape2D_a6ykc")
 size = Vector2i(1, 1)
 damage = 1
 grazeable = true

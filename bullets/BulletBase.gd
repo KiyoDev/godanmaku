@@ -181,13 +181,13 @@ func _physics_process(delta: float) -> void:
 
 
 ## Start firing the pattern
-func fire() -> void:
+func fire(attack_multiplier : float = 1) -> void:
 	show()
 	Godanmaku.disable_active_bullets.connect(_on_disable_active_bullets)
 	expiration_timer = 0
 	disabled = false
 	set_physics_process(true)
-	
+	damage *= attack_multiplier
 	# view shape debug
 	#var col = CollisionShape2D.new()
 	#add_child(col)

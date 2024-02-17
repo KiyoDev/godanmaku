@@ -23,11 +23,11 @@ enum Angle {
 ## Direction to spawn and aim pattern (in degrees)
 @export var fire_angle : int = 180
 ### Velocity to set for bullets being fired
-#@export var velocity : int = 100
+@export var velocity : int = 100
 ### Acceleration to set for bullets being fired
-#@export var acceleration : int = 0
+@export var acceleration : int = 0
 ## Bullet data to use when firing bullets
-@export var bullet_data : Bullet
+@export var bullet_data : BulletData
 
 @export_group("Pattern Controls")
 @export var pattern_ctrl : PatternControl
@@ -67,7 +67,7 @@ var can_update : bool = false
 var angle_offset : float = 0
 var call_count : int = 0
 
-var bullets : Array[Bullet] = []
+var bullets : Array[BulletRef] = []
 var boundary : Rect2:
 	set = set_boundary
 
@@ -118,8 +118,8 @@ func player_position() -> Vector2:
 
 
 func _physics_process(delta: float) -> void:
-	var transform : Transform2D = Transform2D()
-	var destroy_queue : Array[Bullet] = []
+	var used_transform : Transform2D = Transform2D()
+	var destroy_queue : Array[BulletRef] = []
 	
 	if can_fire:
 		if max_repeats == 0:
@@ -146,19 +146,15 @@ func _physics_process(delta: float) -> void:
 				call_count += 1
 		
 	for i in range(0, bullets.size()):
-		var bullet : Bullet = bullets[i]
+		var bullet : BulletRef = bullets[i]
 		#print("b=%s, %s" % [bullet.position, boundary.has_point(bullet.position)])
 		if !boundary.has_point(bullet.position) or (bullet.duration > 0 and bullet.up_time == bullet.duration):
 			if !bullet.bounce(boundary):
 				destroy_queue.append(bullet)
 				continue
-		#bullet._move_update(delta, bullet, bullet.properties)
 		
 		bullet.up_time += 1
-		
-		#print("v=%s,a=%s" % [velocity, acceleration])
 		bullet.velocity = max(min(bullet.velocity + bullet.acceleration, bullet.max_velocity), 0)
-		
 		# Take into consideration angle to arc
 		bullet.virtual_position = Vector2(bullet.virtual_position.x + (bullet.velocity * delta) * cos(bullet.angle), bullet.virtual_position.y + (bullet.velocity * delta) * sin(bullet.angle))
 		# update rotation of texture and transform if bullet is directed
@@ -167,66 +163,63 @@ func _physics_process(delta: float) -> void:
 			#look_at(virtual_position)
 		
 		bullet.position = bullet.virtual_position + bullet.position_offset
-		
+		used_transform.origin = bullet.position
 		#print("bullet[%s] - pos=%s" % [get_instance_id(), position])
-		transform.origin = bullet.position
-	
-		PhysicsServer2D.area_set_shape_transform(Godanmaku.get_bullet_area().get_rid(), i, transform)
+		PhysicsServer2D.area_set_shape_transform(Godanmaku.get_bullet_area().get_rid(), i, used_transform)
 	
 	for b in destroy_queue:
 		#print("destroying - %s" % [b.shape.get_rid()])
 		#PhysicsServer2D.free_rid(b.shape.get_rid())
 		bullets.erase(b)
 	
-	queue_redraw()
 	up_time += 1
 	#print("bullets=%s" % [bullets.size()])
-	#debug_label.text = "bullets[%s]" % [bullets.size()]
+	debug_label.text = "bullets[%s] fps:%s" % [bullets.size(), Engine.get_frames_per_second()]
+	queue_redraw()
 	#print("area shape count = %s" % PhysicsServer2D.area_get_shape_count(Godanmaku.get_bullet_area().get_rid()))
 
 
 func _draw() -> void:
-	#
 	for i in range(0, bullets.size()):
-		var bullet : Bullet = bullets[i]
-		#draw_texture_rect_region(bullet.texture)
-		var region_rect : Rect2i = texture_rect(bullet.texture, bullet.hframes, bullet.vframes, bullet.frame)
-		draw_texture_rect_region(bullet.texture, Rect2i(bullet.position, region_rect.size), region_rect)
-		if !bullet.animated: continue
+		var bullet : BulletRef = bullets[i]
+		draw_texture(bullet.texture, bullet.position)
+		#var region_rect : Rect2i = Rect2i(bullet.texture.get_size().x / bullet.hframes * (bullet.frame % bullet.hframes), bullet.texture.get_size().y / bullet.vframes * (bullet.frame / bullet.vframes), bullet.texture.get_size().x / bullet.hframes, bullet.texture.get_size().y / bullet.vframes)
+		##var region_rect : Rect2i = texture_rect(bullet.texture, bullet.hframes, bullet.vframes, bullet.frame)
+		#draw_texture_rect_region(bullet.texture, Rect2i(bullet.position, region_rect.size), region_rect)
+		#if !bullet.animated: continue
 		#bullet._animation_update()
-		bullet.ani_time += 1
-		if bullet.ani_time == bullet.ani_rate:
-			bullet.ani_time = 0
-			bullet.frame = wrapi(bullet.frame + 1, bullet.start_frame, bullet.end_frame + 1)
+		#bullet.ani_time += 1
+		#if bullet.ani_time == bullet.ani_rate:
+			#bullet.ani_time = 0
+			#bullet.frame = wrapi(bullet.frame + 1, bullet.start_frame, bullet.end_frame + 1)
 
 
 func texture_rect(texture : Texture2D, hframes : int, vframes : int, frame : int) -> Rect2i:
-	var texture_size : Vector2i = texture.get_size()
-	var frame_size : Vector2i = Vector2i(texture_size.x / hframes, texture_size.y / vframes)
-	var x : int = frame % hframes
-	var y : int = frame / vframes
+	#var texture_size : Vector2i = texture.get_size()
+	#var frame_size : Vector2i = Vector2i(texture_size.x / hframes, texture_size.y / vframes)
 	#var frame_pos : Vector2i = Vector2i(frame_size.x / 2 * frame_coords.x, frame_size.y / 2 * frame_coords.y)
-	var rect : Rect2i = Rect2i(frame_size.x * x, frame_size.y * y, texture_size.x / hframes, texture_size.y / vframes)
-	return rect
+	#return Rect2i(Vector2i(frame_size.x * (frame % hframes), frame_size.y * (frame / vframes)), frame_size)
+	return Rect2i(texture.get_size().x / hframes * (frame % hframes), texture.get_size().y / vframes * (frame / vframes), texture.get_size().x / hframes, texture.get_size().y / vframes)
 
 
+var angle : float
+var fire_origin : Vector2
+var start_angle : float
 func _handle_pattern() -> int:
-	#var fire_direction : Vector2
-	var angle : float
-	var fire_origin : Vector2
-	#var bullet : Bullet
+	#var fire_direction : Vector2x
+	#var bullet : BulletRef
 	#var v : int
 	#var pos : Vector2 = global_position
 	#var props : Dictionary = {}
 	#props["bullet_count"] = 0
 	# calculate origin offset
 	pattern_origin = Vector2(global_position.x + (origin_offset * cos(360.0/spawn_count)), global_position.y + (origin_offset * sin(360.0/spawn_count)))
-	var spread_rad : float = spread_degrees * PI / 180 # angle to shoot spread
-	var start_angle = angle_to_player(global_position) if angle_type == Angle.CHASE_PLAYER else (fire_angle * PI / 180) # angle of main bullet to fire
+	#var spread_rad : float = spread_degrees * PI / 180 # angle to shoot spread
+	start_angle = angle_to_player(global_position) if angle_type == Angle.CHASE_PLAYER else (fire_angle * PI / 180) # angle of main bullet to fire
 	#var start_angle = angle_to_player(pattern_origin) if angle_type == Angle.CHASE_PLAYER else angle_to_target(pattern_origin, target) if angle_type == Angle.TARGET else (fire_angle * PI / 180) # angle of main bullet to fire
 	#print("start_angle=%s" % [start_angle])
-	start_angle = start_angle if spread % 2 != 0 else start_angle + (spread_rad / 2)
-	var radians : float = 2 * PI / spawn_count # convert to radians for function params
+	start_angle = start_angle if spread % 2 != 0 else start_angle + (spread_degrees * PI / 180 / 2)
+	#var radians : float = 2 * PI / spawn_count # convert to radians for function params
 	# spawn stacks of rings
 	for stack in range(1, stacks + 1):
 		#v = bullet_data.velocity + (stack_velocity * stack)
@@ -236,7 +229,7 @@ func _handle_pattern() -> int:
 			for line in range(1, spawn_count + 1):
 				#props["bullet_count"] += 1
 				# calculate fire angle, taking spread, and angle offset modifiers
-				angle = start_angle + (radians * line) + angle_offset + (i * spread_rad)
+				angle = start_angle + (2 * PI / spawn_count * line) + angle_offset + (i * spread_degrees * PI / 180)
 				fire_origin = global_position + (pattern_origin.from_angle(angle) * origin_offset)
 				#print(fire_origin)
 				#print(angle_to_target(fire_origin, target))
@@ -247,11 +240,14 @@ func _handle_pattern() -> int:
 				#spawn_bullet(bullet_data, angle_to_target(fire_origin, target) if angle_type == Angle.TARGET else angle, v, fire_origin)
 				
 				
-				var b : Bullet = bullet_data.duplicate(0b0111) as Bullet
+				var b : BulletRef = BulletRef.new()
+				b.set_data(bullet_data)
+				#var b : BulletRef = bullet_data.duplicate(0b0111) as BulletRef
 				b.angle = angle_to_target(fire_origin, target) if angle_type == Angle.TARGET else angle
 				b.virtual_position = fire_origin
 				b.position = fire_origin
-				b.velocity = bullet_data.velocity + (stack_velocity * stack)
+				b.velocity = velocity + (stack_velocity * stack)
+				b.acceleration = acceleration
 				#configure_collision(b)
 				var transform : Transform2D = Transform2D(0, fire_origin)
 				transform.origin = b.position
@@ -262,8 +258,8 @@ func _handle_pattern() -> int:
 	return SUCCESS
 
 
-#func spawn_bullet(bullet : Bullet, angle : float, velocity : int, fire_origin : Vector2) -> void:
-	#var b : Bullet = bullet.duplicate(0b0111) as Bullet
+#func spawn_bullet(bullet : BulletRef, angle : float, velocity : int, fire_origin : Vector2) -> void:
+	#var b : BulletRef = bullet.duplicate(0b0111) as BulletRef
 	#b.angle = angle
 	#b.virtual_position = fire_origin
 	#b.position = fire_origin
@@ -277,7 +273,7 @@ func _handle_pattern() -> int:
 	#bullets.append(b)
 
 
-#func configure_collision(bullet : Bullet) -> void:
+#func configure_collision(bullet : BulletRef) -> void:
 	#var transform : Transform2D = Transform2D(0, position)
 	#transform.origin = bullet.position
 	## Step 2
@@ -290,6 +286,6 @@ func _handle_pattern() -> int:
 	##bullet.shape_id = _circle_shape
 
 
-#func _on_bullet_expired(bullet : Bullet) -> void:
+#func _on_bullet_expired(bullet : BulletRef) -> void:
 	#PhysicsServer2D.free_rid(bullet.shape.get_rid())
 	#bullets.erase(bullet)

@@ -20,8 +20,8 @@ func _before_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void
 	bullet.angle += angle * PI / 180.0
 	if velocity > 0:
 		bullet.velocity = velocity
-	if acceleration > 0:
-		bullet.acceleration = acceleration
+	#if acceleration > 0:
+	bullet.acceleration = acceleration
 	if alt_bullet_data:
 		bullet.directed = alt_bullet_data.directed
 	bullet.update_rotation()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://c41gs2sfa6tvd"]
+[gd_scene load_steps=72 format=3 uid="uid://c41gs2sfa6tvd"]
 
 [ext_resource type="Script" path="res://addons/godanmaku/test/bullet_test.gd" id="1_ap1po"]
 [ext_resource type="Texture2D" uid="uid://clev7jb1fmmjj" path="res://addons/godanmaku/textures/enemy_bullets.png" id="2_fa3y2"]
@@ -21,6 +21,8 @@
 [ext_resource type="Script" path="res://addons/godanmaku/controls/bullet/Delay.gd" id="20_00kps"]
 [ext_resource type="Script" path="res://addons/godanmaku/controls/pattern/OriginChase.gd" id="21_cwha1"]
 [ext_resource type="Texture2D" uid="uid://io4wey6dqj2b" path="res://assets/bullets/boss_ame_bullets.png" id="21_ol4yq"]
+[ext_resource type="Texture2D" uid="uid://c4roaa5dw5ah8" path="res://addons/godanmaku/test/16x16_black.png" id="22_i5om5"]
+[ext_resource type="Script" path="res://addons/godanmaku/controls/bullet/FireSubPattern.gd" id="23_60rxv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hdpox"]
 radius = 4.0
@@ -691,7 +693,7 @@ hitbox_layer = 1
 graze_layer = 2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kjs1q"]
-radius = 12.0
+radius = 6.0
 
 [sub_resource type="Resource" id="Resource_bdeog"]
 script = ExtResource("3_8t27t")
@@ -716,7 +718,56 @@ hide_on_hit = true
 hitbox_layer = 1
 graze_layer = 2
 
-[node name="Camera2D" type="Camera2D" node_paths=PackedStringArray("moving_target", "z", "seq_1", "rings", "lasers") groups=["camera"]]
+[sub_resource type="CircleShape2D" id="CircleShape2D_a6ykc"]
+radius = 3.0
+
+[sub_resource type="Resource" id="Resource_5hrdn"]
+script = ExtResource("3_8t27t")
+texture = ExtResource("2_fa3y2")
+hframes = 8
+vframes = 8
+frame = 5
+frame_coords = Vector2i(5, 0)
+offset = Vector2(0, 0)
+animated = false
+start_frame = 0
+end_frame = 0
+ani_rate = 10
+shape = SubResource("CircleShape2D_a6ykc")
+size = Vector2i(1, 1)
+damage = 1
+grazeable = true
+directed = false
+bounces = 0
+duration = 33
+hide_on_hit = true
+hitbox_layer = 1
+graze_layer = 2
+
+[sub_resource type="Resource" id="Resource_7y2sd"]
+script = ExtResource("3_8t27t")
+texture = ExtResource("2_fa3y2")
+hframes = 16
+vframes = 16
+frame = 0
+frame_coords = Vector2i(0, 0)
+offset = Vector2(0, 0)
+animated = false
+start_frame = 0
+end_frame = 0
+ani_rate = 10
+shape = SubResource("CircleShape2D_a6ykc")
+size = Vector2i(1, 1)
+damage = 1
+grazeable = true
+directed = false
+bounces = 0
+duration = 0
+hide_on_hit = true
+hitbox_layer = 1
+graze_layer = 2
+
+[node name="Camera2D" type="Node2D" node_paths=PackedStringArray("moving_target", "z", "seq_1", "rings", "lasers", "special_rings") groups=["camera"]]
 position = Vector2(-56, 0)
 script = ExtResource("1_ap1po")
 moving_target = NodePath("Node2D/moving_target")
@@ -726,6 +777,7 @@ seq_1 = NodePath("Node2D/RingPattern/Sequence")
 data_1 = SubResource("Resource_42l12")
 rings = [NodePath("Node2D/RingPattern"), NodePath("Node2D/SinglePattern"), NodePath("Node2D/SinglePattern2"), NodePath("Node2D/PatternRepeater"), NodePath("Node2D/Arcing"), NodePath("Node2D/Arcing2"), NodePath("Node2D/Delay Zig"), NodePath("Node2D/ring_spinning_directed"), NodePath("Node2D/ultra_ring2"), NodePath("Node2D/static_bullet_chase"), NodePath("Node2D/ultra_ring"), NodePath("Node2D/ring_test")]
 lasers = [NodePath("Node2D/DelayLaserPattern")]
+special_rings = [NodePath("Node2D/Node2D/Sprite2D/penta_explode")]
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(56, 0)
@@ -1159,7 +1211,7 @@ angle = 0.825
 
 [node name="ring_test" type="Node2D" parent="Node2D" node_paths=PackedStringArray("pattern_ctrl")]
 script = ExtResource("12_qys5r")
-spawn_count = 48
+spawn_count = 44
 bullet_data = SubResource("Resource_bdeog")
 pattern_ctrl = NodePath("PatternSpin")
 max_repeats = 128
@@ -1168,3 +1220,39 @@ repeat_time = 4.0
 [node name="PatternSpin" type="Node" parent="Node2D/ring_test"]
 script = ExtResource("17_8xwg0")
 angle = 10.0
+
+[node name="Node2D" type="Node2D" parent="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Node2D"]
+texture = ExtResource("22_i5om5")
+
+[node name="penta_explode" type="Node2D" parent="Node2D/Node2D/Sprite2D" node_paths=PackedStringArray("bullet_ctrl")]
+script = ExtResource("12_qys5r")
+spawn_count = 5
+fire_angle = -90
+velocity = 180
+bullet_data = SubResource("Resource_5hrdn")
+bullet_ctrl = NodePath("Sequence")
+max_repeats = 128
+repeat_time = 4.0
+
+[node name="Sequence" type="Node" parent="Node2D/Node2D/Sprite2D/penta_explode"]
+script = ExtResource("5_p75xh")
+
+[node name="TravelFrames" type="Node" parent="Node2D/Node2D/Sprite2D/penta_explode/Sequence"]
+script = ExtResource("18_07jc4")
+frames = 30
+
+[node name="FireSubPattern" type="Node" parent="Node2D/Node2D/Sprite2D/penta_explode/Sequence" node_paths=PackedStringArray("pattern")]
+script = ExtResource("23_60rxv")
+pattern = NodePath("../../sub_ring")
+
+[node name="Delay" type="Node" parent="Node2D/Node2D/Sprite2D/penta_explode/Sequence"]
+script = ExtResource("20_00kps")
+duration = 0
+
+[node name="sub_ring" type="Node2D" parent="Node2D/Node2D/Sprite2D/penta_explode"]
+script = ExtResource("12_qys5r")
+spawn_count = 5
+velocity = 180
+bullet_data = SubResource("Resource_7y2sd")

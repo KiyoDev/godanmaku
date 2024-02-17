@@ -1,4 +1,4 @@
-extends Camera2D
+extends Node2D
 
 @export var texture : CurveTexture
 @export var moving_target : Node2D
@@ -12,6 +12,9 @@ extends Camera2D
 
 @export var rings : Array[DanmakuPattern]
 @export var lasers : Array[DanmakuPattern]
+
+@export var special_rings : Array[DanmakuPattern]
+
 
 #var c : Callable = func(): pass
 var duration := 0
@@ -79,3 +82,9 @@ func _input(event: InputEvent) -> void:
 		rings[10].fire()
 	elif Input.is_key_pressed(KEY_P) and just_pressed:
 		rings[11].fire()
+	elif Input.is_key_pressed(KEY_APOSTROPHE) and just_pressed:
+		special_rings[0].fire()
+		#special_rings[1].fire()
+		#special_rings[2].fire()
+		#special_rings[3].fire()
+		#special_rings[4].fire()
