@@ -62,6 +62,8 @@ var current_bounces : int = 0
 ## How long the bullet has been alive for
 var up_time : int = 0
 
+## Used to modify final velicty without changing the base value
+var velocity_modifier : int = 0
 var tmp_velocity : int = 0
 var tmp_acceleration : int = 0
 
@@ -75,7 +77,7 @@ var boundary : Rect2:
 #/---------------- CUSTOM FUNCTIONS ----------------/
 #/--------------------------------------------------/
 ## Callable used handle bullet movement
-var move_update : Callable = _move_update
+#var move_update : Callable = _move_update
 ## Callable used handle custom bullet updates
 var custom_update : Callable = _custom_update
 ## Callable used handle bullet animation updates
@@ -115,7 +117,7 @@ func _physics_process(delta: float) -> void:
 	velocity = max(min(velocity + acceleration, max_velocity), 0)
 	
 	# Take into consideration angle to arc
-	virtual_position = Vector2(virtual_position.x + (velocity * delta) * cos(angle + angle_offset), virtual_position.y + (velocity * delta) * sin(angle + angle_offset))
+	virtual_position = Vector2(virtual_position.x + ((velocity + velocity_modifier) * delta) * cos(angle + angle_offset), virtual_position.y + ((velocity + velocity_modifier) * delta) * sin(angle + angle_offset))
 	# update rotation of texture and transform if bullet is directed
 	if directed:
 		look_at(virtual_position)
@@ -385,21 +387,21 @@ func _animation_update(delta : float, bullet : BulletBase, bulletin_board : Bull
 
 # Default functionality for custom updates
 
-func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
-	# frame up time
-	up_time += 1
-	
-	#print("v=%s,a=%s" % [velocity, acceleration])
-	velocity = max(min(velocity + acceleration, max_velocity), 0)
-	
-	# Take into consideration angle to arc
-	virtual_position = Vector2(virtual_position.x + (velocity * delta) * cos(angle), virtual_position.y + (velocity * delta) * sin(angle))
-	# update rotation of texture and transform if bullet is directed
-	if directed:
-		look_at(virtual_position)
-	
-	query.transform = global_transform
-	global_position = virtual_position + position_offset
+#func _move_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
+	## frame up time
+	#up_time += 1
+	#
+	##print("v=%s,a=%s" % [velocity, acceleration])
+	#velocity = max(min(velocity + acceleration, max_velocity), 0)
+	#
+	## Take into consideration angle to arc
+	#virtual_position = Vector2(virtual_position.x + (velocity * delta) * cos(angle), virtual_position.y + (velocity * delta) * sin(angle))
+	## update rotation of texture and transform if bullet is directed
+	#if directed:
+		#look_at(virtual_position)
+	#
+	#query.transform = global_transform
+	#global_position = virtual_position + position_offset
 
 
 ## set custom behavior for the bullet
