@@ -42,8 +42,8 @@ enum Angle {
 @export_group("Repeat Settings")
 ## How many times the pattern repeats. 0 means no repeats, -1 means infinite
 @export_range(-1, 10000) var max_repeats : int = 0
-## How many seconds until the pattern repeats
-@export var repeat_time : float = 1.0
+## How many frames until the pattern repeats
+@export_range(0, 1000) var repeat_time : int = 1
 
 @export_group("Sub Patterns")
 @export var sub_patterns : Array[DanmakuPattern]

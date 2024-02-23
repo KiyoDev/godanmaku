@@ -145,30 +145,30 @@ func _physics_process(delta: float) -> void:
 		animation_update.call(delta, self, bulletin_board) # can be overwritten for custom animation updates
 	# call collision updates
 	
-	query.collision_mask = hitbox_layer
-	
-	var hit : Array[Dictionary] = direct_space_state.intersect_shape(query, 1)
+	#query.collision_mask = hitbox_layer
+	#
 	#var hit : Array[Dictionary] = direct_space_state.intersect_shape(query, 1)
-	if hit:
-		var coll : Node2D = hit[0]["collider"]
-		
-		#print("rest_info=%s" % [BulletUtil.direct_space_state.get_rest_info(query)])
-		if coll.has_method("_on_hit"):
-			coll._on_hit(self)
-		
-		if hide_on_hit:
-			_disable()
-	else:
-		if !grazeable: return
-		query.collision_mask = graze_layer
-		hit = direct_space_state.intersect_shape(query, 1)
-		if hit and can_graze:
-			can_graze = false
-			var coll = hit[0]["collider"]
-			if coll.has_method("_on_grazed"):
-				coll._on_grazed()
+	##var hit : Array[Dictionary] = direct_space_state.intersect_shape(query, 1)
+	#if hit:
+		#var coll : Node2D = hit[0]["collider"]
+		#
+		##print("rest_info=%s" % [BulletUtil.direct_space_state.get_rest_info(query)])
+		#if coll.has_method("_on_hit"):
+			#coll._on_hit(self)
+		#
+		#if hide_on_hit:
+			#_disable()
+	#else:
+		#if !grazeable: return
+		#query.collision_mask = graze_layer
+		#hit = direct_space_state.intersect_shape(query, 1)
+		#if hit and can_graze:
+			#can_graze = false
+			#var coll = hit[0]["collider"]
+			#if coll.has_method("_on_grazed"):
+				#coll._on_grazed()
 	#_handle_collision(delta)
-	#handle_collision.call(delta)
+	handle_collision.call(delta)
 	
 	if fade and duration > 0 and up_time >= duration * 0.75:
 		self_modulate.a8 -= 15

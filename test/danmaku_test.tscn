@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://drdpn2dddwbpg"]
 
-[ext_resource type="Script" path="res://addons/godanmaku/bullets/Danmaku.gd" id="1_5cyy4"]
+[ext_resource type="Script" path="res://addons/godanmaku/test/Danmaku.gd" id="1_5cyy4"]
 [ext_resource type="Script" path="res://addons/godanmaku/test/danmaku_test.gd" id="1_rlrmt"]
 [ext_resource type="Script" path="res://addons/godanmaku/bullets/BulletData.gd" id="3_25gwf"]
 [ext_resource type="Texture2D" uid="uid://p7n0e10jbwps" path="res://assets/bullets/vector_bullet_blue.png" id="4_gh8sp"]

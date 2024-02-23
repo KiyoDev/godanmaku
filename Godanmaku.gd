@@ -27,6 +27,7 @@ func get_bullet_area() -> Area2D:
 	return bullet_area
 
 
+## Used to set the game's playable area. This area determines the border for when bullets should be despawned
 func set_bullet_area(path : String) -> void:
 	var area_scn : PackedScene = load(path)
 	bullet_area = area_scn.instantiate()
