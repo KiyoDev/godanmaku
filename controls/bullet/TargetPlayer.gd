@@ -15,7 +15,8 @@ class_name TargetPlayer extends ControlNode
 
 func _before_update(bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
 	bulletin_board.set_value(instance_key, 0)
-	bullet.angle = bullet.global_position.angle_to_point(Godanmaku.get_player().global_position)
+	var player = Godanmaku.get_player()
+	bullet.angle = bullet.global_position.angle_to_point(player.global_position if player else bullet.global_position + Vector2.LEFT)
 	if velocity > 0:
 		bullet.velocity = velocity
 	bullet.acceleration = acceleration

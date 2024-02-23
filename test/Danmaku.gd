@@ -57,7 +57,7 @@ enum Angle {
 
 var pattern_origin : Vector2
 
-var player : Player
+var player : Node2D
 
 var up_time : int = 0
 var total_time : int = 0

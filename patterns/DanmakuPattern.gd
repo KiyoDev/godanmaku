@@ -66,7 +66,7 @@ var can_update : bool = false
 var angle_offset : float = 0
 var call_count : int = 0
 
-var player : Player
+var player : Node2D
 
 
 func _ready() -> void:
