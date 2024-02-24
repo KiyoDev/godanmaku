@@ -12,17 +12,20 @@ var bullet_area : Area2D:
 	get = get_bullet_area
 
 
+## Get reference to the registered player node
 func get_player() -> Node2D:
 	if !player:
 		push_error("Player not found. Please make sure the player has been properly registered")
 	return player
 
 
+## Make sure to register player so the system can properly reference it
 func register_player(new_player : Node2D) -> void:
 	if !new_player: return
 	player = new_player
 
 
+## Get the valid area for bullets to exist in
 func get_bullet_area() -> Area2D:
 	return bullet_area
 

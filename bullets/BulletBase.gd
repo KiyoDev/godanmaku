@@ -375,7 +375,7 @@ func _handle_collision(delta : float) -> void:
 			can_graze = false
 			var coll = hit[0]["collider"]
 			if coll.has_method("_on_grazed"):
-				coll._on_grazed()
+				coll._on_grazed(self)
 
 
 func _animation_update(delta : float, bullet : BulletBase, bulletin_board : BulletinBoard) -> void:
