@@ -85,6 +85,8 @@ var animation_update : Callable = _animation_update
 ## Callable used handle bullet collisions
 var handle_collision : Callable = _handle_collision
 
+var on_hit_effects : Array[Callable] = []
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -130,9 +132,6 @@ func _physics_process(delta: float) -> void:
 		if !bounce(boundary):
 			queue_free()
 			return
-	
-			
-			
 	#_move_update(delta, self, bulletin_board)
 	#move_update.call(delta, self, bulletin_board)
 	# FIXME: if referenced control node is destroyed, will cause error
@@ -144,30 +143,6 @@ func _physics_process(delta: float) -> void:
 	if animated:
 		animation_update.call(delta, self, bulletin_board) # can be overwritten for custom animation updates
 	# call collision updates
-	
-	#query.collision_mask = hitbox_layer
-	#
-	#var hit : Array[Dictionary] = direct_space_state.intersect_shape(query, 1)
-	##var hit : Array[Dictionary] = direct_space_state.intersect_shape(query, 1)
-	#if hit:
-		#var coll : Node2D = hit[0]["collider"]
-		#
-		##print("rest_info=%s" % [BulletUtil.direct_space_state.get_rest_info(query)])
-		#if coll.has_method("_on_hit"):
-			#coll._on_hit(self)
-		#
-		#if hide_on_hit:
-			#_disable()
-	#else:
-		#if !grazeable: return
-		#query.collision_mask = graze_layer
-		#hit = direct_space_state.intersect_shape(query, 1)
-		#if hit and can_graze:
-			#can_graze = false
-			#var coll = hit[0]["collider"]
-			#if coll.has_method("_on_grazed"):
-				#coll._on_grazed()
-	#_handle_collision(delta)
 	handle_collision.call(delta)
 	
 	if fade and duration > 0 and up_time >= duration * 0.75:
@@ -363,6 +338,7 @@ func _handle_collision(delta : float) -> void:
 		
 		#print("rest_info=%s" % [BulletUtil.direct_space_state.get_rest_info(query)])
 		if coll.has_method("_on_hit"):
+			_custom_on_hit.call(self)
 			coll._on_hit(self)
 		
 		if hide_on_hit:
@@ -408,6 +384,11 @@ func _animation_update(delta : float, bullet : BulletBase, bulletin_board : Bull
 # instead of having tick controller calls or whatever, when bullet it spawned, it is assigned this behavior
 func _custom_update(delta : float, bullet : BulletBase, bulletin_board) -> int: 
 	return 0
+
+
+func _custom_on_hit(bullet : BulletBase) -> void:
+	for call in on_hit_effects:
+		call.call(bullet)
 
 
 func _on_disable_active_bullets() -> void:

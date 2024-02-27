@@ -801,7 +801,7 @@ t_1 = ExtResource("2_fa3y2")
 z = NodePath("Node2D/RingPattern/Sequence/ZigZag")
 seq_1 = NodePath("Node2D/RingPattern/Sequence")
 data_1 = SubResource("Resource_42l12")
-rings = [NodePath("Node2D/RingPattern"), NodePath("Node2D/SinglePattern"), NodePath("Node2D/SinglePattern2"), NodePath("Node2D/PatternRepeater"), NodePath("Node2D/Arcing"), NodePath("Node2D/Arcing2"), NodePath("Node2D/Delay Zig"), NodePath("Node2D/ring_spinning_directed"), NodePath("Node2D/ultra_ring2"), NodePath("Node2D/static_bullet_chase"), NodePath("Node2D/ultra_ring"), NodePath("Node2D/ring_test")]
+rings = [NodePath("Node2D/RingPattern"), NodePath("Node2D/SinglePattern"), NodePath("Node2D/SinglePattern2"), NodePath("Node2D/PatternRepeater"), NodePath("Node2D/Arcing"), NodePath("Node2D/Arcing2"), NodePath("Node2D/Delay Zig"), NodePath("Node2D/ring_spinning_directed"), NodePath("Node2D/ultra_ring2"), NodePath("Node2D/static_bullet_chase"), NodePath("Node2D/ultra_ring"), NodePath("Node2D/ring_stress_test")]
 lasers = [NodePath("Node2D/DelayLaserPattern")]
 special_rings = [NodePath("Node2D/Node2D/Sprite2D/penta_explode")]
 
@@ -1235,15 +1235,15 @@ repeat_time = 3
 script = ExtResource("17_8xwg0")
 angle = 0.825
 
-[node name="ring_test" type="Node2D" parent="Node2D" node_paths=PackedStringArray("pattern_ctrl")]
+[node name="ring_stress_test" type="Node2D" parent="Node2D" node_paths=PackedStringArray("pattern_ctrl")]
 script = ExtResource("12_qys5r")
 spawn_count = 44
 bullet_data = SubResource("Resource_bdeog")
 pattern_ctrl = NodePath("PatternSpin")
 max_repeats = 128
-repeat_time = 15
+repeat_time = 4
 
-[node name="PatternSpin" type="Node" parent="Node2D/ring_test"]
+[node name="PatternSpin" type="Node" parent="Node2D/ring_stress_test"]
 script = ExtResource("17_8xwg0")
 angle = 10.0
 
