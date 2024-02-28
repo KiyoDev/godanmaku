@@ -42,7 +42,7 @@ var duration : int = 1200:
 
 ## If the bullet should fade after a certain time
 var fade : bool = false
-var hide_on_hit : bool = true
+var disable_on_hit : bool = true
 var grazeable : bool = true
 var can_graze : bool = false
 
@@ -191,7 +191,7 @@ func _swap_data(data : BulletData) -> void:
 		can_graze = true
 	directed = data.directed
 	duration = data.duration
-	hide_on_hit = data.hide_on_hit
+	disable_on_hit = data.disable_on_hit
 	max_bounces = data.bounces
 	offset = data.offset
 	ani_time = 0
@@ -341,7 +341,7 @@ func _handle_collision(delta : float) -> void:
 			_custom_on_hit.call(self)
 			coll._on_hit(self)
 		
-		if hide_on_hit:
+		if disable_on_hit:
 			_disable()
 	else:
 		if !grazeable: return

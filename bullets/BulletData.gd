@@ -78,7 +78,7 @@ var updating_frame : bool = false
 @export var bounces : int = 0
 ## How many frames the bullet should live for
 @export var duration : int = 0
-@export var hide_on_hit : bool = true
+@export var disable_on_hit : bool = true
 ## The layers that the bullet should interact with
 @export_flags_2d_physics var hitbox_layer := 0b0000_0000_0000_0001
 ## The layer of the player's graze area
